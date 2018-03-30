@@ -42,7 +42,9 @@
     "testEnvironment": "node"
   },
   "keywords": [
-    "@gmod/gff"
+    "@gmod/gff",
+    "gff3",
+    "gff"
   ],
   "dependencies": {
     "babel-runtime": "^6.26.0"
