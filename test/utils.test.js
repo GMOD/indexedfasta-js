@@ -1,4 +1,4 @@
-import {parseAttributes,parseFeature,formatFeature,escape,unescape} from '../src/util'
+import {parseAttributes,parseFeature,formatFeature,escape,unescape} from '../dist/util'
 
 describe('GFF3 utils', () => {
   ;[

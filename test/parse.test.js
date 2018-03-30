@@ -1,7 +1,7 @@
 import fs from 'fs'
 import readline from 'readline'
 
-import Parser from '../src/parse'
+import Parser from '../dist/parse'
 
 function tee(t) {
   console.log(t)
