@@ -141,6 +141,7 @@ export default class Parser {
     const featureLine = GFF3.parseFeature(line)
     featureLine.child_features = []
     featureLine.derived_features = []
+    //featureLine._lineNumber = this.lineNumber //< debugging aid
 
     // NOTE: a feature is an arrayref of one or more feature lines.
     const ids = featureLine.attributes.ID || []
@@ -190,6 +191,11 @@ export default class Parser {
 
   _resolveReferencesTo(feature, id) {
     const references = this._underConstructionOrphans[id]
+    //   references is of the form
+    //   {
+    //     'Parent' : [ orphans that have a Parent attr referencing this feature ],
+    //     'Derives_from' : [ orphans that have a Derives_from attr referencing this feature ],
+    //    }
     if (!references) return
 
     Object.keys(references).forEach(attrname => {
@@ -206,30 +212,32 @@ export default class Parser {
     this.errorCallback(`${this.lineNumber}: ${message}`)
   }
 
-  _resolveReferencesFrom(feature, references, ids) {
-    // go through our references
-    //    if we have the feature under construction, put this feature in the right place
-    //    otherwise, put this feature in the right slot in the orphans
-    let pname
-    Object.keys(references).forEach(attrname => {
-      references[attrname].forEach(toId => {
+  _resolveReferencesFrom(feature,references,ids) {
+    function postIncrement(object,slot) {
+      let returnVal = object[slot] || 0
+      if (!object[slot])
+        object[slot] = 1
+      else
+        object[slot] += 1
+      return returnVal
+    }
+    Object.entries(references).forEach(([attrname,toIds]) => {
+      let pname
+      toIds.forEach( toId => {
         const otherFeature = this._underConstructionById[toId]
         if (otherFeature) {
-          if (!pname)
-            pname = containerAttributes[attrname] || attrname.toLowerCase()
+          if (!pname) pname = containerAttributes[attrname] || attrname.toLowerCase()
 
-          if (
-            !ids.some(
-              i => this._completedReferences[`${i},${attrname},${toId}`]++
-            )
-          ) {
-            otherFeature.forEach(loc => {
-              loc[pname].push(feature)
+          if (!ids.filter(id => postIncrement(this._completedReferences,`${id},${attrname},${toId}`)).length) {
+            otherFeature.forEach( location => {
+              location[pname].push(feature)
             })
           }
         } else {
-          const t = this._underConstructionOrphans[toId] || {}
-          t[attrname] = (t[attrname] || []).push(feature)
+          if (!this._underConstructionOrphans[toId][attrname])
+            this._underConstructionOrphans[toId][attrname] = []
+
+          this._underConstructionOrphans[toId][attrname].push(feature)
         }
       })
     })

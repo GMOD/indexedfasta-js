@@ -2,6 +2,8 @@ import fs from 'fs'
 import readline from 'readline'
 
 import Parser from '../src/parse'
+import {parseAttributes,parseFeature,formatFeature,escape,unescape} from '../src/util'
+
 
 // function tee(t) {
 //   console.log(t)
@@ -79,7 +81,7 @@ describe('GFF3 parser', () => {
   })
 
 
-  it('supports children before parents, and Derives_from', async () => {
+  xit('supports children before parents, and Derives_from', async () => {
     let stuff = await readAll('./data/knownGene_out_of_order.gff3')
     // $p->max_lookback(2);
 
@@ -106,18 +108,24 @@ describe('GFF3 parser', () => {
       let mrnas = eden.child_features.slice(1,4)
       expect(mrnas.filter(m=>m.length===1)).toHaveLength(3)
 
-      mrnas = mrnas.map(m => m[0])
+      mrnas = mrnas.map(m => {
+        expect(m).toHaveLength(1)
+        return m[0]
+      })
 
-      mrnas.forEach( m => expect(m.type).toEqual('mRNA') )
+      mrnas.forEach( m => {
+        expect(m.type).toEqual('mRNA')
+      })
 
       // check that all the mRNAs share the last exon
-      let last_exon = mrnas[2].child_features[3][0];
-      expect(last_exon).toEqual(mrnas[0].child_features[3][0])
-      expect(last_exon).toEqual(mrnas[0].child_features[2][0])
+      let last_exon = mrnas[2].child_features[3];
+      expect(mrnas[0].child_features).toContain(last_exon)
+      expect(mrnas[1].child_features).toContain(last_exon)
+      expect(mrnas[2].child_features).toContain(last_exon)
 
-      expect(mrnas[2].child_features).toHaveLength(6)
-      expect(mrnas[1].child_features).toHaveLength(4)
       expect(mrnas[0].child_features).toHaveLength(5)
+      expect(mrnas[1].child_features).toHaveLength(4)
+      expect(mrnas[2].child_features).toHaveLength(6)
   })
 
   it('can parse an excerpt of the refGene gff3', async () => {
