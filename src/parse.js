@@ -47,6 +47,8 @@ export default class Parser {
       // rest of the lines in the file.  currently
       // set when the file switches over to FASTA
       eof: false,
+
+      lineNumber: 0,
     })
   }
 
@@ -54,6 +56,8 @@ export default class Parser {
     if (this.eof) {
       return
     }
+
+    this.lineNumber += 1
 
     if (/^\s*[^#\s>]/.test(line)) {
       // feature line, most common case
@@ -156,9 +160,9 @@ export default class Parser {
       if (existing) {
         // another location of the same feature
         if (existing[existing.length-1].type !== featureLine.type) {
-            throw new ParseError(
+            this._parseError(
               `multi-line feature "${id}" has inconsistent types: "${featureLine.type}", "${existing[existing.length-1].type}"`
-            );
+            )
         }
         existing.push(featureLine)
         feature = existing
@@ -195,6 +199,11 @@ export default class Parser {
         delete references[attrname]
       })
     })
+  }
+
+  _parseError(message) {
+    this.eof = true
+    this.errorCallback(`${this.lineNumber}: ${message}`)
   }
 
   _resolveReferencesFrom(feature, references, ids) {

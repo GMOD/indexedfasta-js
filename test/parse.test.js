@@ -138,8 +138,8 @@ describe('GFF3 parser', () => {
     'mm9_sample_ensembl.gff3',
     'Saccharomyces_cerevisiae_EF3_e64.gff3',
   ].forEach( errorFile => {
-    it(`throws an error when parsing ${errorFile}`, () => {
-      expect(readAll(`./data/${errorFile}`)).rejects.toMatch(/inconsistent types/)
+    it(`throws an error when parsing ${errorFile}`, async () => {
+      await expect(readAll(`./data/${errorFile}`)).rejects.toMatch(/inconsistent types/)
     })
   })
 })
