@@ -30,7 +30,7 @@ describe('GFF3 utils', () => {
       }
   ],
   [
-      escape("Noggin,+-\%Foo\tbar")+"\tbarsource\tmatch\t234\t234\t0\t+\t.\t.\n",
+      `${escape("Noggin,+-%Foo\tbar")}\tbarsource\tmatch\t234\t234\t0\t+\t.\t.\n`,
       {
           'attributes' : {},
           'end' : 234,
@@ -53,3 +53,24 @@ describe('GFF3 utils', () => {
               })
           })
 })
+
+
+// is( gff3_format_attributes( undef ), '.', 'format undef attributes' );
+// is( gff3_format_attributes( {}    ), '.', 'format empty attributes' );
+// is( gff3_format_attributes( { zee => 'zoz' } ), 'zee=zoz', 'format malformed attributes' );
+// is( gff3_format_attributes( { Alias => [], ID => ['Jim'] } ), 'ID=Jim', 'skip empty attributes' );
+// is( gff3_format_attributes( { Alias => [], ID => ['Jim'], Alias => ['Bob'], fogbat => ['noggin'], '01base' => ['free'], } ), 'ID=Jim;Alias=Bob;01base=free;fogbat=noggin', 'ID is forced to be first-printed attr' );
+// is( gff3_format_attributes( { ID => 'Bob', zee => undef } ), 'ID=Bob', 'also skip undef attributes 1' );
+// is( gff3_format_attributes( { ID => 'Bob', zee => [ undef ] } ), 'ID=Bob', 'also skip undef attributes 2' );
+
+
+// is_deeply(
+//     gff3_parse_directive(" ## sequence-region contig12321_2.3  23,232  24,435,432"),
+//     { directive => 'sequence-region',
+//       seq_id => 'contig12321_2.3',
+//       start => 23_232,
+//       end   => 24_435_432,
+//       value => 'contig12321_2.3  23,232  24,435,432',
+//     },
+//     'gff3_parse_directive seems to work',
+// );
