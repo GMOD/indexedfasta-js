@@ -5,6 +5,8 @@ const containerAttributes = {
   Derives_from: 'derived_features',
 }
 
+class ParseError extends Error {}
+
 export default class Parser {
   /**
    * @param {Object} args
@@ -153,8 +155,14 @@ export default class Parser {
       const existing = this._underConstructionById[id]
       if (existing) {
         // another location of the same feature
+        if (existing[existing.length-1].type !== featureLine.type) {
+            throw new ParseError(
+              `multi-line feature "${id}" has inconsistent types: "${featureLine.type}", "${existing[existing.length-1].type}"`
+            );
+        }
         existing.push(featureLine)
         feature = existing
+
       } else {
         // haven't seen it yet
         feature = [featureLine]

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import readline from 'readline'
 
-import Parser from '../dist/parse'
+import Parser from '../src/parse'
 
 // function tee(t) {
 //   console.log(t)
@@ -9,13 +9,25 @@ import Parser from '../dist/parse'
 // }
 function readAll(filename) {
   return new Promise((resolve, reject) => {
-    const stuff = { features: [], directives: [], fasta: [] }
+    const stuff = {
+      features: [],
+      comments: [],
+      directives: [],
+      all: []
+    }
+
     const p = new Parser({
       featureCallback(f) {
         stuff.features.push(f)
+        stuff.all.push(f)
       },
       directiveCallback(d) {
         stuff.directives.push(d)
+        stuff.all.push(d)
+      },
+      commentCallback(c) {
+        stuff.comments.push(c)
+        stuff.all.push(c)
       },
       endCallback() {
         resolve(stuff)
@@ -39,13 +51,12 @@ describe('GFF3 parser', () => {
 
   it('can parse gff3_with_syncs.gff3', async () => {
     let stuff = await readAll('./data/gff3_with_syncs.gff3')
-    const referenceResult = JSON.parse(
-      fs.readFileSync(require.resolve('./data/gff3_with_syncs.result.json')),
-    )
+    const referenceResult = require('./data/gff3_with_syncs.result.json')
+    delete stuff.all
     expect(stuff).toEqual(referenceResult)
   })
 
-  let tests = [
+  ;[
     [ 1010, 'messy_protein_domains.gff3'],
     [ 4, 'gff3_with_syncs.gff3' ],
     [ 51, 'au9_scaffold_subset.gff3' ],
@@ -53,32 +64,88 @@ describe('GFF3 parser', () => {
     [ 5, 'directives.gff3' ],
     [ 2, 'hybrid1.gff3' ],
     [ 2, 'hybrid2.gff3' ],
-    [ 4, 'knownGene.gff3' ],
-    [ 4, 'knownGene2.gff3' ],
+    [ 5, 'knownGene.gff3' ],
+    [ 5, 'knownGene2.gff3' ],
     [ 16, 'tomato_test.gff3' ],
     [ 3, 'spec_eden.gff3' ],
     [ 1, 'spec_match.gff3' ],
     [ 8, 'quantitative.gff3' ],
-  ]
-
-  tests.forEach( ([count,filename]) => {
+  ].forEach( ([count,filename]) => {
     it(`can cursorily parse ${filename}`, async () => {
       let stuff = await readAll(`./data/${filename}`)
       //     $p->max_lookback(10);
-     expect(stuff.features.length + stuff.directives.length).toEqual(count)
+     expect(stuff.all.length).toEqual(count)
     })
   })
 
-//     ) {
-//     my ( $count, $f ) = @$_;
-//     my $p = Bio::GFF3::LowLevel::Parser->open( catfile(qw( t data ), $f ));
-//     my @things;
-//     while( my $thing = $p->next_item ) {
-//         push @things, $thing;
-//     }
-//     is( scalar @things, $count, "parsed $count things from $f" ) or diag explain \@things;
-//     is( scalar ( grep {ref $_ eq 'HASH' && exists $_->{phase}} @things), 0, "no bare-hashref features in $f" );
-// }
+
+  it('supports children before parents, and Derives_from', async () => {
+    let stuff = await readAll('./data/knownGene_out_of_order.gff3')
+    // $p->max_lookback(2);
+
+    let expectedOutput = require('./data/knownGene_out_of_order.result.json')
+    expect(stuff.all).toEqual(expectedOutput)
+    // is( scalar( @stuff ), 6, 'got 6 top-level things' );
+    // is_deeply( [@stuff[0..4]], $right_output, 'got the right parse results' ) or diag explain \@stuff;
+    // is( $stuff[5]{directive}, 'FASTA', 'and last thing is a FASTA directive' );
+  })
+
+  it('can parse the EDEN gene from the gff3 spec', async () => {
+      let stuff = await readAll('./data/spec_eden.gff3')
+      let eden = stuff.all[2];
+
+      expect(eden).toHaveLength(1)
+
+      eden = eden[0]
+
+      expect(eden.child_features).toHaveLength(4)
+
+      expect(eden.child_features[0][0].type).toEqual('TF_binding_site')
+
+      // all the rest are mRNAs
+      let mrnas = eden.child_features.slice(1,4)
+      expect(mrnas.filter(m=>m.length===1)).toHaveLength(3)
+
+      mrnas = mrnas.map(m => m[0])
+
+      mrnas.forEach( m => expect(m.type).toEqual('mRNA') )
+
+      // check that all the mRNAs share the last exon
+      let last_exon = mrnas[2].child_features[3][0];
+      expect(last_exon).toEqual(mrnas[0].child_features[3][0])
+      expect(last_exon).toEqual(mrnas[0].child_features[2][0])
+
+      expect(mrnas[2].child_features).toHaveLength(6)
+      expect(mrnas[1].child_features).toHaveLength(4)
+      expect(mrnas[0].child_features).toHaveLength(5)
+  })
+
+  it('can parse an excerpt of the refGene gff3', async () => {
+      let stuff = await readAll('./data/refGene_excerpt.gff3')
+      expect(true).toBeTruthy()
+      //is_deeply( \@stuff, [] ) or diag explain \@stuff;
+  })
+
+  it('can parse an excerpt of the TAIR10 gff3', async () => {
+    let stuff = await readAll('./data/tair10.gff3')
+    expect(true).toBeTruthy()
+    //is_deeply( \@stuff, [] ) or diag explain \@stuff;
+  })
+
+
+  // check that some files throw a parse error
+  ;[
+    'mm9_sample_ensembl.gff3',
+    'Saccharomyces_cerevisiae_EF3_e64.gff3',
+  ].forEach( errorFile => {
+    it(`throws an error when parsing ${errorFile}`, () => {
+      expect(readAll(`./data/${errorFile}`)).rejects.toMatch(/inconsistent types/)
+    })
+  })
+})
+
+
+///// TODO
 
 // # check the fasta at the end of the hybrid files
 // for my $f ( 'hybrid1.gff3', 'hybrid2.gff3' ) {
@@ -113,80 +180,3 @@ describe('GFF3 parser', () => {
 //     is( $i->[0]{source}, 'ITAG_eugene', 'parsed from a filehandle OK' ) or diag explain $i;
 
 // }
-
-// # check for support for children before parents, and for Derives_from
-// {
-//     my $p = Bio::GFF3::LowLevel::Parser->open( catfile(qw( t data knownGene_out_of_order.gff3 )));
-//     $p->max_lookback(2);
-
-//     my @stuff; push @stuff, $_ while $_ = $p->next_item;
-
-//     my $right_output = do ''.catfile(qw( t data knownGene_out_of_order.dumped_result ));
-//     is( scalar( @stuff ), 6, 'got 6 top-level things' );
-//     is_deeply( [@stuff[0..4]], $right_output, 'got the right parse results' ) or diag explain \@stuff;
-//     is( $stuff[5]{directive}, 'FASTA', 'and last thing is a FASTA directive' );
-// }
-
-
-// # try parsing the EDEN gene from the gff3 spec
-// {
-//     my $p = Bio::GFF3::LowLevel::Parser->open( catfile(qw( t data spec_eden.gff3 )));
-//     my @stuff; push @stuff, $_ while $_ = $p->next_item;
-//     my $eden = $stuff[2];
-//     is( scalar(@$eden), 1 );
-//     $eden = $eden->[0];
-//     is( scalar(@{ $eden->{child_features} }), 4, 'right number of EDEN child features' );
-
-//     is( $eden->{child_features}[0][0]{type}, 'TF_binding_site' );
-
-//     # all the rest are mRNAs
-//     my @mrnas = @{ $eden->{child_features} }[1..3];
-//     is( scalar( grep @$_ == 1, @mrnas ), 3, 'all unique-IDed' );
-//     @mrnas = map $_->[0], @mrnas;
-//     is( scalar( grep $_->{type} eq 'mRNA', @mrnas ), 3, 'all mRNAs' );
-//     # check that all the mRNAs share the last exon
-//     my $last_exon = $mrnas[2]{child_features}[3][0];
-//     is( $last_exon, $mrnas[0]{child_features}[3][0] );
-//     is( $last_exon, $mrnas[1]{child_features}[2][0] );
-//     is( scalar(@{ $mrnas[2]{child_features}} ), 6, 'mRNA00003 has 6 children' )
-//         or diag explain $mrnas[2]{child_features};
-//     is( scalar(@{ $mrnas[1]{child_features}} ), 4, 'mRNA00002 has 4 children' );
-//     is( scalar(@{ $mrnas[0]{child_features}} ), 5, 'mRNA00001 has 5 children' );
-// }
-
-// # try parsing an excerpt of the refGene gff3
-// {
-//     my $p = Bio::GFF3::LowLevel::Parser->open( catfile(qw( t data refGene_excerpt.gff3 )));
-//     my @stuff; push @stuff, $_ while $_ = $p->next_item;
-//     ok(1, 'parsed refGene excerpt');
-//     #is_deeply( \@stuff, [] ) or diag explain \@stuff;
-// }
-
-// # try parsing an excerpt of the TAIR10 gff3
-// {
-//     my $p = Bio::GFF3::LowLevel::Parser->open( catfile(qw( t data tair10.gff3 )));
-//     my @stuff; push @stuff, $_ while $_ = $p->next_item;
-//     ok(1, 'parsed tair10 excerpt');
-//     #is_deeply( \@stuff, [] ) or diag explain \@stuff;
-// }
-
-// for my $error_file ( 'mm9_sample_ensembl.gff3',
-//                      'Saccharomyces_cerevisiae_EF3_e64.gff3'
-//                    ) {
-
-//     # check that Saccharomyces_cerevisiae_EF3_e64.gff3 throws a parse error
-//     eval {
-//         my $p = Bio::GFF3::LowLevel::Parser->open( catfile(qw( t data ), $error_file ) );
-//         1 while $_ = $p->next_item;
-//     };
-//     like( $@, qr/not the same/, 'got a error about types not being the same' );
-// }
-
-// done_testing;
-
-// sub slurp_fh {
-//     my ( $fh ) = @_;
-//     local $/;
-//     return <$fh>;
-// }
-})

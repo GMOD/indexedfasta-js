@@ -76,7 +76,7 @@ export function parseFeature(line) {
   if (parsed.end !== null) parsed.end = parseInt(parsed.end, 10)
   if (parsed.score !== null) parsed.score = parseFloat(parsed.score, 10)
   if (parsed.strand != null)
-    parsed.strand = { '+': 1, '-': -1 }[parsed.strand] || 0
+    parsed.strand = parsed.strand
   return parsed
 }
 
@@ -138,7 +138,7 @@ export function formatFeature(f) {
     // deserialize strand
     if (i === 6)
       fields[i] =
-        val === null || val === undefined ? '.' : translateStrand[val + 1]
+        val === null || val === undefined ? '.' : (translateStrand[val + 1]||val)
     else
       fields[i] = val === null || val === undefined ? '.' : escape(String(val))
   }

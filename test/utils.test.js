@@ -1,4 +1,4 @@
-import {parseAttributes,parseFeature,formatFeature,escape,unescape} from '../dist/util'
+import {parseAttributes,parseFeature,formatFeature,escape,unescape} from '../src/util'
 
 describe('GFF3 utils', () => {
   ;[
@@ -25,7 +25,7 @@ describe('GFF3 utils', () => {
           'seq_id' : 'FooSeq',
           'source' : 'barsource',
           'start' : 234,
-          'strand' : 1,
+          "strand" : "+",
           'type' : 'match'
       }
   ],
@@ -39,7 +39,7 @@ describe('GFF3 utils', () => {
           'seq_id' : "Noggin,+-\%Foo\tbar",
           'source' : 'barsource',
           'start' : 234,
-          'strand' : 1,
+          "strand" : "+",
           'type' : 'match'
       }
   ]
