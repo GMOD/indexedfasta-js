@@ -201,7 +201,7 @@ export default class Parser {
     Object.keys(references).forEach(attrname => {
       const pname = containerAttributes[attrname] || attrname.toLowerCase()
       feature.forEach(loc => {
-        loc[pname].push(references[attrname])
+        loc[pname].push.apply(loc[pname],references[attrname])
         delete references[attrname]
       })
     })
@@ -213,6 +213,7 @@ export default class Parser {
   }
 
   _resolveReferencesFrom(feature,references,ids) {
+    // this is all a bit more awkward in javascript than it was in perl :-\
     function postIncrement(object,slot) {
       let returnVal = object[slot] || 0
       if (!object[slot])
@@ -221,6 +222,7 @@ export default class Parser {
         object[slot] += 1
       return returnVal
     }
+
     Object.entries(references).forEach(([attrname,toIds]) => {
       let pname
       toIds.forEach( toId => {
@@ -234,9 +236,8 @@ export default class Parser {
             })
           }
         } else {
-          if (!this._underConstructionOrphans[toId][attrname])
-            this._underConstructionOrphans[toId][attrname] = []
-
+          if (!this._underConstructionOrphans[toId]) this._underConstructionOrphans[toId] = {}
+          if (!this._underConstructionOrphans[toId][attrname]) this._underConstructionOrphans[toId][attrname] = []
           this._underConstructionOrphans[toId][attrname].push(feature)
         }
       })

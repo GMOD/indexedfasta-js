@@ -81,7 +81,7 @@ describe('GFF3 parser', () => {
   })
 
 
-  xit('supports children before parents, and Derives_from', async () => {
+  it('supports children before parents, and Derives_from', async () => {
     let stuff = await readAll('./data/knownGene_out_of_order.gff3')
     // $p->max_lookback(2);
 
