@@ -13,9 +13,45 @@ read and write GFF3 data as streams
 ## Usage
 
 ```js
-import myModule from '@gmod/gff'
+const fs = require('fs')
 
-myModule()
+import * as gff from '@gmod/gff'
+
+// parse a file from a file name
+gff.parseFile('path/to/my/file.gff3')
+.on('data',function(data) {
+  if (data.directive) {
+    // its a directive
+    console.log('got directive',data)
+  }
+  else if (data.comment) {
+    console.log('got comment',data)
+  }
+  else {
+    console.log('got feature',data)
+  }
+})
+
+// parse a stream of data
+fs.createReadStream('path/to/my/file.gff3')
+.pipe(gff.parseStream())
+.pipe(es.mapSync(data => {
+  console.log(data)
+  return data
+}))
+
+// parse a string of gff3 synchronously
+let arrayOfThings = gff.parseStringSync(stringOfGFF3)
+
+// format an array to a string
+let stringOfGFF3 = gff.formatSync(arrayOfThings)
+// (inserts sync marks automatically)
+
+// format a stream of things to a stream of text
+myStreamOfObjects
+.pipe(gff.formatStream())
+.pipe(myFileWriteStream)
+// (inserts sync marks automatically)
 ```
 
 ## API
@@ -24,11 +60,17 @@ myModule()
 
 #### Table of Contents
 
--   [constructor](#constructor)
--   [\_emitAllUnderConstructionFeatures](#_emitallunderconstructionfeatures)
+-   [Parser](#parser)
+    -   [constructor](#constructor)
+    -   [\_emitAllUnderConstructionFeatures](#_emitallunderconstructionfeatures)
+-   [parseStream](#parsestream)
 -   [fieldNames](#fieldnames)
 
-### constructor
+### Parser
+
+provides a nice modern streaming API over the old-style parse.js
+
+#### constructor
 
 **Parameters**
 
@@ -39,10 +81,20 @@ myModule()
     -   `args.errorCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
     -   `args.directiveCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
-### \_emitAllUnderConstructionFeatures
+#### \_emitAllUnderConstructionFeatures
 
 return all under-construction features, called when we know
 there will be no additional data to attach to them
+
+### parseStream
+
+Parse a stream of text data into a stream of feature,
+directive, and comment objects.
+
+**Parameters**
+
+-   `options`   (optional, default `{}`)
+-   `input` **ReadableStream** 
 
 ### fieldNames
 

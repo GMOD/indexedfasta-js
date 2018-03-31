@@ -5,8 +5,6 @@ const containerAttributes = {
   Derives_from: 'derived_features',
 }
 
-class ParseError extends Error {}
-
 export default class Parser {
   /**
    * @param {Object} args
@@ -141,7 +139,7 @@ export default class Parser {
     const featureLine = GFF3.parseFeature(line)
     featureLine.child_features = []
     featureLine.derived_features = []
-    //featureLine._lineNumber = this.lineNumber //< debugging aid
+    // featureLine._lineNumber = this.lineNumber //< debugging aid
 
     // NOTE: a feature is an arrayref of one or more feature lines.
     const ids = featureLine.attributes.ID || []
@@ -160,14 +158,15 @@ export default class Parser {
       const existing = this._underConstructionById[id]
       if (existing) {
         // another location of the same feature
-        if (existing[existing.length-1].type !== featureLine.type) {
-            this._parseError(
-              `multi-line feature "${id}" has inconsistent types: "${featureLine.type}", "${existing[existing.length-1].type}"`
-            )
+        if (existing[existing.length - 1].type !== featureLine.type) {
+          this._parseError(
+            `multi-line feature "${id}" has inconsistent types: "${
+              featureLine.type
+            }", "${existing[existing.length - 1].type}"`,
+          )
         }
         existing.push(featureLine)
         feature = existing
-
       } else {
         // haven't seen it yet
         feature = [featureLine]
@@ -201,7 +200,7 @@ export default class Parser {
     Object.keys(references).forEach(attrname => {
       const pname = containerAttributes[attrname] || attrname.toLowerCase()
       feature.forEach(loc => {
-        loc[pname].push.apply(loc[pname],references[attrname])
+        loc[pname].push(...references[attrname])
         delete references[attrname]
       })
     })
@@ -212,9 +211,9 @@ export default class Parser {
     this.errorCallback(`${this.lineNumber}: ${message}`)
   }
 
-  _resolveReferencesFrom(feature,references,ids) {
+  _resolveReferencesFrom(feature, references, ids) {
     // this is all a bit more awkward in javascript than it was in perl :-\
-    function postIncrement(object,slot) {
+    function postIncrement(object, slot) {
       let returnVal = object[slot] || 0
       if (!object[slot])
         object[slot] = 1
