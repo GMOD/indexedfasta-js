@@ -16,7 +16,13 @@ function readAll(filename) {
     fs
       .createReadStream(require.resolve(filename))
       .pipe(split())
-      .pipe(gff.parseStream())
+      .pipe(
+        gff.parseStream({
+          parseFeatures: true,
+          parseDirectives: true,
+          parseComments: true,
+        }),
+      )
       .on('data', d => {
         stuff.all.push(d)
         if (d.directive) stuff.directives.push(d)
@@ -37,7 +43,7 @@ describe('GFF3 parser', () => {
   it('can parse gff3_with_syncs.gff3', async () => {
     const stuff = await readAll('./data/gff3_with_syncs.gff3')
     const referenceResult = JSON.parse(
-      require.resolve('./data/gff3_with_syncs.result.json'),
+      fs.readFileSync(require.resolve('./data/gff3_with_syncs.result.json')),
     )
     delete stuff.all
     expect(stuff).toEqual(referenceResult)
@@ -69,7 +75,9 @@ describe('GFF3 parser', () => {
     // $p->max_lookback(2);
 
     const expectedOutput = JSON.parse(
-      require.resolve('./data/knownGene_out_of_order.result.json'),
+      fs.readFileSync(
+        require.resolve('./data/knownGene_out_of_order.result.json'),
+      ),
     )
     expect(stuff.all).toEqual(expectedOutput)
     // is( scalar( @stuff ), 6, 'got 6 top-level things' );
@@ -114,13 +122,13 @@ describe('GFF3 parser', () => {
   it('can parse an excerpt of the refGene gff3', async () => {
     const stuff = await readAll('./data/refGene_excerpt.gff3')
     expect(true).toBeTruthy()
-    expect(stuff).toHaveLength(3) // TODO: update this count
+    expect(stuff.all).toHaveLength(2)
   })
 
   it('can parse an excerpt of the TAIR10 gff3', async () => {
     const stuff = await readAll('./data/tair10.gff3')
     expect(true).toBeTruthy()
-    expect(stuff).toHaveLength(3) // TODO: update this count
+    expect(stuff.all).toHaveLength(3)
   })
 
   // check that some files throw a parse error
