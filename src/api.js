@@ -158,7 +158,7 @@ class FormattingTransform extends Transform {
   constructor(options = {}) {
     super(Object.assign(options, { objectMode: true }))
     this.linesSinceLastSyncMark = 0
-    this.minLinesBetweenSyncMarks = options.maxSyncFrequency || 100
+    this.minLinesBetweenSyncMarks = options.minSyncLines || 100
   }
 
   _transform(chunk, encoding, callback) {
@@ -188,11 +188,35 @@ class FormattingTransform extends Transform {
  * Inserts synchronization (###) marks automatically.
  *
  * @param {Object} options
- * @param {boolean} options.parseAll default false.  if true, will parse all items. overrides other flags
- * @param {boolean} options.parseFeatures default true
- * @param {boolean} options.parseComments default false
- * @param {boolean} options.parseDirectives default false
+ * @param {Object} options.minSyncLines minimum number of lines between ### marks. default 100
  */
 export function formatStream(options) {
   return new FormattingTransform(options)
+}
+
+/**
+ * Format a stream of items (of the type produced
+ * by this script) into a GFF3 file and write it to the filesystem.
+
+ * Inserts synchronization (###) marks and a ##gff-version
+ * directive automatically (if one is not already present).
+ *
+ * @param {ReadableStream} stream the stream to write to the file
+ * @param {String} filename the file path to write to
+ * @param {Object} options
+ * @param {String} options.encoding default 'utf8'. encoding for the written file
+ * @returns the written filename
+ */
+export async function formatFile(stream, filename, options = {}) {
+  return new Promise((resolve, reject) => {
+    stream
+      .pipe(new FormattingTransform(options))
+      .on('end', () => resolve(filename))
+      .on('error', reject)
+      .pipe(
+        fs.createWriteStream(filename, {
+          encoding: options.encoding || 'utf8',
+        }),
+      )
+  })
 }

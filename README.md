@@ -51,6 +51,13 @@ let stringOfGFF3 = gff.formatSync(arrayOfThings)
 myStreamOfObjects
 .pipe(gff.formatStream())
 .pipe(myFileWriteStream)
+
+// format a stream of things and write it to
+// a gff3 file. inserts sync marks and a
+// '##gff-version 3' header if one is not
+// already present
+myStreamOfObjects
+.pipe(gff.formatFile('path/to/destination.gff3')
 ```
 
 ## API
@@ -64,6 +71,7 @@ myStreamOfObjects
 -   [parseStringSync](#parsestringsync)
 -   [formatSync](#formatsync)
 -   [formatStream](#formatstream)
+-   [formatFile](#formatfile)
 -   [constructor](#constructor)
 -   [unescape](#unescape)
 -   [escape](#escape)
@@ -145,10 +153,24 @@ Inserts synchronization (###) marks automatically.
 **Parameters**
 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-    -   `options.parseAll` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false.  if true, will parse all items. overrides other flags
-    -   `options.parseFeatures` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default true
-    -   `options.parseComments` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
-    -   `options.parseDirectives` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
+    -   `options.minSyncLines` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** minimum number of lines between ### marks. default 100
+
+### formatFile
+
+Format a stream of items (of the type produced
+by this script) into a GFF3 file and write it to the filesystem.
+
+Inserts synchronization (###) marks and a ##gff-version
+directive automatically (if one is not already present).
+
+**Parameters**
+
+-   `stream` **ReadableStream** the stream to write to the file
+-   `filename` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the file path to write to
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+    -   `options.encoding` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default 'utf8'. encoding for the written file
+
+Returns **any** the written filename
 
 ### constructor
 

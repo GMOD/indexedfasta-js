@@ -1,4 +1,6 @@
 import fs from 'fs'
+import tmp from 'tmp-promise'
+
 import { promisify } from 'util'
 import getStream from 'get-stream'
 
@@ -22,8 +24,7 @@ describe('GFF3 formatting', () => {
       const resultGFF3 = gff.formatSync(items)
       expect(resultGFF3).toEqual(expectedGFF3)
     })
-  })
-  ;['spec_eden', 'au9_scaffold_subset'].forEach(file => {
+
     it(`can roundtrip ${file}.gff3 with formatStream`, async () => {
       const expectedGFF3 = (await readfile(
         require.resolve(`./data/${file}.reformatted.gff3`),
@@ -42,6 +43,23 @@ describe('GFF3 formatting', () => {
           .pipe(gff.formatStream()),
       )
       expect(resultGFF3).toEqual(expectedGFF3)
+    })
+    it(`can roundtrip ${file} a file with formatFile`, async () => {
+      jest.setTimeout(1000)
+      await tmp.withFile(async o => {
+        const gff3In = fs
+          .createReadStream(require.resolve(`./data/${file}.gff3`))
+          .pipe(gff.parseStream({ parseAll: true }))
+
+        await gff.formatFile(gff3In, o.path)
+        const resultGFF3 = (await readfile(o.path)).toString('utf8')
+
+        const expectedGFF3 = (await readfile(
+          require.resolve(`./data/${file}.reformatted.gff3`),
+        )).toString('utf8')
+
+        expect(resultGFF3).toEqual(expectedGFF3)
+      })
     })
   })
 })

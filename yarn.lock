@@ -1130,6 +1130,10 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
+bluebird@^3.5.0:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
+
 body@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/body/-/body-5.1.0.tgz#e4ba0ce410a46936323367609ecb4e6553125069"
@@ -5518,7 +5522,14 @@ tiny-lr@^1.1.0:
     object-assign "^4.1.0"
     qs "^6.4.0"
 
-tmp@^0.0.33:
+tmp-promise@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/tmp-promise/-/tmp-promise-1.0.4.tgz#cfe2131b78392992e756d8692a059dc4b48be7ac"
+  dependencies:
+    bluebird "^3.5.0"
+    tmp "0.0.33"
+
+tmp@0.0.33, tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
   dependencies:
