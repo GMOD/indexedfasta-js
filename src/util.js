@@ -1,3 +1,5 @@
+/** @module util */
+
 // Fast, low-level functions for parsing and formatting GFF3.
 // JavaScript port of Robert Buels's Bio::GFF3::LowLevel Perl module.
 

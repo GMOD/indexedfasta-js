@@ -6,14 +6,6 @@ const containerAttributes = {
 }
 
 export default class Parser {
-  /**
-   * @param {Object} args
-   * @param {Function} args.featureCallback
-   * @param {Function} args.endCallback
-   * @param {Function} args.commentCallback
-   * @param {Function} args.errorCallback
-   * @param {Function} args.directiveCallback
-   */
   constructor(args) {
     const nullFunc = () => {}
 
