@@ -1,8 +1,6 @@
 import fs from 'fs'
 import gff from '../src'
 
-import {split} from '../src/split'
-
 function readAll(filename) {
   return new Promise((resolve, reject) => {
     const stuff = {
@@ -15,7 +13,7 @@ function readAll(filename) {
     // $p->max_lookback(1)
     fs
       .createReadStream(require.resolve(filename))
-      .pipe(split())
+      //.pipe(split())
       .pipe(
         gff.parseStream({
           parseFeatures: true,

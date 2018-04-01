@@ -3,8 +3,8 @@
  */
 import Parser from './parse'
 
-const split = require('split')
 const { Transform, PassThrough } = require('stream')
+const Decoder = require('string_decoder').StringDecoder
 
 export class GFFTransform extends Transform {
   constructor(inputOptions = {}) {
@@ -21,6 +21,9 @@ export class GFFTransform extends Transform {
 
     this.encoding = inputOptions.encoding || 'utf8'
 
+    this.decoder = new Decoder()
+    this.textBuffer = ''
+
     const push = this.push.bind(this)
     this.parser = new Parser({
       featureCallback: options.parseFeatures ? push : null,
@@ -30,12 +33,36 @@ export class GFFTransform extends Transform {
     })
   }
 
+  _addLine(data) {
+    const line = data.toString('utf8')
+    if (line) {
+      this.parser.addLine(line)
+    }
+  }
+
+  _nextText (buffer) {
+    var pieces = ((this.textBuffer != null ? this.textBuffer : '') + buffer).split(/\r?\n/)
+    this.textBuffer = pieces.pop()
+
+    if (this.maxLineLength && textBuffer.length > this.maxLineLength)
+      return this.emit('error', new Error('maximum line size exceeded'))
+
+    for (var i = 0; i < pieces.length; i++) {
+      var piece = pieces[i]
+      this._addLine(piece)
+    }
+  }
+
   _transform(chunk, encoding, callback) {
-    this.parser.addLine(chunk)
+    this._nextText(this.decoder.write(chunk))
     callback()
   }
 
   _flush(callback) {
+    if(this.decoder.end)
+      this._nextText(this.decoder.end())
+    if(this.textBuffer != null)
+      this._addLine(this.textBuffer)
     this.parser.finish()
     if (process) process.nextTick(callback)
     else callback()
