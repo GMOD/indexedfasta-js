@@ -4,7 +4,7 @@
   "description": "read and write GFF3 data as streams",
   "license": "MIT",
   "repository": "GMOD/gff-js",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": {
     "name": "Robert Buels",
     "email": "rbuels@gmail.com",
@@ -14,8 +14,7 @@
     "node": ">=6"
   },
   "files": [
-    "dist",
-    "index.js"
+    "dist"
   ],
   "scripts": {
     "test": "jest",
@@ -42,9 +41,9 @@
     "testEnvironment": "node"
   },
   "keywords": [
-    "@gmod/gff",
     "gff3",
-    "gff"
+    "gff",
+    "genomics"
   ],
   "dependencies": {
     "babel-runtime": "^6.26.0",
