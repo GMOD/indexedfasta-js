@@ -13,7 +13,6 @@ function readAll(filename) {
     // $p->max_lookback(1)
     fs
       .createReadStream(require.resolve(filename))
-      //.pipe(split())
       .pipe(
         gff.parseStream({
           parseFeatures: true,
