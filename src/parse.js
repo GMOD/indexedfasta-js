@@ -111,6 +111,7 @@ export default class Parser {
   /**
    * return all under-construction features, called when we know
    * there will be no additional data to attach to them
+   * @private
    */
   _emitAllUnderConstructionFeatures() {
     this._underConstructionTopLevel.forEach(this._emitItem.bind(this))

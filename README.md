@@ -15,7 +15,7 @@ read and write GFF3 data as streams
 ```js
 const fs = require('fs')
 
-import * as gff from '@gmod/gff'
+import gff from '@gmod/gff'
 
 // parse a file from a file name
 gff.parseFile('path/to/my/file.gff3')
@@ -45,13 +45,12 @@ let arrayOfThings = gff.parseStringSync(stringOfGFF3)
 
 // format an array to a string
 let stringOfGFF3 = gff.formatSync(arrayOfThings)
-// (inserts sync marks automatically)
 
-// format a stream of things to a stream of text
+// format a stream of things to a stream of text.
+// inserts sync marks automatically.
 myStreamOfObjects
 .pipe(gff.formatStream())
 .pipe(myFileWriteStream)
-// (inserts sync marks automatically)
 ```
 
 ## API
@@ -60,15 +59,12 @@ myStreamOfObjects
 
 #### Table of Contents
 
--   [Parser](#parser)
-    -   [constructor](#constructor)
-    -   [\_emitAllUnderConstructionFeatures](#_emitallunderconstructionfeatures)
 -   [parseStream](#parsestream)
 -   [parseFile](#parsefile)
 -   [parseStringSync](#parsestringsync)
 -   [formatSync](#formatsync)
 -   [formatStream](#formatstream)
--   [typical](#typical)
+-   [constructor](#constructor)
 -   [unescape](#unescape)
 -   [escape](#escape)
 -   [parseAttributes](#parseattributes)
@@ -79,26 +75,6 @@ myStreamOfObjects
 -   [formatDirective](#formatdirective)
 -   [formatComment](#formatcomment)
 -   [formatItem](#formatitem)
-
-### Parser
-
-provides a nice modern streaming API over the old-style parse.js
-
-#### constructor
-
-**Parameters**
-
--   `args` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-    -   `args.featureCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-    -   `args.endCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-    -   `args.commentCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-    -   `args.errorCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-    -   `args.directiveCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-
-#### \_emitAllUnderConstructionFeatures
-
-return all under-construction features, called when we know
-there will be no additional data to attach to them
 
 ### parseStream
 
@@ -174,10 +150,16 @@ Inserts synchronization (###) marks automatically.
     -   `options.parseComments` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
     -   `options.parseDirectives` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
 
-### typical
+### constructor
 
-Fast, low-level functions for parsing and formatting GFF3.
-JavaScript port of Robert Buels's Bio::GFF3::LowLevel Perl module.
+**Parameters**
+
+-   `args` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `args.featureCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+    -   `args.endCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+    -   `args.commentCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+    -   `args.errorCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+    -   `args.directiveCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
 ### unescape
 

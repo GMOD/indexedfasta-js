@@ -1,6 +1,3 @@
-/**
- * provides a nice modern streaming API over the old-style parse.js
- */
 import Parser from './parse'
 import { formatItem } from './util'
 
