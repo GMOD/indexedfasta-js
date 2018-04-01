@@ -64,6 +64,8 @@ myStreamOfObjects
     -   [constructor](#constructor)
     -   [\_emitAllUnderConstructionFeatures](#_emitallunderconstructionfeatures)
 -   [parseStream](#parsestream)
+-   [parseFile](#parsefile)
+-   [parseStringSync](#parsestringsync)
 -   [fieldNames](#fieldnames)
 
 ### Parser
@@ -93,8 +95,43 @@ directive, and comment objects.
 
 **Parameters**
 
--   `options`   (optional, default `{}`)
--   `input` **ReadableStream** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** optional options object (optional, default `{}`)
+    -   `options.encoding` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text encoding of the input GFF3. default 'utf8'
+    -   `options.parseFeatures` **bool** default true
+    -   `options.parseDirectives` **bool** default false
+    -   `options.parseComments` **bool** default false
+
+Returns **ReadableStream** stream (in objectMode) of parsed items
+
+### parseFile
+
+Read and parse a GFF3 file from the filesystem.
+
+**Parameters**
+
+-   `filename` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the filename of the file to parse
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** optional options object
+    -   `options.encoding` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the file's string encoding, defaults to 'utf8'
+    -   `options.parseFeatures` **bool** default true
+    -   `options.parseDirectives` **bool** default false
+    -   `options.parseComments` **bool** default false
+
+Returns **ReadableStream** stream (in objectMode) of parsed items
+
+### parseStringSync
+
+Synchronously parse a string containing GFF3 and return
+an arrayref of the parsed items.
+
+**Parameters**
+
+-   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `inputOptions` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** optional options object (optional, default `{}`)
+    -   `inputOptions.parseFeatures` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default true
+    -   `inputOptions.parseDirectives` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
+    -   `inputOptions.parseComments` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** array of parsed features, directives, and/or comments
 
 ### fieldNames
 

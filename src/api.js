@@ -7,7 +7,7 @@ const fs = require('fs')
 const { Transform } = require('stream')
 const Decoder = require('string_decoder').StringDecoder
 
-export class GFFTransform extends Transform {
+class GFFTransform extends Transform {
   constructor(inputOptions = {}) {
     const options = Object.assign(
       {
@@ -70,16 +70,29 @@ export class GFFTransform extends Transform {
 /**
  * Parse a stream of text data into a stream of feature,
  * directive, and comment objects.
- * @param {object} options options
+ *
+ * @param {Object} options optional options object
  * @param {string} options.encoding text encoding of the input GFF3. default 'utf8'
  * @param {bool} options.parseFeatures default true
  * @param {bool} options.parseDirectives default false
  * @param {bool} options.parseComments default false
+ * @returns {ReadableStream} stream (in objectMode) of parsed items
  */
 export function parseStream(options = {}) {
   return new GFFTransform(options)
 }
 
+/**
+ * Read and parse a GFF3 file from the filesystem.
+ *
+ * @param {string} filename the filename of the file to parse
+ * @param {Object} options optional options object
+ * @param {string} options.encoding the file's string encoding, defaults to 'utf8'
+ * @param {bool} options.parseFeatures default true
+ * @param {bool} options.parseDirectives default false
+ * @param {bool} options.parseComments default false
+ * @returns {ReadableStream} stream (in objectMode) of parsed items
+ */
 export function parseFile(filename, options) {
   return fs.createReadStream(filename).pipe(parseStream(options))
 }
@@ -89,9 +102,11 @@ export function parseFile(filename, options) {
  * an arrayref of the parsed items.
  *
  * @param {string} str
+ * @param {Object} inputOptions optional options object
  * @param {boolean} inputOptions.parseFeatures default true
  * @param {boolean} inputOptions.parseDirectives default false
  * @param {boolean} inputOptions.parseComments default false
+ * @returns {Array} array of parsed features, directives, and/or comments
  */
 export function parseStringSync(str, inputOptions = {}) {
   const options = Object.assign(
