@@ -3,6 +3,7 @@
  */
 import Parser from './parse'
 
+const fs = require('fs')
 const { Transform } = require('stream')
 const Decoder = require('string_decoder').StringDecoder
 
@@ -69,10 +70,16 @@ export class GFFTransform extends Transform {
 /**
  * Parse a stream of text data into a stream of feature,
  * directive, and comment objects.
- * @param {ReadableStream} input
+ * @param {object} options options
+ * @param {string} options.encoding text encoding of the input GFF3. default 'utf8'
+ * @param {bool} options.parseFeatures default true
+ * @param {bool} options.parseDirectives default false
+ * @param {bool} options.parseComments default false
  */
 export function parseStream(options = {}) {
   return new GFFTransform(options)
 }
 
-export function fog() {}
+export function parseFile(filename, options) {
+  return fs.createReadStream(filename).pipe(parseStream(options))
+}

@@ -11,24 +11,18 @@ function readAll(filename) {
     }
 
     // $p->max_lookback(1)
-    fs
-      .createReadStream(require.resolve(filename))
-      .pipe(
-        gff.parseStream({
-          parseFeatures: true,
-          parseDirectives: true,
-          parseComments: true,
-        }),
-      )
+    gff
+      .parseFile(require.resolve(filename), {
+        parseFeatures: true,
+        parseDirectives: true,
+        parseComments: true,
+      })
       .on('data', d => {
         stuff.all.push(d)
         if (d.directive) stuff.directives.push(d)
         else if (d.comment) stuff.comments.push(d)
         else stuff.features.push(d)
       })
-      // .on('feature', f => stuff.features.push(f))
-      // .on('directive', d => stuff.directives.push(d))
-      // .on('comment', c => stuff.comments.push(c))
       .on('end', () => {
         resolve(stuff)
       })

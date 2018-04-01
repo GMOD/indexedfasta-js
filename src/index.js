@@ -1,3 +1,3 @@
-import { parseStream } from './api'
+import * as api from './api'
 
-export default { parseStream }
+export default api
