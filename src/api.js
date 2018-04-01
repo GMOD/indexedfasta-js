@@ -2,22 +2,35 @@
  * provides a nice modern streaming API over the old-style parse.js
  */
 import Parser from './parse'
-import { formatFeature, formatItem } from './util'
+import { formatItem } from './util'
 
 const fs = require('fs')
 const { Transform } = require('stream')
 const Decoder = require('string_decoder').StringDecoder
 
+// shared arg processing for the parse routines
+function _processParseOptions(options) {
+  const out = Object.assign(
+    {
+      parseFeatures: true,
+      parseDirectives: false,
+      parseComments: false,
+    },
+    options,
+  )
+
+  if (options.parseAll) {
+    out.parseFeatures = true
+    out.parseDirectives = true
+    out.parseComments = true
+  }
+
+  return out
+}
+
 class GFFTransform extends Transform {
   constructor(inputOptions = {}) {
-    const options = Object.assign(
-      {
-        parseFeatures: true,
-        parseDirectives: false,
-        parseComments: false,
-      },
-      inputOptions,
-    )
+    const options = _processParseOptions(inputOptions)
 
     super({ objectMode: true })
 
@@ -74,9 +87,10 @@ class GFFTransform extends Transform {
  *
  * @param {Object} options optional options object
  * @param {string} options.encoding text encoding of the input GFF3. default 'utf8'
- * @param {bool} options.parseFeatures default true
- * @param {bool} options.parseDirectives default false
- * @param {bool} options.parseComments default false
+ * @param {boolean} options.parseAll default false.  if true, will parse all items. overrides other flags
+ * @param {boolean} options.parseFeatures default true
+ * @param {boolean} options.parseDirectives default false
+ * @param {boolean} options.parseComments default false
  * @returns {ReadableStream} stream (in objectMode) of parsed items
  */
 export function parseStream(options = {}) {
@@ -89,9 +103,10 @@ export function parseStream(options = {}) {
  * @param {string} filename the filename of the file to parse
  * @param {Object} options optional options object
  * @param {string} options.encoding the file's string encoding, defaults to 'utf8'
- * @param {bool} options.parseFeatures default true
- * @param {bool} options.parseDirectives default false
- * @param {bool} options.parseComments default false
+ * @param {boolean} options.parseAll default false.  if true, will parse all items. overrides other flags
+ * @param {boolean} options.parseFeatures default true
+ * @param {boolean} options.parseDirectives default false
+ * @param {boolean} options.parseComments default false
  * @returns {ReadableStream} stream (in objectMode) of parsed items
  */
 export function parseFile(filename, options) {
@@ -104,20 +119,14 @@ export function parseFile(filename, options) {
  *
  * @param {string} str
  * @param {Object} inputOptions optional options object
+ * @param {boolean} inputOptions.parseAll default false.  if true, will parse all items. overrides other flags
  * @param {boolean} inputOptions.parseFeatures default true
  * @param {boolean} inputOptions.parseDirectives default false
  * @param {boolean} inputOptions.parseComments default false
  * @returns {Array} array of parsed features, directives, and/or comments
  */
 export function parseStringSync(str, inputOptions = {}) {
-  const options = Object.assign(
-    {
-      parseFeatures: true,
-      parseDirectives: false,
-      parseComments: false,
-    },
-    inputOptions,
-  )
+  const options = _processParseOptions(inputOptions)
 
   const items = []
   const push = items.push.bind(items)
@@ -138,15 +147,14 @@ export function parseStringSync(str, inputOptions = {}) {
 }
 
 /**
- * Format an array of GFF3 items (features,directives,comments) into string of GFF3
- * Inserts synchronization (###) marks automatically.
+ * Format an array of GFF3 items (features,directives,comments) into string of GFF3.
+ * Does not insert synchronization (###) marks.
  *
  * @param {Array[Object]} items
  * @returns {String} the formatted GFF3
  */
 export function formatSync(items) {
-  // TODO: sync marks, format comments, format directives
-  return items.map(formatFeature).join('\n')
+  return items.map(formatItem).join('')
 }
 
 class FormattingTransform extends Transform {
@@ -183,6 +191,7 @@ class FormattingTransform extends Transform {
  * Inserts synchronization (###) marks automatically.
  *
  * @param {Object} options
+ * @param {boolean} options.parseAll default false.  if true, will parse all items. overrides other flags
  * @param {boolean} options.parseFeatures default true
  * @param {boolean} options.parseComments default false
  * @param {boolean} options.parseDirectives default false
