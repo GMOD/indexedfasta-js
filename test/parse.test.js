@@ -152,8 +152,6 @@ describe('GFF3 parser', () => {
     )
     expect(result).toEqual(referenceResult)
   })
-
-
 })
 
 // TODO

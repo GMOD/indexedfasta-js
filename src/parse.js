@@ -213,30 +213,34 @@ export default class Parser {
 
   _resolveReferencesFrom(feature, references, ids) {
     // this is all a bit more awkward in javascript than it was in perl :-\
-    function postIncrement(object, slot) {
-      let returnVal = object[slot] || 0
-      if (!object[slot])
-        object[slot] = 1
-      else
-        object[slot] += 1
+    function postSet(obj, slot) {
+      const returnVal = obj[slot] || false
+      obj[slot] = true
       return returnVal
     }
 
-    Object.entries(references).forEach(([attrname,toIds]) => {
+    Object.entries(references).forEach(([attrname, toIds]) => {
       let pname
-      toIds.forEach( toId => {
+      toIds.forEach(toId => {
         const otherFeature = this._underConstructionById[toId]
         if (otherFeature) {
-          if (!pname) pname = containerAttributes[attrname] || attrname.toLowerCase()
+          if (!pname)
+            pname = containerAttributes[attrname] || attrname.toLowerCase()
 
-          if (!ids.filter(id => postIncrement(this._completedReferences,`${id},${attrname},${toId}`)).length) {
-            otherFeature.forEach( location => {
+          if (
+            !ids.filter(id =>
+              postSet(this._completedReferences, `${id},${attrname},${toId}`),
+            ).length
+          ) {
+            otherFeature.forEach(location => {
               location[pname].push(feature)
             })
           }
         } else {
-          if (!this._underConstructionOrphans[toId]) this._underConstructionOrphans[toId] = {}
-          if (!this._underConstructionOrphans[toId][attrname]) this._underConstructionOrphans[toId][attrname] = []
+          if (!this._underConstructionOrphans[toId])
+            this._underConstructionOrphans[toId] = {}
+          if (!this._underConstructionOrphans[toId][attrname])
+            this._underConstructionOrphans[toId][attrname] = []
           this._underConstructionOrphans[toId][attrname].push(feature)
         }
       })

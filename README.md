@@ -66,7 +66,19 @@ myStreamOfObjects
 -   [parseStream](#parsestream)
 -   [parseFile](#parsefile)
 -   [parseStringSync](#parsestringsync)
--   [fieldNames](#fieldnames)
+-   [formatSync](#formatsync)
+-   [formatStream](#formatstream)
+-   [typical](#typical)
+-   [unescape](#unescape)
+-   [escape](#escape)
+-   [parseAttributes](#parseattributes)
+-   [parseFeature](#parsefeature)
+-   [parseDirective](#parsedirective)
+-   [formatAttributes](#formatattributes)
+-   [formatFeature](#formatfeature)
+-   [formatDirective](#formatdirective)
+-   [formatComment](#formatcomment)
+-   [formatItem](#formatitem)
 
 ### Parser
 
@@ -133,10 +145,125 @@ an arrayref of the parsed items.
 
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** array of parsed features, directives, and/or comments
 
-### fieldNames
+### formatSync
+
+Format an array of GFF3 items (features,directives,comments) into string of GFF3
+Inserts synchronization (###) marks automatically.
+
+**Parameters**
+
+-   `items`  
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the formatted GFF3
+
+### formatStream
+
+Format a stream of items (of the type produced
+by this script) into a stream of GFF3 text.
+
+**Parameters**
+
+-   `options`  
+
+### typical
 
 Fast, low-level functions for parsing and formatting GFF3.
 JavaScript port of Robert Buels's Bio::GFF3::LowLevel Perl module.
+
+### unescape
+
+Unescape a string value used in a GFF3 attribute.
+
+**Parameters**
+
+-   `s` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### escape
+
+Escape a value for use in a GFF3 attribute value.
+
+**Parameters**
+
+-   `s` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### parseAttributes
+
+Parse the 9th column (attributes) of a GFF3 feature line.
+
+**Parameters**
+
+-   `attrString` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+### parseFeature
+
+Parse a GFF3 feature line
+
+**Parameters**
+
+-   `line` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### parseDirective
+
+Parse a GFF3 directive line.
+
+**Parameters**
+
+-   `line` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the information in the directive
+
+### formatAttributes
+
+Format an attributes object into a string suitable for the 9th column of GFF3.
+
+**Parameters**
+
+-   `attrs` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+### formatFeature
+
+Format a feature object or array of
+feature objects into one or more lines of GFF3.
+
+**Parameters**
+
+-   `featureOrFeatures`  
+
+### formatDirective
+
+Format a directive into a line of GFF3.
+
+**Parameters**
+
+-   `directive` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### formatComment
+
+Format a comment into a GFF3 comment.
+Yes I know this is just adding a # and a newline.
+
+**Parameters**
+
+-   `comment` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### formatItem
+
+Format a directive, comment, or feature,
+or array of such items, into one or more lines of GFF3.
+
+**Parameters**
+
+-   `itemOrItems` **([Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array))** 
 
 ## License
 

@@ -2,6 +2,7 @@
  * provides a nice modern streaming API over the old-style parse.js
  */
 import Parser from './parse'
+import { formatFeature, formatItem } from './util'
 
 const fs = require('fs')
 const { Transform } = require('stream')
@@ -134,4 +135,51 @@ export function parseStringSync(str, inputOptions = {}) {
   parser.finish()
 
   return items
+}
+
+/**
+ * Format an array of GFF3 items (features,directives,comments) into string of GFF3
+ * Inserts synchronization (###) marks automatically.
+ *
+ * @param {Array[Object]} items
+ * @returns {String} the formatted GFF3
+ */
+export function formatSync(items) {
+  // TODO: sync marks, format comments, format directives
+  return items.map(formatFeature).join('\n')
+}
+
+class FormattingTransform extends Transform {
+  constructor(options = {}) {
+    super(Object.assign(options, { objectMode: true }))
+    this.linesSinceLastSyncMark = 0
+    this.minLinesBetweenSyncMarks = options.maxSyncFrequency || 100
+  }
+
+  _transform(chunk, encoding, callback) {
+    let str
+    if (Array.isArray(chunk)) str = chunk.map(formatItem).join('')
+    else str = formatItem(chunk)
+    this.push(str)
+    if (this.linesSinceLastSyncMark >= this.minLinesBetweenSyncMarks) {
+      this.push('###\n')
+      this.linesSinceLastSyncMark = 0
+    } else {
+      // count the number of newlines in this chunk
+      let count = 0
+      for (let i = 0; i < str.length; i += 1) {
+        if (str[i] === '\n') count += 1
+      }
+      this.linesSinceLastSyncMark += count
+    }
+    callback()
+  }
+}
+
+/**
+ * Format a stream of items (of the type produced
+ * by this script) into a stream of GFF3 text.
+ */
+export function formatStream(options) {
+  return new FormattingTransform(options)
 }

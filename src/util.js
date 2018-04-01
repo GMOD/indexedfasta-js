@@ -3,6 +3,8 @@
  * JavaScript port of Robert Buels's Bio::GFF3::LowLevel Perl module.
  */
 
+import typical from 'typical'
+
 const fieldNames = [
   'seq_id',
   'source',
@@ -15,6 +17,12 @@ const fieldNames = [
   'attributes',
 ]
 
+/**
+ * Unescape a string value used in a GFF3 attribute.
+ *
+ * @param {String} s
+ * @returns {String}
+ */
 export function unescape(s) {
   if (s === null) return null
 
@@ -23,6 +31,12 @@ export function unescape(s) {
   )
 }
 
+/**
+ * Escape a value for use in a GFF3 attribute value.
+ *
+ * @param {String} s
+ * @returns {String}
+ */
 export function escape(s) {
   return s.replace(/[\n;\r\t=%&,\x00-\x1f\x7f-\xff]/g, ch => {
     let hex = ch
@@ -36,6 +50,12 @@ export function escape(s) {
   })
 }
 
+/**
+ * Parse the 9th column (attributes) of a GFF3 feature line.
+ *
+ * @param {String} attrString
+ * @returns {Object}
+ */
 export function parseAttributes(attrString) {
   if (!(attrString && attrString.length) || attrString === '.') return {}
 
@@ -59,6 +79,11 @@ export function parseAttributes(attrString) {
   return attrs
 }
 
+/**
+ * Parse a GFF3 feature line
+ *
+ * @param {String} line
+ */
 export function parseFeature(line) {
   // split the line into columns and replace '.' with null in each column
   const f = line.split('\t').map(a => (a === '.' ? null : a))
@@ -79,6 +104,12 @@ export function parseFeature(line) {
   return parsed
 }
 
+/**
+ * Parse a GFF3 directive line.
+ *
+ * @param {String} line
+ * @returns {Object} the information in the directive
+ */
 export function parseDirective(line) {
   const match = /^\s*##\s*(\S+)\s*(.*)/.exec(line)
   if (!match) return null
@@ -104,6 +135,11 @@ export function parseDirective(line) {
   return parsed
 }
 
+/**
+ * Format an attributes object into a string suitable for the 9th column of GFF3.
+ *
+ * @param {Object} attrs
+ */
 export function formatAttributes(attrs) {
   const attrOrder = []
   Object.keys(attrs).forEach(tag => {
@@ -125,7 +161,7 @@ export function formatAttributes(attrs) {
 
 const translateStrand = ['-', '.', '+']
 
-export function formatFeature(f) {
+function _formatSingleFeature(f, seenFeature) {
   const attrString =
     f.attributes === null || f.attributes === undefined
       ? '.'
@@ -145,5 +181,83 @@ export function formatFeature(f) {
   }
   fields[8] = attrString
 
-  return `${fields.join('\t')}\n`
+  const formattedString = `${fields.join('\t')}\n`
+
+  // if we have already output this exact feature, skip it
+  if (seenFeature[formattedString]) {
+    return ''
+  }
+
+  seenFeature[formattedString] = true
+  return formattedString
+}
+
+function _formatFeature(feature, seenFeature) {
+  if (Array.isArray(feature)) {
+    return feature.map(f => _formatFeature(f, seenFeature)).join('')
+  }
+
+  const strings = [_formatSingleFeature(feature, seenFeature)]
+  ;['child_features', 'derived_features'].forEach(multiSlot => {
+    if (feature[multiSlot]) {
+      strings.push(
+        ...feature[multiSlot].map(f => _formatFeature(f, seenFeature)),
+      )
+    }
+  })
+  return strings.join('')
+}
+
+/**
+ * Format a feature object or array of
+ * feature objects into one or more lines of GFF3.
+ *
+ * @param {Object|Array[Object]} featureOrFeatures
+ */
+export function formatFeature(featureOrFeatures) {
+  const seen = {}
+  return _formatFeature(featureOrFeatures, seen)
+}
+
+/**
+ * Format a directive into a line of GFF3.
+ *
+ * @param {Object} directive
+ * @returns {String}
+ */
+export function formatDirective(directive) {
+  let str = `##${directive.directive}`
+  if (directive.value) str += ` ${directive.value}`
+  str += '\n'
+  return str
+}
+
+/**
+ * Format a comment into a GFF3 comment.
+ * Yes I know this is just adding a # and a newline.
+ *
+ * @param {Object} comment
+ * @returns {String}
+ */
+export function formatComment(comment) {
+  return `# ${comment.comment}\n`
+}
+
+/**
+ * Format a directive, comment, or feature,
+ * or array of such items, into one or more lines of GFF3.
+ *
+ * @param {Object|Array} itemOrItems
+ */
+export function formatItem(itemOrItems) {
+  function formatSingleItem(item) {
+    if (item.directive) return formatDirective(item)
+    else if (item.comment) return formatComment(item)
+    return formatFeature(item)
+  }
+
+  if (typical.isArrayLike(itemOrItems)) {
+    return Array.map(itemOrItems, formatSingleItem)
+  }
+  return formatSingleItem(itemOrItems)
 }
