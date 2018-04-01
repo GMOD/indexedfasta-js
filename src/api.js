@@ -30,16 +30,15 @@ export class GFFTransform extends Transform {
     })
   }
 
+  _transform(chunk, encoding, callback) {
+    this.parser.addLine(chunk)
+    callback()
+  }
+
   _flush(callback) {
     this.parser.finish()
     if (process) process.nextTick(callback)
     else callback()
-  }
-
-  _transform(chunk, encoding, callback) {
-    const line = chunk.toString(this.encoding)
-    this.parser.addLine(line)
-    callback()
   }
 }
 

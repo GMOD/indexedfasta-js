@@ -1,7 +1,7 @@
 import fs from 'fs'
 import gff from '../src'
 
-const split = require('split')
+import {split} from '../src/split'
 
 function readAll(filename) {
   return new Promise((resolve, reject) => {
