@@ -179,6 +179,13 @@ class FormattingTransform extends Transform {
 /**
  * Format a stream of items (of the type produced
  * by this script) into a stream of GFF3 text.
+ *
+ * Inserts synchronization (###) marks automatically.
+ *
+ * @param {Object} options
+ * @param {boolean} options.parseFeatures default true
+ * @param {boolean} options.parseComments default false
+ * @param {boolean} options.parseDirectives default false
  */
 export function formatStream(options) {
   return new FormattingTransform(options)

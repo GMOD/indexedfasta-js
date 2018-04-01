@@ -147,8 +147,8 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 ### formatSync
 
-Format an array of GFF3 items (features,directives,comments) into string of GFF3
-Inserts synchronization (###) marks automatically.
+Format an array of GFF3 items (features,directives,comments) into string of GFF3.
+Does not insert synchronization (###) marks.
 
 **Parameters**
 
@@ -161,9 +161,14 @@ Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 Format a stream of items (of the type produced
 by this script) into a stream of GFF3 text.
 
+Inserts synchronization (###) marks automatically.
+
 **Parameters**
 
--   `options`  
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `options.parseFeatures` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default true
+    -   `options.parseComments` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
+    -   `options.parseDirectives` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** default false
 
 ### typical
 
