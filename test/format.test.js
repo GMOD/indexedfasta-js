@@ -1,7 +1,7 @@
 import fs from 'fs'
 import tmp from 'tmp-promise'
 
-import { promisify } from 'util'
+import { promisify } from 'es6-promisify'
 import getStream from 'get-stream'
 
 import gff from '../src'
