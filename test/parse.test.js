@@ -78,7 +78,6 @@ describe('GFF3 parser', () => {
 
   it('can parse the EDEN gene from the gff3 spec', async () => {
     const stuff = await readAll('./data/spec_eden.gff3')
-
     expect(stuff.all[2]).toHaveLength(1)
     const [eden] = stuff.all[2]
 
@@ -108,6 +107,11 @@ describe('GFF3 parser', () => {
     expect(mrnas[0].child_features).toHaveLength(5)
     expect(mrnas[1].child_features).toHaveLength(4)
     expect(mrnas[2].child_features).toHaveLength(6)
+
+    const referenceResult = JSON.parse(
+      fs.readFileSync(require.resolve('./data/spec_eden.result.json')),
+    )
+    expect(stuff.all).toEqual(referenceResult)
   })
 
   it('can parse an excerpt of the refGene gff3', async () => {
@@ -132,6 +136,24 @@ describe('GFF3 parser', () => {
       })
     },
   )
+
+  it('can parse a string synchronously', () => {
+    const gff3 = fs
+      .readFileSync(require.resolve('./data/spec_eden.gff3'))
+      .toString('utf8')
+    const result = gff.parseStringSync(gff3, {
+      parseFeatures: true,
+      parseDirectives: true,
+      parseComments: true,
+    })
+    expect(result).toHaveLength(3)
+    const referenceResult = JSON.parse(
+      fs.readFileSync(require.resolve('./data/spec_eden.result.json')),
+    )
+    expect(result).toEqual(referenceResult)
+  })
+
+
 })
 
 // TODO

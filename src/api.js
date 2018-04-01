@@ -83,3 +83,40 @@ export function parseStream(options = {}) {
 export function parseFile(filename, options) {
   return fs.createReadStream(filename).pipe(parseStream(options))
 }
+
+/**
+ * Synchronously parse a string containing GFF3 and return
+ * an arrayref of the parsed items.
+ *
+ * @param {string} str
+ * @param {boolean} inputOptions.parseFeatures default true
+ * @param {boolean} inputOptions.parseDirectives default false
+ * @param {boolean} inputOptions.parseComments default false
+ */
+export function parseStringSync(str, inputOptions = {}) {
+  const options = Object.assign(
+    {
+      parseFeatures: true,
+      parseDirectives: false,
+      parseComments: false,
+    },
+    inputOptions,
+  )
+
+  const items = []
+  const push = items.push.bind(items)
+
+  const parser = new Parser({
+    featureCallback: options.parseFeatures ? push : null,
+    directiveCallback: options.parseDirectives ? push : null,
+    commentCallback: options.parseComments ? push : null,
+    errorCallback: err => {
+      throw err
+    },
+  })
+
+  str.split(/\r?\n/).forEach(parser.addLine.bind(parser))
+  parser.finish()
+
+  return items
+}
