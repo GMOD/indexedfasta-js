@@ -165,10 +165,18 @@ class FormattingTransform extends Transform {
     super(Object.assign(options, { objectMode: true }))
     this.linesSinceLastSyncMark = 0
     this.minLinesBetweenSyncMarks = options.minSyncLines || 100
+    this.insertVersionDirective = options.insertVersionDirective || false
+    this.haveWeEmittedData = false
   }
 
   _transform(chunk, encoding, callback) {
     let str
+    if (
+      !this.haveWeEmittedData &&
+      (chunk[0] || chunk).directive !== 'gff-version'
+    )
+      this.push('##gff-version 3\n')
+
     if (Array.isArray(chunk)) str = chunk.map(formatItem).join('')
     else str = formatItem(chunk)
     this.push(str)
@@ -183,10 +191,11 @@ class FormattingTransform extends Transform {
       }
       this.linesSinceLastSyncMark += count
     }
+
+    this.haveWeEmittedData = true
     _callback(callback)
   }
 }
-
 
 /**
  * Format a stream of items (of the type produced
@@ -196,6 +205,9 @@ class FormattingTransform extends Transform {
  *
  * @param {Object} options
  * @param {Object} options.minSyncLines minimum number of lines between ### marks. default 100
+ * @param {Boolean} options.insertVersionDirective
+ *  if the first item in the stream is not a ##gff-version directive, insert one.
+ *  default false
  */
 export function formatStream(options) {
   return new FormattingTransform(options)
@@ -212,17 +224,29 @@ export function formatStream(options) {
  * @param {String} filename the file path to write to
  * @param {Object} options
  * @param {String} options.encoding default 'utf8'. encoding for the written file
- * @returns {Promise} promise for the written filename
+ * @param {Number} options.minSyncLines
+ *  minimum number of lines between sync (###) marks. default 100
+ * @param {Boolean} options.insertVersionDirective
+ *  if the first item in the stream is not a ##gff-version directive, insert one.
+ *  default true
+ * @returns {Promise[String]} promise for the written filename
  */
 export async function formatFile(stream, filename, options = {}) {
+  const newOptions = Object.assign(
+    {
+      insertVersionDirective: true,
+    },
+    options,
+  )
+
   return new Promise((resolve, reject) => {
     stream
-      .pipe(new FormattingTransform(options))
+      .pipe(new FormattingTransform(newOptions))
       .on('end', () => resolve(filename))
       .on('error', reject)
       .pipe(
         fs.createWriteStream(filename, {
-          encoding: options.encoding || 'utf8',
+          encoding: newOptions.encoding || 'utf8',
         }),
       )
   })

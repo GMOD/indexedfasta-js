@@ -11,7 +11,7 @@ const fdatasync = promisify(fs.fdatasync)
 
 describe('GFF3 formatting', () => {
   ;['spec_eden', 'au9_scaffold_subset'].forEach(file => {
-    it(`can roundtrip ${file} with formatSync`, () => {
+    it(`can roundtrip ${file}.gff3 with formatSync`, () => {
       const inputGFF3 = fs
         .readFileSync(require.resolve(`./data/${file}.gff3`))
         .toString('utf8')
@@ -45,7 +45,13 @@ describe('GFF3 formatting', () => {
       )
       expect(resultGFF3).toEqual(expectedGFF3)
     })
-    it(`can roundtrip ${file} a file with formatFile`, async () => {
+  })
+  ;[
+    'spec_eden',
+    'spec_eden.no_version_directive',
+    'au9_scaffold_subset',
+  ].forEach(file => {
+    it(`can roundtrip ${file}.gff3 with formatFile`, async () => {
       jest.setTimeout(1000)
       await tmp.withFile(async tmpFile => {
         const gff3In = fs
