@@ -245,8 +245,11 @@ export default class Parser {
   _resolveReferencesFrom(feature, references, ids) {
     // this is all a bit more awkward in javascript than it was in perl
     function postSet(obj, slot1, slot2) {
-      let subObj = obj[slot1];
-      if (!subObj) subObj = obj[slot1] = {}
+      let subObj = obj[slot1]
+      if (!subObj) {
+        subObj = {}
+        obj[slot1] = subObj
+      }
       const returnVal = subObj[slot2] || false
       subObj[slot2] = true
       return returnVal
