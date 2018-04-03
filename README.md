@@ -4,7 +4,7 @@
 [![NPM version](https://img.shields.io/npm/v/@gmod/gff.svg?style=flat-square)](https://npmjs.org/package/@gmod/gff)
 [![Build Status](https://img.shields.io/travis/GMOD/gff-js/master.svg?style=flat-square)](https://travis-ci.org/GMOD/gff-js) [![Coverage Status](https://img.shields.io/codecov/c/github/GMOD/gff-js/master.svg?style=flat-square)](https://codecov.io/gh/GMOD/gff-js/branch/master)
 
-read and write GFF3 data performantly
+Read and write GFF3 data performantly. This module aims to be a complete implementation of the [GFF3 specification](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md).
 
 ## Install
 
