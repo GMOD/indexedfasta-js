@@ -7,6 +7,7 @@ import getStream from 'get-stream'
 import gff from '../src'
 
 const readfile = promisify(fs.readFile)
+const fdatasync = promisify(fs.fdatasync)
 
 describe('GFF3 formatting', () => {
   ;['spec_eden', 'au9_scaffold_subset'].forEach(file => {
@@ -46,13 +47,15 @@ describe('GFF3 formatting', () => {
     })
     it(`can roundtrip ${file} a file with formatFile`, async () => {
       jest.setTimeout(1000)
-      await tmp.withFile(async o => {
+      await tmp.withFile(async tmpFile => {
         const gff3In = fs
           .createReadStream(require.resolve(`./data/${file}.gff3`))
           .pipe(gff.parseStream({ parseAll: true }))
 
-        await gff.formatFile(gff3In, o.path)
-        const resultGFF3 = (await readfile(o.path)).toString('utf8')
+        await gff.formatFile(gff3In, tmpFile.path)
+        await fdatasync(tmpFile.fd)
+
+        const resultGFF3 = (await readfile(tmpFile.path)).toString('utf8')
 
         const expectedGFF3 = (await readfile(
           require.resolve(`./data/${file}.reformatted.gff3`),

@@ -5,6 +5,13 @@ const fs = require('fs')
 const { Transform } = require('stream')
 const Decoder = require('string_decoder').StringDecoder
 
+// call a callback on the next process tick if running in
+// an environment that supports it
+function _callback(callback) {
+  if (process && process.nextTick) process.nextTick(callback)
+  else callback()
+}
+
 // shared arg processing for the parse routines
 function _processParseOptions(options) {
   const out = Object.assign(
@@ -66,15 +73,14 @@ class GFFTransform extends Transform {
 
   _transform(chunk, encoding, callback) {
     this._nextText(this.decoder.write(chunk))
-    callback()
+    _callback(callback)
   }
 
   _flush(callback) {
     if (this.decoder.end) this._nextText(this.decoder.end())
     if (this.textBuffer != null) this._addLine(this.textBuffer)
     this.parser.finish()
-    if (process) process.nextTick(callback)
-    else callback()
+    _callback(callback)
   }
 }
 
@@ -177,9 +183,10 @@ class FormattingTransform extends Transform {
       }
       this.linesSinceLastSyncMark += count
     }
-    callback()
+    _callback(callback)
   }
 }
+
 
 /**
  * Format a stream of items (of the type produced
@@ -205,7 +212,7 @@ export function formatStream(options) {
  * @param {String} filename the file path to write to
  * @param {Object} options
  * @param {String} options.encoding default 'utf8'. encoding for the written file
- * @returns the written filename
+ * @returns {Promise} promise for the written filename
  */
 export async function formatFile(stream, filename, options = {}) {
   return new Promise((resolve, reject) => {
