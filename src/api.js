@@ -18,6 +18,7 @@ function _processParseOptions(options, additionalDefaults = {}) {
     {
       parseFeatures: true,
       parseDirectives: false,
+      parseSequences: true,
       parseComments: false,
     },
     additionalDefaults,
@@ -28,6 +29,7 @@ function _processParseOptions(options, additionalDefaults = {}) {
     out.parseFeatures = true
     out.parseDirectives = true
     out.parseComments = true
+    out.parseSequences = true
   }
 
   return out
@@ -48,6 +50,7 @@ class GFFTransform extends Transform {
       featureCallback: options.parseFeatures ? push : null,
       directiveCallback: options.parseDirectives ? push : null,
       commentCallback: options.parseComments ? push : null,
+      sequenceCallback: options.parseSequences ? push : null,
       errorCallback: err => this.emit('error', err),
       bufferSize: options.bufferSize,
     })
@@ -95,6 +98,7 @@ class GFFTransform extends Transform {
  * @param {boolean} options.parseFeatures default true
  * @param {boolean} options.parseDirectives default false
  * @param {boolean} options.parseComments default false
+ * @param {boolean} options.parseSequences default true
  * @param {Number} options.bufferSize maximum number of GFF3 lines to buffer. defaults to 1000
  * @returns {ReadableStream} stream (in objectMode) of parsed items
  */
@@ -113,6 +117,7 @@ export function parseStream(options = {}) {
  * @param {boolean} options.parseFeatures default true
  * @param {boolean} options.parseDirectives default false
  * @param {boolean} options.parseComments default false
+ * @param {boolean} options.parseSequences default true
  * @param {Number} options.bufferSize maximum number of GFF3 lines to buffer. defaults to 1000
  * @returns {ReadableStream} stream (in objectMode) of parsed items
  */
@@ -130,6 +135,7 @@ export function parseFile(filename, options) {
  * @param {boolean} inputOptions.parseFeatures default true
  * @param {boolean} inputOptions.parseDirectives default false
  * @param {boolean} inputOptions.parseComments default false
+ * @param {boolean} inputOptions.parseSequences default true
  * @returns {Array} array of parsed features, directives, and/or comments
  */
 export function parseStringSync(str, inputOptions = {}) {

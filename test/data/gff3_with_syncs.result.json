@@ -1,524 +1,519 @@
-{
-   "directives" : [
-      {
-         "value" : "3",
-         "directive" : "gff-version"
+[
+  {
+    "directive": "gff-version",
+    "value": "3"
+  },
+  {
+    "directive": "feature-ontology",
+    "value": "http://song.cvs.sourceforge.net/*checkout*/song/ontology/sofa.obo?revision=1.93"
+  },
+  [
+    {
+      "seq_id": "SL2.40ch00",
+      "source": "ITAG_eugene",
+      "type": "gene",
+      "start": 16437,
+      "end": 18189,
+      "score": null,
+      "strand": "+",
+      "phase": null,
+      "attributes": {
+        "Alias": [
+          "Solyc00g005000"
+        ],
+        "ID": [
+          "gene:Solyc00g005000.2"
+        ],
+        "Name": [
+          "Solyc00g005000.2"
+        ],
+        "from_BOGAS": [
+          "1"
+        ],
+        "length": [
+          "1753"
+        ]
       },
-      {
-         "directive" : "feature-ontology",
-         "value" : "http://song.cvs.sourceforge.net/*checkout*/song/ontology/sofa.obo?revision=1.93"
-      }
-   ],
-   "comments": [],
-   "features" : [
-      [
-         {
-            "phase" : null,
-            "strand" : "+",
-            "end" : 18189,
-            "attributes" : {
-               "Name" : [
-                  "Solyc00g005000.2"
-               ],
-               "length" : [
-                  "1753"
-               ],
-               "ID" : [
-                  "gene:Solyc00g005000.2"
-               ],
-               "from_BOGAS" : [
-                  "1"
-               ],
-               "Alias" : [
-                  "Solyc00g005000"
-               ]
+      "child_features": [
+        [
+          {
+            "seq_id": "SL2.40ch00",
+            "source": "ITAG_eugene",
+            "type": "mRNA",
+            "start": 16437,
+            "end": 18189,
+            "score": null,
+            "strand": "+",
+            "phase": null,
+            "attributes": {
+              "ID": [
+                "mRNA:Solyc00g005000.2.1"
+              ],
+              "Name": [
+                "Solyc00g005000.2.1"
+              ],
+              "Parent": [
+                "gene:Solyc00g005000.2"
+              ],
+              "from_BOGAS": [
+                "1"
+              ],
+              "length": [
+                "1753"
+              ],
+              "nb_exon": [
+                "2"
+              ]
             },
-            "start" : 16437,
-            "derived_features" : [],
-            "child_features" : [
-               [
-                  {
-                     "phase" : null,
-                     "strand" : "+",
-                     "attributes" : {
-                        "Parent" : [
-                           "gene:Solyc00g005000.2"
-                        ],
-                        "length" : [
-                           "1753"
-                        ],
-                        "ID" : [
-                           "mRNA:Solyc00g005000.2.1"
-                        ],
-                        "from_BOGAS" : [
-                           "1"
-                        ],
-                        "Name" : [
-                           "Solyc00g005000.2.1"
-                        ],
-                        "nb_exon" : [
-                           "2"
-                        ]
-                     },
-                     "end" : 18189,
-                     "start" : 16437,
-                     "source" : "ITAG_eugene",
-                     "score" : null,
-                     "derived_features" : [],
-                     "child_features" : [
-                        [
-                           {
-                              "start" : 16437,
-                              "type" : "exon",
-                              "seq_id" : "SL2.40ch00",
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "phase" : null,
-                              "end" : 17275,
-                              "attributes" : {
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ],
-                                 "ID" : [
-                                    "exon:Solyc00g005000.2.1.1"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005000.2.1"
-                                 ]
-                              },
-                              "strand" : "+"
-                           }
-                        ],
-                        [
-                           {
-                              "phase" : null,
-                              "end" : 16479,
-                              "attributes" : {
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005000.2.1"
-                                 ],
-                                 "ID" : [
-                                    "five_prime_UTR:Solyc00g005000.2.1.0"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "strand" : "+",
-                              "start" : 16437,
-                              "type" : "five_prime_UTR",
-                              "seq_id" : "SL2.40ch00",
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "source" : "ITAG_eugene",
-                              "score" : null
-                           }
-                        ],
-                        [
-                           {
-                              "strand" : "+",
-                              "end" : 17275,
-                              "attributes" : {
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005000.2.1"
-                                 ],
-                                 "ID" : [
-                                    "CDS:Solyc00g005000.2.1.1"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "phase" : "0",
-                              "derived_features" : [],
-                              "child_features" : [],
-                              "score" : null,
-                              "source" : "ITAG_eugene",
-                              "type" : "CDS",
-                              "seq_id" : "SL2.40ch00",
-                              "start" : 16480
-                           }
-                        ],
-                        [
-                           {
-                              "phase" : null,
-                              "attributes" : {
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ],
-                                 "ID" : [
-                                    "intron:Solyc00g005000.2.1.1"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005000.2.1"
-                                 ]
-                              },
-                              "end" : 17335,
-                              "strand" : "+",
-                              "start" : 17276,
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "intron",
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "child_features" : [],
-                              "derived_features" : []
-                           }
-                        ],
-                        [
-                           {
-                              "end" : 18189,
-                              "attributes" : {
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ],
-                                 "ID" : [
-                                    "exon:Solyc00g005000.2.1.2"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005000.2.1"
-                                 ]
-                              },
-                              "strand" : "+",
-                              "phase" : "0",
-                              "type" : "exon",
-                              "seq_id" : "SL2.40ch00",
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "start" : 17336
-                           }
-                        ],
-                        [
-                           {
-                              "phase" : "2",
-                              "strand" : "+",
-                              "attributes" : {
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005000.2.1"
-                                 ],
-                                 "ID" : [
-                                    "CDS:Solyc00g005000.2.1.2"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "end" : 17940,
-                              "start" : 17336,
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "derived_features" : [],
-                              "child_features" : [],
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "CDS"
-                           }
-                        ],
-                        [
-                           {
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "three_prime_UTR",
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "start" : 17941,
-                              "attributes" : {
-                                 "ID" : [
-                                    "three_prime_UTR:Solyc00g005000.2.1.0"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005000.2.1"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "end" : 18189,
-                              "strand" : "+",
-                              "phase" : null
-                           }
-                        ]
-                     ],
-                     "seq_id" : "SL2.40ch00",
-                     "type" : "mRNA"
-                  }
-               ]
+            "child_features": [
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "exon",
+                  "start": 16437,
+                  "end": 17275,
+                  "score": null,
+                  "strand": "+",
+                  "phase": null,
+                  "attributes": {
+                    "ID": [
+                      "exon:Solyc00g005000.2.1.1"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005000.2.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "five_prime_UTR",
+                  "start": 16437,
+                  "end": 16479,
+                  "score": null,
+                  "strand": "+",
+                  "phase": null,
+                  "attributes": {
+                    "ID": [
+                      "five_prime_UTR:Solyc00g005000.2.1.0"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005000.2.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "CDS",
+                  "start": 16480,
+                  "end": 17275,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "CDS:Solyc00g005000.2.1.1"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005000.2.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "intron",
+                  "start": 17276,
+                  "end": 17335,
+                  "score": null,
+                  "strand": "+",
+                  "phase": null,
+                  "attributes": {
+                    "ID": [
+                      "intron:Solyc00g005000.2.1.1"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005000.2.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "exon",
+                  "start": 17336,
+                  "end": 18189,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "exon:Solyc00g005000.2.1.2"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005000.2.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "CDS",
+                  "start": 17336,
+                  "end": 17940,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "2",
+                  "attributes": {
+                    "ID": [
+                      "CDS:Solyc00g005000.2.1.2"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005000.2.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "three_prime_UTR",
+                  "start": 17941,
+                  "end": 18189,
+                  "score": null,
+                  "strand": "+",
+                  "phase": null,
+                  "attributes": {
+                    "ID": [
+                      "three_prime_UTR:Solyc00g005000.2.1.0"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005000.2.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ]
             ],
-            "source" : "ITAG_eugene",
-            "score" : null,
-            "type" : "gene",
-            "seq_id" : "SL2.40ch00"
-         }
+            "derived_features": []
+          }
+        ]
       ],
-      [
-         {
-            "start" : 68062,
-            "seq_id" : "SL2.40ch00",
-            "type" : "gene",
-            "score" : null,
-            "source" : "ITAG_eugene",
-            "child_features" : [
-               [
-                  {
-                     "start" : 68062,
-                     "child_features" : [
-                        [
-                           {
-                              "start" : 68062,
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "exon",
-                              "phase" : "0",
-                              "strand" : "+",
-                              "attributes" : {
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ],
-                                 "ID" : [
-                                    "exon:Solyc00g005020.1.1.1"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "end" : 68211
-                           }
-                        ],
-                        [
-                           {
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "score" : null,
-                              "source" : "ITAG_eugene",
-                              "type" : "CDS",
-                              "seq_id" : "SL2.40ch00",
-                              "start" : 68062,
-                              "strand" : "+",
-                              "end" : 68211,
-                              "attributes" : {
-                                 "ID" : [
-                                    "CDS:Solyc00g005020.1.1.1"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "phase" : "0"
-                           }
-                        ],
-                        [
-                           {
-                              "score" : null,
-                              "source" : "ITAG_eugene",
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "intron",
-                              "start" : 68212,
-                              "strand" : "+",
-                              "attributes" : {
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ],
-                                 "ID" : [
-                                    "intron:Solyc00g005020.1.1.1"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ]
-                              },
-                              "end" : 68343,
-                              "phase" : null
-                           }
-                        ],
-                        [
-                           {
-                              "phase" : "0",
-                              "strand" : "+",
-                              "attributes" : {
-                                 "ID" : [
-                                    "exon:Solyc00g005020.1.1.2"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "end" : 68568,
-                              "start" : 68344,
-                              "score" : null,
-                              "source" : "ITAG_eugene",
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "exon"
-                           }
-                        ],
-                        [
-                           {
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "CDS",
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "start" : 68344,
-                              "attributes" : {
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ],
-                                 "ID" : [
-                                    "CDS:Solyc00g005020.1.1.2"
-                                 ]
-                              },
-                              "end" : 68568,
-                              "strand" : "+",
-                              "phase" : "0"
-                           }
-                        ],
-                        [
-                           {
-                              "strand" : "+",
-                              "attributes" : {
-                                 "ID" : [
-                                    "intron:Solyc00g005020.1.1.2"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ],
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ]
-                              },
-                              "end" : 68653,
-                              "phase" : null,
-                              "score" : null,
-                              "source" : "ITAG_eugene",
-                              "child_features" : [],
-                              "derived_features" : [],
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "intron",
-                              "start" : 68569
-                           }
-                        ],
-                        [
-                           {
-                              "phase" : "0",
-                              "end" : 68764,
-                              "attributes" : {
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ],
-                                 "ID" : [
-                                    "exon:Solyc00g005020.1.1.3"
-                                 ]
-                              },
-                              "strand" : "+",
-                              "start" : 68654,
-                              "type" : "exon",
-                              "seq_id" : "SL2.40ch00",
-                              "derived_features" : [],
-                              "child_features" : [],
-                              "source" : "ITAG_eugene",
-                              "score" : null
-                           }
-                        ],
-                        [
-                           {
-                              "source" : "ITAG_eugene",
-                              "score" : null,
-                              "derived_features" : [],
-                              "child_features" : [],
-                              "seq_id" : "SL2.40ch00",
-                              "type" : "CDS",
-                              "start" : 68654,
-                              "strand" : "+",
-                              "attributes" : {
-                                 "from_BOGAS" : [
-                                    "1"
-                                 ],
-                                 "Parent" : [
-                                    "mRNA:Solyc00g005020.1.1"
-                                 ],
-                                 "ID" : [
-                                    "CDS:Solyc00g005020.1.1.3"
-                                 ]
-                              },
-                              "end" : 68764,
-                              "phase" : "0"
-                           }
-                        ]
-                     ],
-                     "derived_features" : [],
-                     "score" : null,
-                     "source" : "ITAG_eugene",
-                     "type" : "mRNA",
-                     "seq_id" : "SL2.40ch00",
-                     "phase" : null,
-                     "strand" : "+",
-                     "end" : 68764,
-                     "attributes" : {
-                        "ID" : [
-                           "mRNA:Solyc00g005020.1.1"
-                        ],
-                        "length" : [
-                           "703"
-                        ],
-                        "Parent" : [
-                           "gene:Solyc00g005020.1"
-                        ],
-                        "from_BOGAS" : [
-                           "1"
-                        ],
-                        "Name" : [
-                           "Solyc00g005020.1.1"
-                        ],
-                        "nb_exon" : [
-                           "3"
-                        ]
-                     }
-                  }
-               ]
-            ],
-            "derived_features" : [],
-            "phase" : null,
-            "attributes" : {
-               "from_BOGAS" : [
-                  "1"
-               ],
-               "Alias" : [
-                  "Solyc00g005020"
-               ],
-               "length" : [
-                  "703"
-               ],
-               "ID" : [
-                  "gene:Solyc00g005020.1"
-               ],
-               "Name" : [
-                  "Solyc00g005020.1"
-               ]
+      "derived_features": []
+    }
+  ],
+  [
+    {
+      "seq_id": "SL2.40ch00",
+      "source": "ITAG_eugene",
+      "type": "gene",
+      "start": 68062,
+      "end": 68764,
+      "score": null,
+      "strand": "+",
+      "phase": null,
+      "attributes": {
+        "Alias": [
+          "Solyc00g005020"
+        ],
+        "ID": [
+          "gene:Solyc00g005020.1"
+        ],
+        "Name": [
+          "Solyc00g005020.1"
+        ],
+        "from_BOGAS": [
+          "1"
+        ],
+        "length": [
+          "703"
+        ]
+      },
+      "child_features": [
+        [
+          {
+            "seq_id": "SL2.40ch00",
+            "source": "ITAG_eugene",
+            "type": "mRNA",
+            "start": 68062,
+            "end": 68764,
+            "score": null,
+            "strand": "+",
+            "phase": null,
+            "attributes": {
+              "ID": [
+                "mRNA:Solyc00g005020.1.1"
+              ],
+              "Name": [
+                "Solyc00g005020.1.1"
+              ],
+              "Parent": [
+                "gene:Solyc00g005020.1"
+              ],
+              "from_BOGAS": [
+                "1"
+              ],
+              "length": [
+                "703"
+              ],
+              "nb_exon": [
+                "3"
+              ]
             },
-            "end" : 68764,
-            "strand" : "+"
-         }
-      ]
-   ]
-}
+            "child_features": [
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "exon",
+                  "start": 68062,
+                  "end": 68211,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "exon:Solyc00g005020.1.1.1"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "CDS",
+                  "start": 68062,
+                  "end": 68211,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "CDS:Solyc00g005020.1.1.1"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "intron",
+                  "start": 68212,
+                  "end": 68343,
+                  "score": null,
+                  "strand": "+",
+                  "phase": null,
+                  "attributes": {
+                    "ID": [
+                      "intron:Solyc00g005020.1.1.1"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "exon",
+                  "start": 68344,
+                  "end": 68568,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "exon:Solyc00g005020.1.1.2"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "CDS",
+                  "start": 68344,
+                  "end": 68568,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "CDS:Solyc00g005020.1.1.2"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "intron",
+                  "start": 68569,
+                  "end": 68653,
+                  "score": null,
+                  "strand": "+",
+                  "phase": null,
+                  "attributes": {
+                    "ID": [
+                      "intron:Solyc00g005020.1.1.2"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "exon",
+                  "start": 68654,
+                  "end": 68764,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "exon:Solyc00g005020.1.1.3"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ],
+              [
+                {
+                  "seq_id": "SL2.40ch00",
+                  "source": "ITAG_eugene",
+                  "type": "CDS",
+                  "start": 68654,
+                  "end": 68764,
+                  "score": null,
+                  "strand": "+",
+                  "phase": "0",
+                  "attributes": {
+                    "ID": [
+                      "CDS:Solyc00g005020.1.1.3"
+                    ],
+                    "Parent": [
+                      "mRNA:Solyc00g005020.1.1"
+                    ],
+                    "from_BOGAS": [
+                      "1"
+                    ]
+                  },
+                  "child_features": [],
+                  "derived_features": []
+                }
+              ]
+            ],
+            "derived_features": []
+          }
+        ]
+      ],
+      "derived_features": []
+    }
+  ]
+]

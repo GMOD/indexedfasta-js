@@ -7,6 +7,7 @@ function readAll(filename) {
       features: [],
       comments: [],
       directives: [],
+      sequences: [],
       all: [],
     }
 
@@ -16,11 +17,13 @@ function readAll(filename) {
         parseFeatures: true,
         parseDirectives: true,
         parseComments: true,
+        parseSequences: true,
       })
       .on('data', d => {
         stuff.all.push(d)
         if (d.directive) stuff.directives.push(d)
         else if (d.comment) stuff.comments.push(d)
+        else if (d.sequence) stuff.sequences.push(d)
         else stuff.features.push(d)
       })
       .on('end', () => {
@@ -36,8 +39,7 @@ describe('GFF3 parser', () => {
     const referenceResult = JSON.parse(
       fs.readFileSync(require.resolve('./data/gff3_with_syncs.result.json')),
     )
-    delete stuff.all
-    expect(stuff).toEqual(referenceResult)
+    expect(stuff.all).toEqual(referenceResult)
   })
   ;[
     [1010, 'messy_protein_domains.gff3'],
@@ -45,10 +47,10 @@ describe('GFF3 parser', () => {
     [51, 'au9_scaffold_subset.gff3'],
     [14, 'tomato_chr4_head.gff3'],
     [5, 'directives.gff3'],
-    [2, 'hybrid1.gff3'],
-    [2, 'hybrid2.gff3'],
-    [5, 'knownGene.gff3'],
-    [5, 'knownGene2.gff3'],
+    [5, 'hybrid1.gff3'],
+    [3, 'hybrid2.gff3'],
+    [6, 'knownGene.gff3'],
+    [6, 'knownGene2.gff3'],
     [16, 'tomato_test.gff3'],
     [3, 'spec_eden.gff3'],
     [1, 'spec_match.gff3'],
@@ -64,16 +66,12 @@ describe('GFF3 parser', () => {
   it('supports children before parents, and Derives_from', async () => {
     const stuff = await readAll('./data/knownGene_out_of_order.gff3')
     // $p->max_lookback(2);
-
     const expectedOutput = JSON.parse(
       fs.readFileSync(
         require.resolve('./data/knownGene_out_of_order.result.json'),
       ),
     )
     expect(stuff.all).toEqual(expectedOutput)
-    // is( scalar( @stuff ), 6, 'got 6 top-level things' );
-    // is_deeply( [@stuff[0..4]], $right_output, 'got the right parse results' ) or diag explain \@stuff;
-    // is( $stuff[5]{directive}, 'FASTA', 'and last thing is a FASTA directive' );
   })
 
   it('can parse the EDEN gene from the gff3 spec', async () => {
@@ -190,24 +188,40 @@ SL2.40ch01	ITAG_eugene	gene	80999140	81004317	.	+	.	Alias=Solyc01g098840;ID=gene
 
     expect(result).toEqual(referenceResult)
   })
+  ;[
+    [
+      'hybrid1.gff3',
+      [
+        {
+          id: 'A00469',
+          sequence: 'GATTACAGATTACA',
+        },
+        {
+          id: 'zonker',
+          sequence:
+            'AAAAAACTAGCATGATCGATCGATCGATCGATATTAGCATGCATGCATGATGATGATAGCTATGATCGATCCCCCCCAAAAAACTAGCATGATCGATCGATCGATCGATATTAGCATGCATGCATGATGATGATAGCTATGATCGATCCCCCCC',
+        },
+        {
+          id: 'zeebo',
+          description: 'this is a test description',
+          sequence:
+            'AAAAACTAGTAGCTAGCTAGCTGATCATAGATCGATGCATGGCATACTGACTGATCGACCCCCC',
+        },
+      ],
+    ],
+    [
+      'hybrid2.gff3',
+      [
+        {
+          id: 'A00469',
+          sequence: 'GATTACAGATTACA',
+        },
+      ],
+    ],
+  ].forEach(([filename, expectedOutput]) => {
+    it(`can parse FASTA sections in hybrid ${filename} file`, async () => {
+      const stuff = await readAll(`./data/${filename}`)
+      expect(stuff.sequences).toEqual(expectedOutput)
+    })
+  })
 })
-
-// TODO
-
-// # check the fasta at the end of the hybrid files
-// for my $f ( 'hybrid1.gff3', 'hybrid2.gff3' ) {
-//     my $p = Bio::GFF3::LowLevel::Parser->open( catfile(qw( t data ), $f ));
-//     $p->max_lookback(3);
-//     my @items;
-//     while( my $item = $p->next_item ) {
-//         push @items, $item;
-//     }
-//     is( scalar @items, 3, 'got 3 items' );
-//     is( $items[-1]->{directive}, 'FASTA', 'last one is a FASTA directive' )
-//         or diag explain \@items;
-//     is( slurp_fh($items[-1]->{filehandle}), <<EOF, 'got the right stuff in the filehandle' ) or diag explain $items[-1];
-// >A00469
-// GATTACA
-// GATTACA
-// EOF
-// }

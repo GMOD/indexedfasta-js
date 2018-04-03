@@ -5,6 +5,32 @@ const containerAttributes = {
   Derives_from: 'derived_features',
 }
 
+class FASTAParser {
+  constructor(seqCallback) {
+    this.seqCallback = seqCallback
+    this.currentSequence = undefined
+  }
+
+  addLine(line) {
+    const defMatch = /^>\s*(\S+)\s*(.*)/.exec(line)
+    if (defMatch) {
+      this._flush()
+      this.currentSequence = { id: defMatch[1], sequence: '' }
+      if (defMatch[2]) this.currentSequence.description = defMatch[2].trim()
+    } else if (this.currentSequence && /\S/.test(line)) {
+      this.currentSequence.sequence += line.trim()
+    }
+  }
+
+  _flush() {
+    if (this.currentSequence) this.seqCallback(this.currentSequence)
+  }
+
+  finish() {
+    this._flush()
+  }
+}
+
 export default class Parser {
   constructor(args) {
     const nullFunc = () => {}
@@ -15,6 +41,7 @@ export default class Parser {
       commentCallback: args.commentCallback || nullFunc,
       errorCallback: args.errorCallback || nullFunc,
       directiveCallback: args.directiveCallback || nullFunc,
+      sequenceCallback: args.sequenceCallback || nullFunc,
 
       // number of lines to buffer
       bufferSize: args.bufferSize === undefined ? 1000 : args.bufferSize,
@@ -46,6 +73,13 @@ export default class Parser {
   }
 
   addLine(line) {
+    // if we have transitioned to a fasta section, just delegate to that parser
+    if (this.fastaParser) {
+      this.fastaParser.addLine(line)
+      return
+    }
+
+    // otherwise, if we are done, ignore this line
     if (this.eof) {
       return
     }
@@ -71,6 +105,7 @@ export default class Parser {
         if (directive.directive === 'FASTA') {
           this._emitAllUnderConstructionFeatures()
           this.eof = true
+          this.fastaParser = new FASTAParser(this.sequenceCallback)
         } else {
           this._emitItem(directive)
         }
@@ -81,10 +116,11 @@ export default class Parser {
     } else if (/^\s*$/.test(line)) {
       // blank line, do nothing
     } else if (/^\s*>/.test(line)) {
-      // implicit beginning of a FASTA section.  just stop
-      // parsing, since we don't currently handle sequences
+      // implicit beginning of a FASTA section
       this._emitAllUnderConstructionFeatures()
       this.eof = true
+      this.fastaParser = new FASTAParser(this.sequenceCallback)
+      this.fastaParser.addLine(line)
     } else {
       // it's a parse error
       const errLine = line.replace(/\r?\n?$/g, '')
@@ -100,6 +136,7 @@ export default class Parser {
 
   finish() {
     this._emitAllUnderConstructionFeatures()
+    if (this.fastaParser) this.fastaParser.finish()
     this.endCallback()
   }
 
