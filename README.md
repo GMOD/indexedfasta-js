@@ -4,7 +4,7 @@
 [![NPM version](https://img.shields.io/npm/v/@gmod/gff.svg?style=flat-square)](https://npmjs.org/package/@gmod/gff)
 [![Build Status](https://img.shields.io/travis/GMOD/gff-js/master.svg?style=flat-square)](https://travis-ci.org/GMOD/gff-js) [![Coverage Status](https://img.shields.io/codecov/c/github/GMOD/gff-js/master.svg?style=flat-square)](https://codecov.io/gh/GMOD/gff-js/branch/master)
 
-read and write GFF3 data as streams
+read and write low-level GFF3 data as streams
 
 ## Install
 
@@ -14,12 +14,14 @@ read and write GFF3 data as streams
 
 ```js
 const fs = require('fs')
+const gff = require('@gmod/gff').default
 
+// or if you have ES6 imports
 import gff from '@gmod/gff'
 
 // parse a file from a file name
 gff.parseFile('path/to/my/file.gff3')
-.on('data',function(data) {
+.on('data', data => {
   if (data.directive) {
     // its a directive
     console.log('got directive',data)
@@ -32,31 +34,37 @@ gff.parseFile('path/to/my/file.gff3')
   }
 })
 
-// parse a stream of data
+// parse a stream of GFF3 text
 fs.createReadStream('path/to/my/file.gff3')
 .pipe(gff.parseStream())
-.pipe(es.mapSync(data => {
-  console.log(data)
+.on('data', data => {
+  console.log('got item',data)
   return data
-}))
+})
+.on('end', () => {
+  console.log('done parsing!')
+})
 
 // parse a string of gff3 synchronously
+let stringOfGFF3 = fs
+  .readFileSync('my_annotations.gff3')
+  .toString()
 let arrayOfThings = gff.parseStringSync(stringOfGFF3)
 
-// format an array to a string
+// format an array of items to a string
 let stringOfGFF3 = gff.formatSync(arrayOfThings)
 
 // format a stream of things to a stream of text.
 // inserts sync marks automatically.
-myStreamOfObjects
+myStreamOfGFF3Objects
 .pipe(gff.formatStream())
-.pipe(myFileWriteStream)
+.pipe(fs.createWriteStream('my_new.gff3'))
 
 // format a stream of things and write it to
 // a gff3 file. inserts sync marks and a
 // '##gff-version 3' header if one is not
 // already present
-myStreamOfObjects
+myStreamOfGFF3Objects
 .pipe(gff.formatFile('path/to/destination.gff3')
 ```
 
@@ -64,7 +72,8 @@ myStreamOfObjects
 
 ### features
 
-In GFF3, features can have more than one location. We parse features as arrayrefs of all the lines that share that feature's ID.
+In GFF3, features can have more than one location. We parse features
+as arrayrefs of all the lines that share that feature's ID.
 Values that are `.` in the GFF3 are `null` in the output.
 
 A simple feature that's located in just one place:
