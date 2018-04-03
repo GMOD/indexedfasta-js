@@ -152,6 +152,44 @@ describe('GFF3 parser', () => {
     )
     expect(result).toEqual(referenceResult)
   })
+
+  it('can parse another string synchronously', () => {
+    const gff3 = `
+SL2.40ch01	ITAG_eugene	gene	80999140	81004317	.	+	.	Alias=Solyc01g098840;ID=gene:Solyc01g098840.2;Name=Solyc01g098840.2;from_BOGAS=1;length=5178
+`
+
+    const result = gff.parseStringSync(gff3, {
+      parseFeatures: true,
+      parseDirectives: true,
+      parseComments: true,
+    })
+    expect(result).toHaveLength(1)
+    const referenceResult = [
+      [
+        {
+          seq_id: 'SL2.40ch01',
+          source: 'ITAG_eugene',
+          type: 'gene',
+          start: 80999140,
+          end: 81004317,
+          score: null,
+          strand: '+',
+          phase: null,
+          attributes: {
+            Alias: ['Solyc01g098840'],
+            ID: ['gene:Solyc01g098840.2'],
+            Name: ['Solyc01g098840.2'],
+            from_BOGAS: ['1'],
+            length: ['5178'],
+          },
+          child_features: [],
+          derived_features: [],
+        },
+      ],
+    ]
+
+    expect(result).toEqual(referenceResult)
+  })
 })
 
 // TODO
@@ -174,17 +212,3 @@ describe('GFF3 parser', () => {
 // EOF
 // }
 
-// { # try parsing from a string ref
-//     my $gff3 = <<EOG;
-// SL2.40ch01	ITAG_eugene	gene	80999140	81004317	.	+	.	Alias=Solyc01g098840;ID=gene:Solyc01g098840.2;Name=Solyc01g098840.2;from_BOGAS=1;length=5178
-// EOG
-//     my $i = Bio::GFF3::LowLevel::Parser->open( \$gff3 )->next_item;
-//     is( $i->[0]{source}, 'ITAG_eugene', 'parsed from a string ref OK' ) or diag explain $i;
-//     my $tempfile = File::Temp->new;
-//     $tempfile->print( $gff3 );
-//     $tempfile->close;
-//     open my $fh, '<', "$tempfile" or die "$! reading $tempfile";
-//     $i = Bio::GFF3::LowLevel::Parser->open( $fh  )->next_item;
-//     is( $i->[0]{source}, 'ITAG_eugene', 'parsed from a filehandle OK' ) or diag explain $i;
-
-// }
