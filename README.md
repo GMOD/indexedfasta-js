@@ -4,7 +4,7 @@
 [![NPM version](https://img.shields.io/npm/v/@gmod/gff.svg?style=flat-square)](https://npmjs.org/package/@gmod/gff)
 [![Build Status](https://img.shields.io/travis/GMOD/gff-js/master.svg?style=flat-square)](https://travis-ci.org/GMOD/gff-js) [![Coverage Status](https://img.shields.io/codecov/c/github/GMOD/gff-js/master.svg?style=flat-square)](https://codecov.io/gh/GMOD/gff-js/branch/master)
 
-read and write low-level GFF3 data as streams
+read and write GFF3 data performantly
 
 ## Install
 
@@ -77,6 +77,7 @@ as arrayrefs of all the lines that share that feature's ID.
 Values that are `.` in the GFF3 are `null` in the output.
 
 A simple feature that's located in just one place:
+
 ```json
 [
   {
@@ -102,6 +103,7 @@ A simple feature that's located in just one place:
 ```
 
 A CDS called `cds00001` located in two places:
+
 ```json
 [
   {
@@ -171,6 +173,7 @@ parseDirective('##sequence-region ctg123 1 1497228\n')
 ```
 
 ### comments
+
 ```js
 parseComment('# hi this is a comment\n')
 // returns
@@ -260,6 +263,8 @@ Inserts synchronization (###) marks automatically.
 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `options.minSyncLines` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** minimum number of lines between ### marks. default 100
+    -   `options.insertVersionDirective` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if the first item in the stream is not a ##gff-version directive, insert one.
+         default false
 
 ### formatFile
 
@@ -275,11 +280,24 @@ directive automatically (if one is not already present).
 -   `filename` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the file path to write to
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.encoding` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default 'utf8'. encoding for the written file
+    -   `options.minSyncLines` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** minimum number of lines between sync (###) marks. default 100
+    -   `options.insertVersionDirective` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if the first item in the stream is not a ##gff-version directive, insert one.
+         default true
 
-Returns **any** the written filename
-
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** promise for the written filename
 
 ## util
+
+There is also a `util` module that contains super-low-level functions for dealing with lines and parts of lines.
+
+```js
+const util = require('@gmod/gff/util')
+const gff3Lines = util.formatItem({
+  seq_id: 'ctgA',
+  ...
+}))
+```
+
 -   [unescape](#unescape)
 -   [escape](#escape)
 -   [parseAttributes](#parseattributes)
@@ -291,13 +309,6 @@ Returns **any** the written filename
 -   [formatComment](#formatcomment)
 -   [formatItem](#formatitem)
 
-```js
-const util = require('@gmod/gff/util')
-const gff3Lines = util.formatItem({
-  seq_id: 'ctgA',
-  ...
-}))
-```
 ### unescape
 
 Unescape a string value used in a GFF3 attribute.

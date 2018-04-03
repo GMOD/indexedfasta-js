@@ -229,7 +229,7 @@ export function formatStream(options) {
  * @param {Boolean} options.insertVersionDirective
  *  if the first item in the stream is not a ##gff-version directive, insert one.
  *  default true
- * @returns {Promise[String]} promise for the written filename
+ * @returns {Promise} promise for the written filename
  */
 export async function formatFile(stream, filename, options = {}) {
   const newOptions = Object.assign(
