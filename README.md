@@ -20,10 +20,11 @@ const gff = require('@gmod/gff').default
 import gff from '@gmod/gff'
 
 // parse a file from a file name
-gff.parseFile('path/to/my/file.gff3')
+// parses only features by default,
+// set options to parse directives and/or comments
+gff.parseFile('path/to/my/file.gff3', { parseAll: true })
 .on('data', data => {
   if (data.directive) {
-    // its a directive
     console.log('got directive',data)
   }
   else if (data.comment) {
