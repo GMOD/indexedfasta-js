@@ -13,6 +13,9 @@
   "engines": {
     "node": ">=6"
   },
+  "bin": {
+    "gff-to-json": "dist/gff-to-json.js"
+  },
   "files": [
     "dist"
   ],
@@ -23,8 +26,8 @@
     "lint": "eslint src test",
     "docs": "documentation readme src --section=API",
     "clean": "rimraf dist",
-    "prebuild": "npm run docs && npm run clean",
-    "build": "babel src -d dist",
+    "prebuild": "npm run clean",
+    "build": "babel src bin -d dist",
     "watch": "npm-watch",
     "patch": "npm version patch && npm publish",
     "minor": "npm version minor && npm publish",
