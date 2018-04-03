@@ -16,6 +16,9 @@ export default class Parser {
       errorCallback: args.errorCallback || nullFunc,
       directiveCallback: args.directiveCallback || nullFunc,
 
+      // number of lines to buffer
+      bufferSize: args.bufferSize === undefined ? 1000 : args.bufferSize,
+
       // features that we have to keep on hand for now because they
       // might be referenced by something else
       _underConstructionTopLevel: [],
@@ -100,6 +103,38 @@ export default class Parser {
     this.endCallback()
   }
 
+  _enforceBufferSizeLimit(additionalItemCount = 0) {
+    const _unbufferItem = item => {
+      if (
+        item &&
+        item[0] &&
+        item[0].attributes &&
+        item[0].attributes.ID &&
+        item[0].attributes.ID[0]
+      ) {
+        const ids = item[0].attributes.ID
+        ids.forEach(id => {
+          delete this._underConstructionById[id]
+          delete this._completedReferences[id]
+        })
+        item.forEach(i => {
+          if (i.child_features) i.child_features.forEach(c => _unbufferItem(c))
+          if (i.derived_features)
+            i.derived_features.forEach(d => _unbufferItem(d))
+        })
+      }
+    }
+
+    while (
+      this._underConstructionTopLevel.length + additionalItemCount >
+      this.bufferSize
+    ) {
+      const item = this._underConstructionTopLevel.shift()
+      this._emitItem(item)
+      _unbufferItem(item)
+    }
+  }
+
   /**
    * return all under-construction features, called when we know
    * there will be no additional data to attach to them
@@ -161,8 +196,11 @@ export default class Parser {
         existing.push(featureLine)
         feature = existing
       } else {
-        // haven't seen it yet
+        // haven't seen it yet, so buffer it so we can attach
+        // child features to it
         feature = [featureLine]
+
+        this._enforceBufferSizeLimit(1)
         if (!parents.length && !derives.length) {
           this._underConstructionTopLevel.push(feature)
         }
@@ -205,10 +243,12 @@ export default class Parser {
   }
 
   _resolveReferencesFrom(feature, references, ids) {
-    // this is all a bit more awkward in javascript than it was in perl :-\
-    function postSet(obj, slot) {
-      const returnVal = obj[slot] || false
-      obj[slot] = true
+    // this is all a bit more awkward in javascript than it was in perl
+    function postSet(obj, slot1, slot2) {
+      let subObj = obj[slot1];
+      if (!subObj) subObj = obj[slot1] = {}
+      const returnVal = subObj[slot2] || false
+      subObj[slot2] = true
       return returnVal
     }
 
@@ -222,7 +262,7 @@ export default class Parser {
 
           if (
             !ids.filter(id =>
-              postSet(this._completedReferences, `${id},${attrname},${toId}`),
+              postSet(this._completedReferences, id, `${attrname},${toId}`),
             ).length
           ) {
             otherFeature.forEach(location => {

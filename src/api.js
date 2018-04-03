@@ -13,13 +13,14 @@ function _callback(callback) {
 }
 
 // shared arg processing for the parse routines
-function _processParseOptions(options) {
+function _processParseOptions(options, additionalDefaults = {}) {
   const out = Object.assign(
     {
       parseFeatures: true,
       parseDirectives: false,
       parseComments: false,
     },
+    additionalDefaults,
     options,
   )
 
@@ -35,7 +36,6 @@ function _processParseOptions(options) {
 class GFFTransform extends Transform {
   constructor(inputOptions = {}) {
     const options = _processParseOptions(inputOptions)
-
     super({ objectMode: true })
 
     this.encoding = inputOptions.encoding || 'utf8'
@@ -49,6 +49,7 @@ class GFFTransform extends Transform {
       directiveCallback: options.parseDirectives ? push : null,
       commentCallback: options.parseComments ? push : null,
       errorCallback: err => this.emit('error', err),
+      bufferSize: options.bufferSize,
     })
   }
 
@@ -94,10 +95,12 @@ class GFFTransform extends Transform {
  * @param {boolean} options.parseFeatures default true
  * @param {boolean} options.parseDirectives default false
  * @param {boolean} options.parseComments default false
+ * @param {Number} options.bufferSize maximum number of GFF3 lines to buffer. defaults to 1000
  * @returns {ReadableStream} stream (in objectMode) of parsed items
  */
 export function parseStream(options = {}) {
-  return new GFFTransform(options)
+  const newOptions = Object.assign({ bufferSize: 1000 }, options)
+  return new GFFTransform(newOptions)
 }
 
 /**
@@ -110,6 +113,7 @@ export function parseStream(options = {}) {
  * @param {boolean} options.parseFeatures default true
  * @param {boolean} options.parseDirectives default false
  * @param {boolean} options.parseComments default false
+ * @param {Number} options.bufferSize maximum number of GFF3 lines to buffer. defaults to 1000
  * @returns {ReadableStream} stream (in objectMode) of parsed items
  */
 export function parseFile(filename, options) {
@@ -138,6 +142,7 @@ export function parseStringSync(str, inputOptions = {}) {
     featureCallback: options.parseFeatures ? push : null,
     directiveCallback: options.parseDirectives ? push : null,
     commentCallback: options.parseComments ? push : null,
+    bufferSize: Infinity,
     errorCallback: err => {
       throw err
     },
