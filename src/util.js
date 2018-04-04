@@ -88,9 +88,10 @@ export function parseFeature(line) {
   // split the line into columns and replace '.' with null in each column
   const f = line.split('\t').map(a => (a === '.' ? null : a))
 
-  // unescape only the ref and source columns
+  // unescape only the ref, source, and type columns
   f[0] = unescape(f[0])
   f[1] = unescape(f[1])
+  f[2] = unescape(f[2])
 
   f[8] = parseAttributes(f[8])
   const parsed = {}

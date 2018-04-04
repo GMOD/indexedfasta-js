@@ -154,7 +154,7 @@ describe('GFF3 parser', () => {
 
   it('can parse another string synchronously', () => {
     const gff3 = `
-SL2.40ch01	ITAG_eugene	gene	80999140	81004317	.	+	.	Alias=Solyc01g098840;ID=gene:Solyc01g098840.2;Name=Solyc01g098840.2;from_BOGAS=1;length=5178
+SL2.40%25ch01	IT%25AG eugene	g%25e;ne	80999140	81004317	.	+	.	Alias=Solyc01g098840;ID=gene:Solyc01g098840.2;Name=Solyc01g098840.2;from_BOGAS=1;length=5178
 `
 
     const result = gff.parseStringSync(gff3, {
@@ -166,9 +166,9 @@ SL2.40ch01	ITAG_eugene	gene	80999140	81004317	.	+	.	Alias=Solyc01g098840;ID=gene
     const referenceResult = [
       [
         {
-          seq_id: 'SL2.40ch01',
-          source: 'ITAG_eugene',
-          type: 'gene',
+          seq_id: 'SL2.40%ch01',
+          source: 'IT%AG eugene',
+          type: 'g%e;ne',
           start: 80999140,
           end: 81004317,
           score: null,
