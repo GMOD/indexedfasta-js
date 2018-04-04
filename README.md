@@ -11,6 +11,8 @@ Read and write GFF3 data performantly. This module aims to be a complete impleme
 * supports features with multiple locations and features with multiple parents
 * reconstructs feature hierarchies of both `Parent` and `Derives_from` relationships
 * parses FASTA sections
+* does no validation except for `Parent` and `Derives_from` relationships
+* only compatible with GFF3
 
 ## Install
 
@@ -24,7 +26,7 @@ const gff = require('@gmod/gff').default
 import gff from '@gmod/gff'
 
 // parse a file from a file name
-// parses only features by default,
+// parses only features and sequences by default,
 // set options to parse directives and/or comments
 gff.parseFile('path/to/my/file.gff3', { parseAll: true })
 .on('data', data => {
