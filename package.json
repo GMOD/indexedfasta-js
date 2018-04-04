@@ -32,7 +32,7 @@
     "patch": "npm version patch && npm publish",
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
-    "prepublishOnly": "npm run lint && npm test && npm run build",
+    "prepublishOnly": "npm test && npm run build",
     "postpublish": "git push origin master --follow-tags"
   },
   "watch": {
