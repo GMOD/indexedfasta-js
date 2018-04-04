@@ -329,6 +329,7 @@ const gff3Lines = util.formatItem({
 -   [formatFeature](#formatfeature)
 -   [formatDirective](#formatdirective)
 -   [formatComment](#formatcomment)
+-   [formatSequence](#formatsequence)
 -   [formatItem](#formatitem)
 
 ### unescape
@@ -416,6 +417,16 @@ Yes I know this is just adding a # and a newline.
 -   `comment` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### formatSequence
+
+Format a sequence object as FASTA
+
+**Parameters**
+
+-   `seq` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** formatted single FASTA sequence
 
 ### formatItem
 
