@@ -10,7 +10,7 @@ const readfile = promisify(fs.readFile)
 const fdatasync = promisify(fs.fdatasync)
 
 describe('GFF3 formatting', () => {
-  ;['spec_eden', 'au9_scaffold_subset'].forEach(file => {
+  ;['spec_eden', 'au9_scaffold_subset', 'hybrid1', 'hybrid2'].forEach(file => {
     it(`can roundtrip ${file}.gff3 with formatSync`, () => {
       const inputGFF3 = fs
         .readFileSync(require.resolve(`./data/${file}.gff3`))

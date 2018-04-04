@@ -18,7 +18,7 @@ class FASTAParser {
       this.currentSequence = { id: defMatch[1], sequence: '' }
       if (defMatch[2]) this.currentSequence.description = defMatch[2].trim()
     } else if (this.currentSequence && /\S/.test(line)) {
-      this.currentSequence.sequence += line.trim()
+      this.currentSequence.sequence += line.replace(/\s/g, '')
     }
   }
 

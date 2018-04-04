@@ -214,7 +214,7 @@ SL2.40ch01	ITAG_eugene	gene	80999140	81004317	.	+	.	Alias=Solyc01g098840;ID=gene
       [
         {
           id: 'A00469',
-          sequence: 'GATTACAGATTACA',
+          sequence: 'GATTACAWATTACABATTACAGATTACA',
         },
       ],
     ],

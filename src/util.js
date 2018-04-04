@@ -244,6 +244,17 @@ export function formatComment(comment) {
 }
 
 /**
+ * Format a sequence object as FASTA
+ *
+ * @param {Object} seq
+ */
+export function formatSequence(seq) {
+  return `>${seq.id}${seq.description ? ` ${seq.description}` : ''}\n${
+    seq.sequence
+  }\n`
+}
+
+/**
  * Format a directive, comment, or feature,
  * or array of such items, into one or more lines of GFF3.
  *
@@ -251,9 +262,11 @@ export function formatComment(comment) {
  */
 export function formatItem(itemOrItems) {
   function formatSingleItem(item) {
-    if (item.directive) return formatDirective(item)
+    if (item[0] || item.attributes) return formatFeature(item)
+    else if (item.directive) return formatDirective(item)
+    else if (item.sequence) return formatSequence(item)
     else if (item.comment) return formatComment(item)
-    return formatFeature(item)
+    return '# (invalid item found during format)\n'
   }
 
   if (typical.isArrayLike(itemOrItems)) {

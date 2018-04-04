@@ -1,5 +1,5 @@
 import Parser from './parse'
-import { formatItem } from './util'
+import { formatItem, formatSequence } from './util'
 
 const fs = require('fs')
 const { Transform } = require('stream')
@@ -148,6 +148,7 @@ export function parseStringSync(str, inputOptions = {}) {
     featureCallback: options.parseFeatures ? push : null,
     directiveCallback: options.parseDirectives ? push : null,
     commentCallback: options.parseComments ? push : null,
+    sequenceCallback: options.parseSequences ? push : null,
     bufferSize: Infinity,
     errorCallback: err => {
       throw err
@@ -168,7 +169,19 @@ export function parseStringSync(str, inputOptions = {}) {
  * @returns {String} the formatted GFF3
  */
 export function formatSync(items) {
-  return items.map(formatItem).join('')
+  // sort items into seq and other
+  const other = []
+  const sequences = []
+  items.forEach(i => {
+    if (i.sequence) sequences.push(i)
+    else other.push(i)
+  })
+  let str = other.map(formatItem).join('')
+  if (sequences.length) {
+    str += '##FASTA\n'
+    str += sequences.map(formatSequence).join('')
+  }
+  return str
 }
 
 class FormattingTransform extends Transform {
@@ -178,19 +191,32 @@ class FormattingTransform extends Transform {
     this.minLinesBetweenSyncMarks = options.minSyncLines || 100
     this.insertVersionDirective = options.insertVersionDirective || false
     this.haveWeEmittedData = false
+    this.fastaMode = false
   }
 
   _transform(chunk, encoding, callback) {
+    // if we have not emitted anything yet, and this first
+    // chunk is not a gff-version directive, emit one
     let str
     if (
       !this.haveWeEmittedData &&
+      this.insertVersionDirective &&
       (chunk[0] || chunk).directive !== 'gff-version'
     )
       this.push('##gff-version 3\n')
 
+    // if it's a sequence chunk coming down, emit a FASTA directive and
+    // change to FASTA mode
+    if (chunk.sequence && !this.fastaMode) {
+      this.push('##FASTA\n')
+      this.fastaMode = true
+    }
+
     if (Array.isArray(chunk)) str = chunk.map(formatItem).join('')
     else str = formatItem(chunk)
+
     this.push(str)
+
     if (this.linesSinceLastSyncMark >= this.minLinesBetweenSyncMarks) {
       this.push('###\n')
       this.linesSinceLastSyncMark = 0
