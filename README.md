@@ -6,13 +6,11 @@
 
 Read and write GFF3 data performantly. This module aims to be a complete implementation of the [GFF3 specification](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md).
 
-Supports streaming input and streaming output.
-
-Does proper escaping of attribute values. Supports features with multiple locations and features with multiple parents.
-
-Supports feature hierarchy reconstruction of both `Parent` and `Derived_from` relationships.
-
-Supports both implicit and explicit FASTA sections.
+* streaming parsing and streaming formatting
+* proper escaping and unescaping of attribute and column values
+* supports features with multiple locations and features with multiple parents
+* reconstructs feature hierarchies of both `Parent` and `Derives_from` relationships
+* parses FASTA sections
 
 ## Install
 
@@ -21,10 +19,8 @@ Supports both implicit and explicit FASTA sections.
 ## Usage
 
 ```js
-const fs = require('fs')
 const gff = require('@gmod/gff').default
-
-// or if you have ES6 imports
+// or in ES6 (recommended)
 import gff from '@gmod/gff'
 
 // parse a file from a file name
@@ -47,6 +43,7 @@ gff.parseFile('path/to/my/file.gff3', { parseAll: true })
 })
 
 // parse a stream of GFF3 text
+const fs = require('fs')
 fs.createReadStream('path/to/my/file.gff3')
 .pipe(gff.parseStream())
 .on('data', data => {
