@@ -227,4 +227,23 @@ SL2.40%25ch01	IT%25AG eugene	g%25e;ne	80999140	81004317	.	+	.	Alias=Solyc01g0988
       expect(stuff.sequences).toEqual(expectedOutput)
     })
   })
+
+  it('can be written to directly', async () => {
+    const items = await new Promise((resolve, reject) => {
+      const i = []
+      const stream = gff
+        .parseStream()
+        .on('data', d => i.push(d))
+        .on('end', () => resolve(i))
+        .on('error', reject)
+
+      stream.write(
+        `SL2.40ch00	ITAG_eugene	gene	16437	18189	.	+	.	Alias=Solyc00g005000;ID=gene:Solyc00g005000.2;Name=Solyc00g005000.2;from_BOGAS=1;length=1753\n`,
+      )
+      stream.end()
+    })
+
+    expect(items).toHaveLength(1)
+    expect(items[0][0].seq_id).toEqual('SL2.40ch00')
+  })
 })
