@@ -18,6 +18,7 @@ function readAll(filename) {
         parseDirectives: true,
         parseComments: true,
         parseSequences: true,
+        bufferSize: 10,
       })
       .on('data', d => {
         stuff.all.push(d)

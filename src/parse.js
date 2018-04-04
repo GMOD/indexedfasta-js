@@ -77,10 +77,8 @@ export default class Parser {
     if (this.fastaParser) {
       this.fastaParser.addLine(line)
       return
-    }
-
-    // otherwise, if we are done, ignore this line
-    if (this.eof) {
+    } else if (this.eof) {
+      // otherwise, if we are done, ignore this line
       return
     }
 
