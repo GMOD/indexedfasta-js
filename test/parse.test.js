@@ -1,5 +1,6 @@
 import fs from 'fs'
 import gff from '../src'
+import { formatFeature } from '../src/util'
 
 function readAll(filename) {
   return new Promise((resolve, reject) => {
@@ -188,6 +189,7 @@ SL2.40%25ch01	IT%25AG eugene	g%25e;ne	80999140	81004317	.	+	.	Alias=Solyc01g0988
     ]
 
     expect(result).toEqual(referenceResult)
+    expect(`\n${formatFeature(referenceResult[0])}`).toEqual(gff3)
   })
   ;[
     [

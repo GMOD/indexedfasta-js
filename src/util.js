@@ -37,8 +37,8 @@ export function unescape(s) {
  * @param {String} s
  * @returns {String}
  */
-export function escape(s) {
-  return s.replace(/[\n;\r\t=%&,\x00-\x1f\x7f-\xff]/g, ch => {
+function _escape(regex, s) {
+  return s.replace(regex, ch => {
     let hex = ch
       .charCodeAt(0)
       .toString(16)
@@ -48,6 +48,20 @@ export function escape(s) {
     if (hex.length < 2) hex = `0${hex}`
     return `%${hex}`
   })
+}
+
+export function escape(s) {
+  return _escape(/[\n;\r\t=%&,\x00-\x1f\x7f-\xff]/g, s)
+}
+
+/**
+ * Escape a value for use in a GFF3 column value.
+ *
+ * @param {String} s
+ * @returns {String}
+ */
+export function escapeColumn(s) {
+  return _escape(/[\n\r\t%\x00-\x1f\x7f-\xff]/g, s)
 }
 
 /**
@@ -178,7 +192,8 @@ function _formatSingleFeature(f, seenFeature) {
           ? '.'
           : translateStrand[val + 1] || val
     else
-      fields[i] = val === null || val === undefined ? '.' : escape(String(val))
+      fields[i] =
+        val === null || val === undefined ? '.' : escapeColumn(String(val))
   }
   fields[8] = attrString
 

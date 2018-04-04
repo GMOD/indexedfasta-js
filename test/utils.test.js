@@ -2,7 +2,7 @@ import {
   parseAttributes,
   parseFeature,
   formatFeature,
-  escape,
+  escapeColumn,
 } from '../src/util'
 
 describe('GFF3 utils', () => {
@@ -33,7 +33,7 @@ describe('GFF3 utils', () => {
       },
     ],
     [
-      `${escape(
+      `${escapeColumn(
         'Noggin,+-%Foo\tbar',
       )}\tbarsource\tmatch\t234\t234\t0\t+\t.\t.\n`,
       {
