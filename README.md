@@ -6,6 +6,14 @@
 
 Read and write GFF3 data performantly. This module aims to be a complete implementation of the [GFF3 specification](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md).
 
+Supports streaming input and streaming output.
+
+Does proper escaping of attribute values. Supports features with multiple locations and features with multiple parents.
+
+Supports feature hierarchy reconstruction of both `Parent` and `Derived_from` relationships.
+
+Supports both implicit and explicit FASTA sections.
+
 ## Install
 
     $ npm install --save @gmod/gff
