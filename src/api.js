@@ -141,6 +141,8 @@ export function parseFile(filename, options) {
  * @returns {Array} array of parsed features, directives, and/or comments
  */
 export function parseStringSync(str, inputOptions = {}) {
+  if (!str) return []
+
   const options = _processParseOptions(inputOptions)
 
   const items = []
