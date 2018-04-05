@@ -1,6 +1,6 @@
 {
   "name": "@gmod/gff",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "read and write GFF3 data as streams",
   "license": "MIT",
   "repository": "GMOD/gff-js",
