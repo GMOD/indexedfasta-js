@@ -16,6 +16,9 @@
   "bin": {
     "gff-to-json": "dist/gff-to-json.js"
   },
+  "directories": {
+    "lib": "dist"
+  },
   "files": [
     "dist"
   ],

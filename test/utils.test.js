@@ -1,9 +1,6 @@
-import {
-  parseAttributes,
-  parseFeature,
-  formatFeature,
-  escapeColumn,
-} from '../src/util'
+import gff from '../src'
+
+const { parseAttributes, parseFeature, formatFeature, escapeColumn } = gff.util
 
 describe('GFF3 utils', () => {
   ;[

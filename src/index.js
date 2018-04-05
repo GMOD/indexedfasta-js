@@ -1,3 +1,20 @@
-import * as api from './api'
+import {
+  parseStream,
+  parseFile,
+  parseStringSync,
+  formatSync,
+  formatStream,
+  formatFile,
+} from './api'
 
-export default api
+import * as util from './util'
+
+export default {
+  parseStream,
+  parseFile,
+  parseStringSync,
+  formatSync,
+  formatStream,
+  formatFile,
+  util,
+}

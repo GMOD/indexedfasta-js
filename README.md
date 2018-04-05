@@ -320,7 +320,12 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 There is also a `util` module that contains super-low-level functions for dealing with lines and parts of lines.
 
 ```js
-const util = require('@gmod/gff/util')
+// non-ES6
+const util = require('@gmod/gff').default.util
+// or, with ES6
+import gff from '@gmod/gff'
+const util = gff.util
+
 const gff3Lines = util.formatItem({
   seq_id: 'ctgA',
   ...
