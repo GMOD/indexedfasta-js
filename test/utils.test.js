@@ -3,6 +3,15 @@ import gff from '../src'
 const { parseAttributes, parseFeature, formatFeature, escapeColumn } = gff.util
 
 describe('GFF3 utils', () => {
+  it('can escape properly', () => {
+    expect(gff.util.escape(5)).toEqual('5')
+    // TODO: should add more escape tests
+  })
+  it('can unescape properly', () => {
+    expect(gff.util.unescape(' ')).toEqual(' ')
+    expect(gff.util.unescape(5)).toEqual('5')
+    // TODO: should add more unescape tests
+  })
   ;[
     ['foo=bar', { foo: ['bar'] }],
     ['ID=Beep%2Cbonk%3B+Foo\n', { ID: ['Beep,bonk;+Foo'] }],

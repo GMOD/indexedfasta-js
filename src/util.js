@@ -26,7 +26,7 @@ const fieldNames = [
 export function unescape(s) {
   if (s === null) return null
 
-  return s.replace(/%([0-9A-Fa-f]{2})/g, (match, seq) =>
+  return String(s).replace(/%([0-9A-Fa-f]{2})/g, (match, seq) =>
     String.fromCharCode(parseInt(seq, 16)),
   )
 }
@@ -38,7 +38,7 @@ export function unescape(s) {
  * @returns {String}
  */
 function _escape(regex, s) {
-  return s.replace(regex, ch => {
+  return String(s).replace(regex, ch => {
     let hex = ch
       .charCodeAt(0)
       .toString(16)
