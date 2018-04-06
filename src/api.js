@@ -272,7 +272,7 @@ export function formatStream(options) {
  *  default true
  * @returns {Promise} promise for the written filename
  */
-export async function formatFile(stream, filename, options = {}) {
+export function formatFile(stream, filename, options = {}) {
   const newOptions = Object.assign(
     {
       insertVersionDirective: true,
