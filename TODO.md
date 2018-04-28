@@ -1,1 +1,0 @@
-* Support returning FASTA stream
