@@ -1,20 +1,20 @@
 {
-  "name": "@gmod/gff",
-  "version": "1.1.1",
-  "description": "read and write GFF3 data as streams",
+  "name": "@gmod/fasta",
+  "version": "0.0.1",
+  "description": "read and write FASTA data as streams",
   "license": "MIT",
-  "repository": "GMOD/gff-js",
+  "repository": "GMOD/fasta-js",
   "main": "dist/index.js",
   "author": {
-    "name": "Robert Buels",
-    "email": "rbuels@gmail.com",
-    "url": "https://github.com/rbuels"
+    "name": "Colin Diesh",
+    "email": "colin.diesh@gmail.com",
+    "url": "https://github.com/cmdcolin"
   },
   "engines": {
     "node": ">=6"
   },
   "bin": {
-    "gff-to-json": "dist/gff-to-json.js"
+    "fasta-to-json": "dist/fasta-to-json.js"
   },
   "directories": {
     "lib": "dist"
@@ -47,8 +47,7 @@
     "testEnvironment": "node"
   },
   "keywords": [
-    "gff3",
-    "gff",
+    "fasta",
     "genomics"
   ],
   "dependencies": {
