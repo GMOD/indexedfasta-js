@@ -10,7 +10,7 @@ const readfile = promisify(fs.readFile)
 const fdatasync = promisify(fs.fdatasync)
 
 describe('FASTA formatting', () => {
-  ;['phi-X174.fa'].forEach(file => {
+  ;['phi-X174'].forEach(file => {
     it(`can roundtrip ${file}.fa with formatSync`, () => {
       const inputFasta = fs
         .readFileSync(require.resolve(`./data/${file}.fa`))

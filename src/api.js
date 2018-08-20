@@ -89,7 +89,7 @@ class FASTATransform extends Transform {
  */
 export function parseStream(options = {}) {
   const newOptions = Object.assign({ bufferSize: 1000 }, options)
-  return new GFFTransform(newOptions)
+  return new FASTATransform(newOptions)
 }
 
 /**

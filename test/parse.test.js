@@ -7,7 +7,7 @@ function readAll(filename) {
 
     // $p->max_lookback(1)
    fasta
-      .parseSmallFasta(require.resolve(filename), {
+      .parseFile(require.resolve(filename), {
         bufferSize: 10,
       })
       .on('data', d => {
