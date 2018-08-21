@@ -13,9 +13,6 @@
   "engines": {
     "node": ">=6"
   },
-  "bin": {
-    "fasta-to-json": "dist/fasta-to-json.js"
-  },
   "directories": {
     "lib": "dist"
   },
