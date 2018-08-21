@@ -1,24 +1,13 @@
 import fs from 'fs'
-import fasta from '../src'
+import * as fasta from '../src'
+const util = require('util');
 
-function readAll(filename) {
-  return new Promise((resolve, reject) => {
-    const stuff = [];
+const readFile = util.promisify(fs.readFile);
 
-    // $p->max_lookback(1)
-   fasta
-      .parseFile(require.resolve(filename), {
-        bufferSize: 10,
-      })
-      .on('data', d => {
-        stuff.push(d);
-        console.log(d);
-      })
-      .on('end', () => {
-        resolve(stuff)
-      })
-      .on('error', reject)
-  })
+
+async function readAll(filename) {
+  var t = await readFile(require.resolve(filename), {encoding: 'utf8'});
+  return fasta.parseSmallFasta(t);
 }
 
 describe('FASTA parser', () => {
@@ -27,8 +16,9 @@ describe('FASTA parser', () => {
     const referenceResult = JSON.parse(
       fs.readFileSync(require.resolve('./data/phi-X174.fa.json')),
     )
-    expect(stuff.all).toEqual(referenceResult)
+    expect(stuff).toEqual(referenceResult)
   })
+
 
 
 })
