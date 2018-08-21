@@ -1,13 +1,19 @@
-import fs from 'fs'
-import * as fasta from '../src'
+import {parseSmallFasta,FetchableSmallFasta,IndexedFasta} from '../src'
 import {promisify} from 'es6-promisify';
 
+const {
+    testDataFile,
+    loadTestJSON,
+    extended,
+    JsonClone,
+    REWRITE_EXPECTED_DATA,
+    fs,
+} = require('./lib/util')
 const readFile = promisify(fs.readFile);
-
 
 async function readAll(filename) {
   var t = await readFile(require.resolve(filename), {encoding: 'utf8'});
-  return fasta.parseSmallFasta(t);
+  return parseSmallFasta(t);
 }
 
 describe('FASTA parser', () => {
@@ -18,7 +24,9 @@ describe('FASTA parser', () => {
     )
     expect(stuff).toEqual(referenceResult)
   })
-
-
-
+  it('get sequence list', async () => {
+    var t = new FetchableSmallFasta(testDataFile('./phi-X174.fa'));
+    expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+  })
 })
+

@@ -27,7 +27,7 @@
     "docs": "documentation readme src --section=API",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "babel src bin -d dist",
+    "build": "babel src -d dist",
     "watch": "npm-watch",
     "patch": "npm version patch && npm publish",
     "minor": "npm version minor && npm publish",
@@ -49,6 +49,7 @@
   ],
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "cross-fetch": "^2.2.2",
     "es6-promisify": "^6.0.0",
     "tmp-promise": "^1.0.4",
     "typical": "^2.6.1"
