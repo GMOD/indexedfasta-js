@@ -1,8 +1,8 @@
 import fs from 'fs'
 import * as fasta from '../src'
-const util = require('util');
+import {promisify} from 'es6-promisify';
 
-const readFile = util.promisify(fs.readFile);
+const readFile = promisify(fs.readFile);
 
 
 async function readAll(filename) {
