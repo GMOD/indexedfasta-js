@@ -1,4 +1,3 @@
-
 /**
  * Format a sequence object as FASTA
  *

@@ -2,9 +2,7 @@ const path = typeof __webpack_require__ !== 'function' ? require('path') : null 
 const fs = typeof __webpack_require__ !== 'function' ? require('fs') : null // eslint-disable-line camelcase
 const { fromUrl } = require('../../src/io')
 
-const dataDir =
-  path &&
-  path.dirname(require.resolve('../data/phi-X174.fa'))
+const dataDir = path && path.dirname(require.resolve('../data/phi-X174.fa'))
 
 function testDataUrl(filename) {
   return typeof window === 'undefined'
@@ -26,8 +24,6 @@ async function loadTestJSON(filename) {
 function JsonClone(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
-
-
 
 const REWRITE_EXPECTED_DATA =
   typeof process !== 'undefined' &&

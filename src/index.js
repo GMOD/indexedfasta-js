@@ -24,7 +24,7 @@ class FetchableSmallFasta {
 
   async fetch(id, start, end) {
     const data = await this.data
-    const entry = data.find((iter) => iter.id == id)
+    const entry = data.find(iter => iter.id == id)
     const length = end - start + 1
     if (!entry) throw new Error(`no sequence with id ${id} exists`)
     return entry.sequence.substr(start - 1, length)
