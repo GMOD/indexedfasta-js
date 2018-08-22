@@ -7,7 +7,7 @@ script:
   - cd bgzf-filehandle && yarn && yarn link && yarn build && cd -
   - yarn link @gmod/bgzf-filehandle
   - yarn build
-  - yarn test -- --coverage
+  - yarn test --coverage
 cache:
   - node_modules
 after_success:
