@@ -69,6 +69,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-prettier": "^2.6.0",
+    "file-loader": "^2.0.0",
     "get-stream": "^3.0.0",
     "jest-cli": "^22.1.4",
     "karma": "^2.0.2",

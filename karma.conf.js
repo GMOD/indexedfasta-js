@@ -74,7 +74,14 @@ module.exports = config => {
             use: {
               loader: 'babel-loader',
             },
+          },{
+            test: /\.fa/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'file-loader',
+            },
           },
+
         ],
       },
       watch: true,
