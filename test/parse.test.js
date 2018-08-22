@@ -12,21 +12,15 @@ const {
 
 const readFile = promisify(fs.readFile)
 
-async function readAll(filename) {
-  const t = await readFile(require.resolve(filename), { encoding: 'utf8' })
-  return parseSmallFasta(t)
-}
 
 describe('FASTA parser', () => {
-  it('can parse fasta', async () => {
-    const stuff = await readAll('./data/phi-X174.fa')
-    const referenceResult = JSON.parse(
-      fs.readFileSync(require.resolve('./data/phi-X174.fa.json')),
-    )
-    expect(stuff).toEqual(referenceResult)
-  })
+  // it('can parse fasta', async () => {
+  //   const stuff = parseSmallFasta(testDataFile('phi-X174.fa'))
+  //   const referenceResult = loadTestJSON('phi-X174.fa.json')
+  //   expect(stuff).toEqual(referenceResult)
+  // })
   it('get sequence list', async () => {
-    const t = new FetchableSmallFasta(testDataFile('./phi-X174.fa'))
+    const t = new FetchableSmallFasta(testDataFile('phi-X174.fa'))
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
     expect(await t.fetch('NC_001422.1', 1, 100)).toEqual(
       'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
