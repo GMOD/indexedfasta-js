@@ -1,4 +1,5 @@
 const IndexedFasta = require('./indexedFasta')
+const BgzipIndexedFasta = require('./bgzipIndexedFasta')
 
 function parseSmallFasta(text) {
   return text
@@ -36,4 +37,4 @@ class FetchableSmallFasta {
   }
 }
 
-export { parseSmallFasta, FetchableSmallFasta, IndexedFasta }
+export { parseSmallFasta, FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta }
