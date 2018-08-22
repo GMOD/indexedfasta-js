@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "test": "jest",
+    "test-browser": "karma start --single-run",
     "coverage": "npm test -- --coverage",
     "postcoverage": "opn coverage/lcov-report/index.html",
     "lint": "eslint src test",
@@ -58,6 +59,7 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.0",
     "babel-jest": "^22.1.0",
+    "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.1.8",
     "babel-preset-stage-2": "^6.18.0",
@@ -69,9 +71,15 @@
     "eslint-plugin-prettier": "^2.6.0",
     "get-stream": "^3.0.0",
     "jest-cli": "^22.1.4",
+    "karma": "^2.0.2",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "karma-webpack": "^3.0.0",
+    "mocha": "^5.1.1",
     "npm-watch": "^0.3.0",
     "opn-cli": "^3.1.0",
     "prettier": "^1.10.2",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "webpack": "^4.17.1"
   }
 }
