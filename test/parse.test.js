@@ -27,6 +27,7 @@ describe('FASTA parser', () => {
   it('get sequence list', async () => {
     var t = new FetchableSmallFasta(testDataFile('./phi-X174.fa'));
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+    expect(await t.fetch('NC_001422.1', 1, 100)).toEqual('GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA')
   })
 })
 
