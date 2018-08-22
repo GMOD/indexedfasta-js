@@ -17,7 +17,6 @@ function testDataFile(filename) {
 
 async function loadTestJSON(filename) {
   const data = await testDataFile(`${filename}`).readFile()
-  console.log(data)
   const text = data.toString()
   return JSON.parse(text)
 }

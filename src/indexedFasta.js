@@ -46,6 +46,7 @@ class IndexedFasta {
         indexByName[entry.name] = entry
         indexById[entry.id] = entry
       })
+
     return { name: indexByName, id: indexById }
   }
 
@@ -56,7 +57,8 @@ class IndexedFasta {
    * is the sequence name
    */
   async getSequenceList() {
-    return (await this._getIndexes()).id.map(entry => entry.name)
+    var ret = await this._getIndexes();
+    return Object.entries((await this._getIndexes()).id).map(([key, value]) => value.name)
   }
 
   /**
@@ -91,14 +93,14 @@ class IndexedFasta {
 
   async _fetchFromIndexEntry(indexEntry, min, max) {
     const start = Math.max(0, min)
-    const position = this._faiOffset(indexEntry, start)
+    const position = this._faiOffset(indexEntry, start) - 1
     const readlen = this._faiOffset(indexEntry, max) - position
 
     if (readlen > this.chunkSizeLimit)
       throw new Error('chunkSizeLimit exceeded')
 
     let residues = Buffer.allocUnsafe(readlen)
-    await this.data.read(residues, 0, readlen, position)
+    await this.fasta.read(residues, 0, readlen, position)
     residues = residues.toString('utf8').replace(/\s+/g, '')
 
     return residues
@@ -107,8 +109,8 @@ class IndexedFasta {
   _faiOffset(idx, pos) {
     return (
       idx.offset +
-      idx.linebytelen * Math.floor(pos / idx.linelen) +
-      (pos % idx.linelen)
+      idx.lineBytes * Math.floor(pos / idx.lineLength) +
+      (pos % idx.lineLength)
     )
   }
 }
