@@ -14,7 +14,7 @@ function parseSmallFasta(text) {
       return { id, description, sequence }
     })
 }
-  // memoized
+// memoized
 class FetchableSmallFasta {
   constructor(filehandle) {
     this.data = filehandle.readFile().then(buffer => {

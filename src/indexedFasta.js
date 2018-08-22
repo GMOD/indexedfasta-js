@@ -57,8 +57,10 @@ class IndexedFasta {
    * is the sequence name
    */
   async getSequenceList() {
-    var ret = await this._getIndexes();
-    return Object.entries((await this._getIndexes()).id).map(([key, value]) => value.name)
+    const ret = await this._getIndexes()
+    return Object.entries((await this._getIndexes()).id).map(
+      ([key, value]) => value.name,
+    )
   }
 
   /**
