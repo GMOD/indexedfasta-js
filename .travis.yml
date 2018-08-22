@@ -3,8 +3,11 @@ node_js:
   - v6
 script:
   - set -e
-  - npm run build
-  - npm run test -- --coverage
+  - git clone https://github.com/GMOD/bgzf-filehandle
+  - cd bgzf-filehandle && yarn && yarn link && yarn build && cd -
+  - yarn link @gmod/bgzf-filehandle
+  - yarn build
+  - yarn test -- --coverage
 cache:
   - node_modules
 after_success:
