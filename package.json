@@ -1,9 +1,9 @@
 {
-  "name": "@gmod/fasta",
+  "name": "@gmod/indexedfasta",
   "version": "0.0.1",
   "description": "read and write FASTA data as streams",
   "license": "MIT",
-  "repository": "GMOD/fasta-js",
+  "repository": "GMOD/indexedfasta-js",
   "main": "dist/index.js",
   "author": {
     "name": "Colin Diesh",
