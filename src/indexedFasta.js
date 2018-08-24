@@ -64,6 +64,18 @@ class IndexedFasta {
   }
 
   /**
+   * @returns {array[string]} array of string sequence
+   * names that are present in the index, in which the
+   * array index indicates the sequence ID, and the value
+   * is the sequence name
+   */
+  async getSequenceSizes() {
+    const ret = await this._getIndexes()
+    return Object.entries((await this._getIndexes()).id).map(
+      ([key, value]) => ({ name: value.name, start: 0, end: value.length })
+    )
+  }
+  /**
    *
    * @param {string} name
    * @returns {Promise[boolean]} true if the file contains the given reference sequence name

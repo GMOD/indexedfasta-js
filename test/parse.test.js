@@ -23,6 +23,7 @@ describe('Indexed FASTA parser', () => {
       fai: testDataFile('phi-X174.fa.fai'),
     })
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+    expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
     expect(await t.getResiduesByName('NC_001422.1', 1, 100)).toEqual(
       'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
     )
@@ -37,6 +38,7 @@ describe('Compressed indexed FASTA parser', () => {
       fai: testDataFile('phi-X174.fa.fai'),
     })
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+    expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
     expect(await t.getResiduesByName('NC_001422.1', 1, 100)).toEqual(
       'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
     )
