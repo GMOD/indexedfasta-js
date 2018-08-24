@@ -86,6 +86,14 @@ module.exports = config => {
       },
       watch: true,
       devtool: 'eval-source-map',
+      resolve: {
+          symlinks: false
+      },
+      resolveLoader: {
+          modules: ["node_modules"]
+      },
+
+
     },
 
     webpackMiddleware: {

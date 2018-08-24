@@ -37,4 +37,4 @@ class FetchableSmallFasta {
   }
 }
 
-export { parseSmallFasta, FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta }
+export default { parseSmallFasta, FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta }

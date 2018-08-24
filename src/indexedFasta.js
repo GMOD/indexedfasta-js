@@ -117,4 +117,4 @@ class IndexedFasta {
   }
 }
 
-module.exports = IndexedFasta
+export default IndexedFasta
