@@ -109,9 +109,10 @@ class IndexedFasta {
   }
 
   async _fetchFromIndexEntry(indexEntry, min, max) {
-    const start = Math.max(0, min)
+    const start = Math.max(1, min)
+    const end = Math.min(indexEntry.length, max);
     const position = this._faiOffset(indexEntry, start) - 1
-    const readlen = this._faiOffset(indexEntry, max) - position
+    const readlen = this._faiOffset(indexEntry, end) - position
 
     if (readlen > this.chunkSizeLimit)
       throw new Error('chunkSizeLimit exceeded')
