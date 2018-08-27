@@ -94,9 +94,7 @@ class IndexedFasta {
    * is the sequence name
    */
   async getSequenceList() {
-    return Object.entries((await this._getIndexes()).id).map(
-      ([key, value]) => value.name, // eslint-disable-line no-unused-vars
-    )
+    return Object.values((await this._getIndexes()).id).map(value => value.name)
   }
 
   /**
@@ -116,12 +114,11 @@ class IndexedFasta {
    */
   async getSequenceSizes() {
     const returnObject = {}
-    Object.entries((await this._getIndexes()).id).map(
-      // eslint-disable-next-line no-unused-vars
-      ([key, value]) => {
-        returnObject[value.name] = value.length
-      }
-    )
+    const idx = await this._getIndexes()
+    const vals = Object.values(idx.id)
+    for (let i = 0; i < vals.length; i += 1) {
+      returnObject[vals[i].name] = vals[i].length
+    }
     return returnObject
   }
 
@@ -167,8 +164,8 @@ class IndexedFasta {
     if (!indexEntry) return undefined
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
-  async getSequence(seqName, min, max) {
-    return this.getResiduesByName(...arguments)
+  async getSequence(...args) {
+    return this.getResiduesByName(...args)
   }
 
   async _fetchFromIndexEntry(indexEntry, min = 0, max) {
