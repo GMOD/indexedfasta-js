@@ -7,7 +7,7 @@ const { testDataFile, fs } = require('./lib/util')
 const readFile = promisify(fs.readFile)
 
 describe('FASTA parser', () => {
-  it('get sequence list', async () => {
+  it('process unindexed fasta', async () => {
     const t = new FetchableSmallFasta(testDataFile('phi-X174.fa'))
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
     expect(await t.fetch('NC_001422.1', 1, 100)).toEqual(
@@ -23,6 +23,9 @@ async function phiTest(t) {
   )
   expect(await t.getResiduesByName('NC_001422.1', -100, 100)).toEqual(
     'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
+  )
+  expect(await t.getResiduesByName('NC_001422.1', 101, 150)).toEqual(
+    'CGAATTAAATCGAAGTGGACTGCTGGCGGAAAATGAGAAAATTCGACCTA'
   )
   let err
   const catchErr = e => {
@@ -44,13 +47,22 @@ async function endTest(t) {
   expect(await t.getResiduesByName('chr1', 1, 100)).toEqual(
     'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN',
   )
-  // expect(await t.getResiduesByName('chr1', 0, 100)).toEqual(
-  //   'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN',
-  // )
+  expect(await t.getResiduesByName('chr1', 0, 100)).toEqual(
+    'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN',
+  )
+}
+
+
+async function volvoxTest(t) {
+  expect(await t.getSequenceList()).toEqual(['ctgA', 'ctgB'])
+  expect(await t.getSequenceSizes()).toEqual([{ name: 'ctgA', start: 0, end: 50001}, {"end": 6079, "name": "ctgB", "start": 0}])
+  expect(await t.getResiduesByName('ctgA', 0, 100)).toEqual(
+		'cattgttgcggagttgaacaACGGCATTAGGAACACTTCCGTCTCtcacttttatacgattatgattggttctttagccttggtttagattggtagtagt'
+  )
 }
 
 describe('Indexed FASTA parser', () => {
-  it('get sequence list', async () => {
+  it('process indexed fasta', async () => {
     const t = new IndexedFasta({
       fasta: testDataFile('phi-X174.fa'),
       fai: testDataFile('phi-X174.fa.fai'),
@@ -61,11 +73,16 @@ describe('Indexed FASTA parser', () => {
       fai: testDataFile('end.fa.fai'),
     })
     endTest(e)
+    const v = new IndexedFasta({
+      fasta: testDataFile('volvox.fa'),
+      fai: testDataFile('volvox.fa.fai'),
+    })
+    volvoxTest(v)
   })
 })
 
 describe('Compressed indexed FASTA parser', () => {
-  it('get sequence list', async () => {
+  it('process bgzipped fasta', async () => {
     const t = new BgzipIndexedFasta({
       fasta: testDataFile('phi-X174.fa.gz'),
       gzi: testDataFile('phi-X174.fa.gz.gzi'),
@@ -78,5 +95,11 @@ describe('Compressed indexed FASTA parser', () => {
       fai: testDataFile('end.fa.fai'),
     })
     endTest(e)
+    const v = new BgzipIndexedFasta({
+      fasta: testDataFile('volvox.fa.gz'),
+      gzi: testDataFile('volvox.fa.gz.gzi'),
+      fai: testDataFile('volvox.fa.gz.fai'),
+    })
+    volvoxTest(v)
   })
 })
