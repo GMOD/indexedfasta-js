@@ -6,6 +6,7 @@ script:
   - git clone https://github.com/GMOD/bgzf-filehandle
   - cd bgzf-filehandle && yarn && yarn link && yarn build && cd -
   - yarn link @gmod/bgzf-filehandle
+  - yarn lint
   - yarn build
   - yarn test --coverage
 cache:
