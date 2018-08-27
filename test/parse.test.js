@@ -1,10 +1,6 @@
-import { promisify } from 'es6-promisify'
-
 import { FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta } from '../src'
 
-const { testDataFile, fs } = require('./lib/util')
-
-const readFile = promisify(fs.readFile)
+const { testDataFile } = require('./lib/util')
 
 describe('FASTA parser', () => {
   it('process unindexed fasta', async () => {
@@ -16,20 +12,21 @@ describe('FASTA parser', () => {
   })
 })
 async function phiTest(t) {
-
   let err
   const catchErr = e => {
     err = e
   }
   expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
-  expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
+  expect(await t.getSequenceSizes()).toEqual([
+    { name: 'NC_001422.1', start: 0, end: 5386 },
+  ])
   expect(await t.getResiduesByName('NC_001422.1', 0, 100)).toEqual(
     'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
   )
   await t.getResiduesByName('NC_001422.1', -100, 100).catch(catchErr)
   expect(err.toString()).toContain('cannot be less than 0')
   expect(await t.getResiduesByName('NC_001422.1', 100, 150)).toEqual(
-    'CGAATTAAATCGAAGTGGACTGCTGGCGGAAAATGAGAAAATTCGACCTA'
+    'CGAATTAAATCGAAGTGGACTGCTGGCGGAAAATGAGAAAATTCGACCTA',
   )
 
   await t.getResiduesByName('missing', 1, 100).catch(catchErr)
@@ -38,7 +35,9 @@ async function phiTest(t) {
 
 async function endTest(t) {
   expect(await t.getSequenceList()).toEqual(['chr1'])
-  expect(await t.getSequenceSizes()).toEqual([{ name: 'chr1', start: 0, end: 100100}])
+  expect(await t.getSequenceSizes()).toEqual([
+    { name: 'chr1', start: 0, end: 100100 },
+  ])
   expect(await t.getResiduesByName('chr1', 100000, 100100)).toEqual(
     'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
   )
@@ -50,12 +49,14 @@ async function endTest(t) {
   )
 }
 
-
 async function volvoxTest(t) {
   expect(await t.getSequenceList()).toEqual(['ctgA', 'ctgB'])
-  expect(await t.getSequenceSizes()).toEqual([{ name: 'ctgA', start: 0, end: 50001}, {"end": 6079, "name": "ctgB", "start": 0}])
+  expect(await t.getSequenceSizes()).toEqual([
+    { name: 'ctgA', start: 0, end: 50001 },
+    { end: 6079, name: 'ctgB', start: 0 },
+  ])
   expect(await t.getResiduesByName('ctgA', 0, 100)).toEqual(
-		'cattgttgcggagttgaacaACGGCATTAGGAACACTTCCGTCTCtcacttttatacgattatgattggttctttagccttggtttagattggtagtagt'
+    'cattgttgcggagttgaacaACGGCATTAGGAACACTTCCGTCTCtcacttttatacgattatgattggttctttagccttggtttagattggtagtagt',
   )
 }
 

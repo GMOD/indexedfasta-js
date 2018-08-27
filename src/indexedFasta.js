@@ -1,5 +1,12 @@
+function _faiOffset(idx, pos) {
+  return (
+    idx.offset +
+    idx.lineBytes * Math.floor(pos / idx.lineLength) +
+    (pos % idx.lineLength)
+  )
+}
 class IndexedFasta {
-  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 50000 }) {
+  constructor({ fasta, fai, chunkSizeLimit = 50000 }) {
     this.fasta = fasta
     this.fai = fai
 
@@ -57,7 +64,6 @@ class IndexedFasta {
    * is the sequence name
    */
   async getSequenceList() {
-    const ret = await this._getIndexes()
     return Object.entries((await this._getIndexes()).id).map(
       ([key, value]) => value.name,
     )
@@ -72,7 +78,7 @@ class IndexedFasta {
   async getSequenceSizes() {
     const ret = await this._getIndexes()
     return Object.entries((await this._getIndexes()).id).map(
-      ([key, value]) => ({ name: value.name, start: 0, end: value.length })
+      ([key, value]) => ({ name: value.name, start: 0, end: value.length }),
     )
   }
   /**
@@ -92,8 +98,7 @@ class IndexedFasta {
    */
   async getResiduesById(seqId, min, max) {
     const indexEntry = (await this._getIndexes()).id[seqId]
-    console.log(indexEntry);
-    if(!indexEntry) throw new Error('Reference sequence not found')
+    if (!indexEntry) throw new Error('Reference sequence not found')
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
 
@@ -104,20 +109,20 @@ class IndexedFasta {
    */
   async getResiduesByName(seqName, min, max) {
     const indexEntry = (await this._getIndexes()).name[seqName]
-    if(!indexEntry) throw new Error('Reference sequence not found')
+    if (!indexEntry) throw new Error('Reference sequence not found')
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
 
   async _fetchFromIndexEntry(indexEntry, min, max) {
-    if(min < 0) {
+    if (min < 0) {
       throw new TypeError('regionStart cannot be less than 0')
     }
     if (max === undefined || max > indexEntry.length) {
       max = indexEntry.length
     }
 
-    const position = this._faiOffset(indexEntry, min)
-    const readlen = this._faiOffset(indexEntry, max) - position
+    const position = _faiOffset(indexEntry, min)
+    const readlen = _faiOffset(indexEntry, max) - position
 
     if (readlen > this.chunkSizeLimit)
       throw new Error('chunkSizeLimit exceeded')
@@ -127,14 +132,6 @@ class IndexedFasta {
     residues = residues.toString('utf8').replace(/\s+/g, '')
 
     return residues
-  }
-
-  _faiOffset(idx, pos) {
-    return (
-      idx.offset +
-      idx.lineBytes * Math.floor(pos / idx.lineLength) +
-      (pos % idx.lineLength)
-    )
   }
 }
 
