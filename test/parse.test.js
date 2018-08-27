@@ -10,27 +10,28 @@ describe('FASTA parser', () => {
   it('process unindexed fasta', async () => {
     const t = new FetchableSmallFasta(testDataFile('phi-X174.fa'))
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
-    expect(await t.fetch('NC_001422.1', 1, 100)).toEqual(
+    expect(await t.fetch('NC_001422.1', 0, 100)).toEqual(
       'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
     )
   })
 })
 async function phiTest(t) {
-  expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
-  expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
-  expect(await t.getResiduesByName('NC_001422.1', 1, 100)).toEqual(
-    'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
-  )
-  expect(await t.getResiduesByName('NC_001422.1', -100, 100)).toEqual(
-    'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
-  )
-  expect(await t.getResiduesByName('NC_001422.1', 101, 150)).toEqual(
-    'CGAATTAAATCGAAGTGGACTGCTGGCGGAAAATGAGAAAATTCGACCTA'
-  )
+
   let err
   const catchErr = e => {
     err = e
   }
+  expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+  expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
+  expect(await t.getResiduesByName('NC_001422.1', 0, 100)).toEqual(
+    'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
+  )
+  await t.getResiduesByName('NC_001422.1', -100, 100).catch(catchErr)
+  expect(err.toString()).toContain('cannot be less than 0')
+  expect(await t.getResiduesByName('NC_001422.1', 100, 150)).toEqual(
+    'CGAATTAAATCGAAGTGGACTGCTGGCGGAAAATGAGAAAATTCGACCTA'
+  )
+
   await t.getResiduesByName('missing', 1, 100).catch(catchErr)
   expect(err.toString()).toContain('not found')
 }
@@ -43,9 +44,6 @@ async function endTest(t) {
   )
   expect(await t.getResiduesByName('chr1', 100000, 100200)).toEqual(
     'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-  )
-  expect(await t.getResiduesByName('chr1', 1, 100)).toEqual(
-    'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN',
   )
   expect(await t.getResiduesByName('chr1', 0, 100)).toEqual(
     'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN',
@@ -67,17 +65,17 @@ describe('Indexed FASTA parser', () => {
       fasta: testDataFile('phi-X174.fa'),
       fai: testDataFile('phi-X174.fa.fai'),
     })
-    phiTest(t)
+    await phiTest(t)
     const e = new IndexedFasta({
       fasta: testDataFile('end.fa'),
       fai: testDataFile('end.fa.fai'),
     })
-    endTest(e)
+    await endTest(e)
     const v = new IndexedFasta({
       fasta: testDataFile('volvox.fa'),
       fai: testDataFile('volvox.fa.fai'),
     })
-    volvoxTest(v)
+    await volvoxTest(v)
   })
 })
 
@@ -88,18 +86,18 @@ describe('Compressed indexed FASTA parser', () => {
       gzi: testDataFile('phi-X174.fa.gz.gzi'),
       fai: testDataFile('phi-X174.fa.fai'),
     })
-    phiTest(t)
+    await phiTest(t)
     const e = new BgzipIndexedFasta({
       fasta: testDataFile('end.fa.gz'),
       gzi: testDataFile('end.fa.gz.gzi'),
       fai: testDataFile('end.fa.fai'),
     })
-    endTest(e)
+    await endTest(e)
     const v = new BgzipIndexedFasta({
       fasta: testDataFile('volvox.fa.gz'),
       gzi: testDataFile('volvox.fa.gz.gzi'),
       fai: testDataFile('volvox.fa.gz.fai'),
     })
-    volvoxTest(v)
+    await volvoxTest(v)
   })
 })
