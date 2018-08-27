@@ -1,5 +1,5 @@
 class IndexedFasta {
-  constructor({ fasta, fai, chunkSizeLimit = 50000 }) {
+  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 50000 }) {
     this.fasta = fasta
     this.fai = fai
 
@@ -92,6 +92,8 @@ class IndexedFasta {
    */
   async getResiduesById(seqId, min, max) {
     const indexEntry = (await this._getIndexes()).id[seqId]
+    console.log(indexEntry);
+    if(!indexEntry) throw new Error('Reference sequence not found')
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
 
@@ -102,6 +104,7 @@ class IndexedFasta {
    */
   async getResiduesByName(seqName, min, max) {
     const indexEntry = (await this._getIndexes()).name[seqName]
+    if(!indexEntry) throw new Error('Reference sequence not found')
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
 

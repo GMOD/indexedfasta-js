@@ -15,18 +15,26 @@ describe('FASTA parser', () => {
     )
   })
 })
-
+async function sameTest(t) {
+	expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+	expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
+	expect(await t.getResiduesByName('NC_001422.1', 1, 100)).toEqual(
+		'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
+	)
+	let err
+	const catchErr = e => {
+		err = e
+	}
+	await t.getResiduesByName('missing', 1, 100).catch(catchErr)
+	expect(err.toString()).toContain('not found')
+}
 describe('Indexed FASTA parser', () => {
   it('get sequence list', async () => {
     const t = new IndexedFasta({
       fasta: testDataFile('phi-X174.fa'),
       fai: testDataFile('phi-X174.fa.fai'),
     })
-    expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
-    expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
-    expect(await t.getResiduesByName('NC_001422.1', 1, 100)).toEqual(
-      'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
-    )
+		sameTest(t)
   })
 })
 
@@ -37,10 +45,6 @@ describe('Compressed indexed FASTA parser', () => {
       gzi: testDataFile('phi-X174.fa.gz.gzi'),
       fai: testDataFile('phi-X174.fa.fai'),
     })
-    expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
-    expect(await t.getSequenceSizes()).toEqual([{ name: 'NC_001422.1', start: 0, end: 5386}])
-    expect(await t.getResiduesByName('NC_001422.1', 1, 100)).toEqual(
-      'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
-    )
+		sameTest(t)
   })
 })
