@@ -6,12 +6,14 @@ function parseSmallFasta(text) {
     .split('>')
     .filter(t => /\S/.test(t))
     .map(entryText => {
-      let [defLine, ...seqLines] = entryText.split('\n')
-      let [id, ...description] = defLine.split(' ')
-      description = description.join(' ')
-      seqLines = seqLines.join('')
-      const sequence = seqLines.replace(/\s/g, '')
-      return { id, description, sequence }
+      const [defLine, ...seqLines] = entryText.split('\n')
+      const [id, ...description] = defLine.split(' ')
+      const sequence = seqLines.join('').replace(/\s/g, '')
+      return {
+        id,
+        description: description.join(' '),
+        sequence,
+      }
     })
 }
 // memoized
@@ -25,7 +27,7 @@ class FetchableSmallFasta {
 
   async fetch(id, start, end) {
     const data = await this.data
-    const entry = data.find(iter => iter.id == id)
+    const entry = data.find(iter => iter.id === id)
     const length = end - start
     if (!entry) throw new Error(`no sequence with id ${id} exists`)
     return entry.sequence.substr(start, length)

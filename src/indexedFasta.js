@@ -65,7 +65,7 @@ class IndexedFasta {
    */
   async getSequenceList() {
     return Object.entries((await this._getIndexes()).id).map(
-      ([key, value]) => value.name,
+      ([key, value]) => value.name, // eslint-disable-line no-unused-vars
     )
   }
 
@@ -76,9 +76,13 @@ class IndexedFasta {
    * is the sequence name
    */
   async getSequenceSizes() {
-    const ret = await this._getIndexes()
     return Object.entries((await this._getIndexes()).id).map(
-      ([key, value]) => ({ name: value.name, start: 0, end: value.length }),
+      // eslint-disable-next-line no-unused-vars
+      ([key, value]) => ({
+        name: value.name,
+        start: 0,
+        end: value.length,
+      }),
     )
   }
   /**
@@ -114,15 +118,16 @@ class IndexedFasta {
   }
 
   async _fetchFromIndexEntry(indexEntry, min, max) {
+    let end = max
     if (min < 0) {
       throw new TypeError('regionStart cannot be less than 0')
     }
-    if (max === undefined || max > indexEntry.length) {
-      max = indexEntry.length
+    if (end === undefined || end > indexEntry.length) {
+      end = indexEntry.length
     }
 
     const position = _faiOffset(indexEntry, min)
-    const readlen = _faiOffset(indexEntry, max) - position
+    const readlen = _faiOffset(indexEntry, end) - position
 
     if (readlen > this.chunkSizeLimit)
       throw new Error('chunkSizeLimit exceeded')
