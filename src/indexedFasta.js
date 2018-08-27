@@ -19,10 +19,14 @@ class LocalFile {
     const fd = await this.fdPromise
     await fs.read(fd, buf, offset, length, position)
   }
+  async readFile() {
+    const fd = await this.fdPromise
+    return fs.readFile(fd)
+  }
 }
 
 class IndexedFasta {
-  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 50000 }) {
+  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 100000 }) {
     if (fasta) {
       this.fasta = fasta
     } else if (path) {
@@ -101,15 +105,24 @@ class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
+  async getSequenceNames() {
+    return Object.keys((await this._getIndexes()).id)
+  }
+  /**
+   * @returns {array[string]} array of string sequence
+   * names that are present in the index, in which the
+   * array index indicates the sequence ID, and the value
+   * is the sequence name
+   */
   async getSequenceSizes() {
-    return Object.entries((await this._getIndexes()).id).map(
+    const returnObject = {}
+    Object.entries((await this._getIndexes()).id).map(
       // eslint-disable-next-line no-unused-vars
-      ([key, value]) => ({
-        name: value.name,
-        start: 0,
-        end: value.length,
-      }),
+      ([key, value]) => {
+        returnObject[value.name] = value.length
+      }
     )
+    return returnObject
   }
 
   /**
@@ -120,9 +133,9 @@ class IndexedFasta {
    */
   async getSequenceSize(seqName) {
     const idx = await this._getIndexes()
-    console.log(idx)
-    return idx.name[seqName]
+    return idx.name[seqName].length
   }
+
   /**
    *
    * @param {string} name
@@ -140,7 +153,7 @@ class IndexedFasta {
    */
   async getResiduesById(seqId, min, max) {
     const indexEntry = (await this._getIndexes()).id[seqId]
-    if (!indexEntry) throw new Error('Reference sequence not found')
+    if (!indexEntry) return undefined
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
 
@@ -151,11 +164,14 @@ class IndexedFasta {
    */
   async getResiduesByName(seqName, min, max) {
     const indexEntry = (await this._getIndexes()).name[seqName]
-    if (!indexEntry) throw new Error('Reference sequence not found')
+    if (!indexEntry) return undefined
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
+  async getSequence(seqName, min, max) {
+    return this.getResiduesByName(...arguments)
+  }
 
-  async _fetchFromIndexEntry(indexEntry, min, max) {
+  async _fetchFromIndexEntry(indexEntry, min = 0, max) {
     let end = max
     if (min < 0) {
       throw new TypeError('regionStart cannot be less than 0')

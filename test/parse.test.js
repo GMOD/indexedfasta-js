@@ -17,9 +17,9 @@ async function phiTest(t) {
     err = e
   }
   expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
-  expect(await t.getSequenceSizes()).toEqual([
-    { name: 'NC_001422.1', start: 0, end: 5386 },
-  ])
+  expect(await t.getSequenceSizes()).toEqual(
+    {"NC_001422.1": 5386}
+  )
   expect(await t.getResiduesByName('NC_001422.1', 0, 100)).toEqual(
     'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
   )
@@ -28,16 +28,14 @@ async function phiTest(t) {
   expect(await t.getResiduesByName('NC_001422.1', 100, 150)).toEqual(
     'CGAATTAAATCGAAGTGGACTGCTGGCGGAAAATGAGAAAATTCGACCTA',
   )
-
-  await t.getResiduesByName('missing', 1, 100).catch(catchErr)
-  expect(err.toString()).toContain('not found')
+  expect(await t.getResiduesByName('missing', 1, 100)).toEqual(undefined)
 }
 
 async function endTest(t) {
   expect(await t.getSequenceList()).toEqual(['chr1'])
-  expect(await t.getSequenceSizes()).toEqual([
-    { name: 'chr1', start: 0, end: 100100 },
-  ])
+  expect(await t.getSequenceSizes()).toEqual(
+    { 'chr1': 100100 },
+  )
   expect(await t.getResiduesByName('chr1', 100000, 100100)).toEqual(
     'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
   )
@@ -51,10 +49,9 @@ async function endTest(t) {
 
 async function volvoxTest(t) {
   expect(await t.getSequenceList()).toEqual(['ctgA', 'ctgB'])
-  expect(await t.getSequenceSizes()).toEqual([
-    { name: 'ctgA', start: 0, end: 50001 },
-    { end: 6079, name: 'ctgB', start: 0 },
-  ])
+  expect(await t.getSequenceSizes()).toEqual(
+    { 'ctgA': 50001, 'ctgB': 6079 },
+  )
   expect(await t.getResiduesByName('ctgA', 0, 100)).toEqual(
     'cattgttgcggagttgaacaACGGCATTAGGAACACTTCCGTCTCtcacttttatacgattatgattggttctttagccttggtttagattggtagtagt',
   )

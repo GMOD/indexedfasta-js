@@ -3,7 +3,7 @@ import { IndexedFasta } from '../src'
 describe('.fa data store', () => {
   it('loads some small bits of data from foo.fa', async () => {
     const t = new IndexedFasta({
-      path: './data/foo.fa',
+      path: require.resolve('./data/foo.fa'),
       seqChunkSize: 3,
     })
 
