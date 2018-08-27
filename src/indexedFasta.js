@@ -1,3 +1,7 @@
+const fs =
+  // eslint-disable-next-line camelcase
+  typeof __webpack_require__ !== 'function' ? require('fs-extra') : undefined
+
 function _faiOffset(idx, pos) {
   return (
     idx.offset +
@@ -5,11 +9,33 @@ function _faiOffset(idx, pos) {
     (pos % idx.lineLength)
   )
 }
-class IndexedFasta {
-  constructor({ fasta, fai, chunkSizeLimit = 50000 }) {
-    this.fasta = fasta
-    this.fai = fai
 
+class LocalFile {
+  constructor(path) {
+    this.fdPromise = fs.open(path, 'r')
+  }
+
+  async read(buf, offset, length, position) {
+    const fd = await this.fdPromise
+    await fs.read(fd, buf, offset, length, position)
+  }
+}
+
+class IndexedFasta {
+  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 50000 }) {
+    if (fasta) {
+      this.fasta = fasta
+    } else if (path) {
+      this.fasta = new LocalFile(path)
+    }
+
+    if (fai) {
+      this.fai = fai
+    } else if (faiPath) {
+      this.fai = new LocalFile(faiPath)
+    } else if (path) {
+      this.fai = new LocalFile(`${path}.fai`)
+    }
     this.chunkSizeLimit = chunkSizeLimit
   }
 
@@ -84,6 +110,18 @@ class IndexedFasta {
         end: value.length,
       }),
     )
+  }
+
+  /**
+   * @returns {array[string]} array of string sequence
+   * names that are present in the index, in which the
+   * array index indicates the sequence ID, and the value
+   * is the sequence name
+   */
+  async getSequenceSize(seqName) {
+    const idx = await this._getIndexes()
+    console.log(idx)
+    return idx.name[seqName]
   }
   /**
    *
