@@ -1,4 +1,4 @@
-import {LocalFile} from './localFile'
+import LocalFile from './localFile'
 
 function _faiOffset(idx, pos) {
   return (
