@@ -1,6 +1,4 @@
-const fs =
-  // eslint-disable-next-line camelcase
-  typeof __webpack_require__ !== 'function' ? require('fs-extra') : undefined
+import {LocalFile} from './localFile'
 
 function _faiOffset(idx, pos) {
   return (
@@ -8,21 +6,6 @@ function _faiOffset(idx, pos) {
     idx.lineBytes * Math.floor(pos / idx.lineLength) +
     (pos % idx.lineLength)
   )
-}
-
-class LocalFile {
-  constructor(path) {
-    this.fdPromise = fs.open(path, 'r')
-  }
-
-  async read(buf, offset, length, position) {
-    const fd = await this.fdPromise
-    await fs.read(fd, buf, offset, length, position)
-  }
-  async readFile() {
-    const fd = await this.fdPromise
-    return fs.readFile(fd)
-  }
 }
 
 class IndexedFasta {

@@ -4,7 +4,7 @@ const { testDataFile } = require('./lib/util')
 
 describe('FASTA parser', () => {
   it('process unindexed fasta', async () => {
-    const t = new FetchableSmallFasta(testDataFile('phi-X174.fa'))
+    const t = new FetchableSmallFasta({ fasta: testDataFile('phi-X174.fa') })
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
     expect(await t.fetch('NC_001422.1', 0, 100)).toEqual(
       'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',

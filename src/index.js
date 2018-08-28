@@ -1,5 +1,6 @@
-const IndexedFasta = require('./indexedFasta')
-const BgzipIndexedFasta = require('./bgzipIndexedFasta')
+import LocalFile from './localFile'
+import BgzipIndexedFasta from './bgzipIndexedFasta'
+import IndexedFasta from './indexedFasta'
 
 function parseSmallFasta(text) {
   return text
@@ -18,8 +19,13 @@ function parseSmallFasta(text) {
 }
 // memoized
 class FetchableSmallFasta {
-  constructor(filehandle) {
-    this.data = filehandle.readFile().then(buffer => {
+  constructor({ fasta, path }) {
+    if (fasta) {
+      this.fasta = fasta
+    } else if (path) {
+      this.fasta = LocalFile(path)
+    }
+    this.data = this.fasta.readFile().then(buffer => {
       const text = buffer.toString('utf8')
       return parseSmallFasta(text)
     })
