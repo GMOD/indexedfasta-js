@@ -23,7 +23,7 @@ class FetchableSmallFasta {
     if (fasta) {
       this.fasta = fasta
     } else if (path) {
-      this.fasta = LocalFile(path)
+      this.fasta = new LocalFile(path)
     }
     this.data = this.fasta.readFile().then(buffer => {
       const text = buffer.toString('utf8')
