@@ -13,11 +13,41 @@ Not available yet
 
 ## Usage
 
-To be announced
+```js
+const { IndexedFasta, BgzipIndexedFasta } = require('@gmod/indexedfasta')
 
-## Object format
+const t = new IndexedFasta({
+  path: require.resolve('./test.fa'),
+  faiPath: require.resolve('./test.fa.fai'),
+});
+// or
+const t = new BgzipIndexedFasta({
+  path: require.resolve('./test.fa.gz'),
+  faiPath: require.resolve('./test.fa.gz.fai'),
+  gziPath: require.resolve('./test.fa.gz.gzi'),
+        chunkSizeLimit: 500000
+});
 
-To be announced
+// get the first 10 bases of a sequence from the file.
+// coordinates are UCSC standard 0-based half-open
+//
+const chr1Region = await t.getSequence('chr1', 0, 10);
+// chr1Region is now a string of bases, 'ACTG...'
+
+// get a whole sequence from the file
+const chr1Bases = await t.getSequence('chr1');
+
+// get object with all seq lengths as { seqName => length, ... }
+const allSequenceSizes = await t.getSequenceSizes();
+
+// get the size of a single sequence
+const chr1Size = await t.getSequenceSize('chr1');
+
+// get an array of all sequence names in the file
+const seqNames = await t.getSequenceNames();
+})();
+```
+
 
 ## License
 
