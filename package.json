@@ -45,7 +45,9 @@
   },
   "keywords": [
     "fasta",
-    "genomics"
+    "genomics",
+    "biojs",
+    "bionode"
   ],
   "dependencies": {
     "@gmod/bgzf-filehandle": "^1.0.0",
@@ -72,5 +74,8 @@
     "opn-cli": "^3.1.0",
     "prettier": "^1.10.2",
     "rimraf": "^2.6.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
