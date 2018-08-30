@@ -1,7 +1,7 @@
 {
   "name": "@gmod/indexedfasta",
   "version": "1.0.2",
-  "description": "read and write FASTA data as streams",
+  "description": "read indexed fasta and bgzipped fasta formats",
   "license": "MIT",
   "repository": "GMOD/indexedfasta-js",
   "main": "dist/index.js",
