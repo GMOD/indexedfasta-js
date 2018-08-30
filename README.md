@@ -7,8 +7,6 @@
 
 ## Install
 
-Not available yet
-
     $ npm install --save @gmod/indexedfasta
 
 ## Usage
@@ -25,7 +23,7 @@ const t = new BgzipIndexedFasta({
   path: require.resolve('./test.fa.gz'),
   faiPath: require.resolve('./test.fa.gz.fai'),
   gziPath: require.resolve('./test.fa.gz.gzi'),
-        chunkSizeLimit: 500000
+  chunkSizeLimit: 500000
 });
 
 // get the first 10 bases of a sequence from the file.
