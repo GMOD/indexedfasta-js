@@ -13,14 +13,14 @@
 const { IndexedFasta, BgzipIndexedFasta } = require('@gmod/indexedfasta')
 
 const t = new IndexedFasta({
-  path: require.resolve('./test.fa'),
-  faiPath: require.resolve('./test.fa.fai'),
+  path: 'test.fa',
+  faiPath: 'test.fa.fai',
 });
 // or
 const t = new BgzipIndexedFasta({
-  path: require.resolve('./test.fa.gz'),
-  faiPath: require.resolve('./test.fa.gz.fai'),
-  gziPath: require.resolve('./test.fa.gz.gzi'),
+  path: 'test.fa.gz',
+  faiPath: 'test.fa.gz.fai',
+  gziPath: 'test.fa.gz.gzi',
   chunkSizeLimit: 500000
 });
 
