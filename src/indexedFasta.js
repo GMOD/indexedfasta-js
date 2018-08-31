@@ -9,7 +9,7 @@ function _faiOffset(idx, pos) {
 }
 
 class IndexedFasta {
-  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 100000 }) {
+  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 1000000 }) {
     if (fasta) {
       this.fasta = fasta
     } else if (path) {

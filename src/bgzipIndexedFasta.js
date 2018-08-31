@@ -9,7 +9,7 @@ class BgzipIndexedFasta extends IndexedFasta {
     faiPath,
     gzi,
     gziPath,
-    chunkSizeLimit = 50000,
+    chunkSizeLimit,
   }) {
     super({ fasta, path, fai, faiPath, chunkSizeLimit })
     if (fasta && gzi) {
