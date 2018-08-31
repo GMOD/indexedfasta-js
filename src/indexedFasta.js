@@ -159,6 +159,9 @@ class IndexedFasta {
     if (end === undefined || end > indexEntry.length) {
       end = indexEntry.length
     }
+    if (min >= end) {
+      return ''
+    }
 
     const position = _faiOffset(indexEntry, min)
     const readlen = _faiOffset(indexEntry, end) - position
