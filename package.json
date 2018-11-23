@@ -50,7 +50,7 @@
     "bionode"
   ],
   "dependencies": {
-    "@gmod/bgzf-filehandle": "^1.0.0",
+    "@gmod/bgzf-filehandle": "^1.2.2",
     "util.promisify": "^1.0.0"
   },
   "devDependencies": {
