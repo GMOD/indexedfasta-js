@@ -1,6 +1,6 @@
 {
   "name": "@gmod/indexedfasta",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "read indexed fasta and bgzipped fasta formats",
   "license": "MIT",
   "repository": "GMOD/indexedfasta-js",
