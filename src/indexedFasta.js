@@ -167,7 +167,9 @@ class IndexedFasta {
     const readlen = _faiOffset(indexEntry, end) - position
 
     if (readlen > this.chunkSizeLimit) {
-      throw new Error(`data size of ${readlen.toLocaleString()} bytes exceeded chunk size limit of ${this.chunkSizeLimit.toLocaleString()} bytes`)
+      throw new Error(
+        `data size of ${readlen.toLocaleString()} bytes exceeded chunk size limit of ${this.chunkSizeLimit.toLocaleString()} bytes`,
+      )
     }
 
     let residues = Buffer.allocUnsafe(readlen)
