@@ -166,8 +166,9 @@ class IndexedFasta {
     const position = _faiOffset(indexEntry, min)
     const readlen = _faiOffset(indexEntry, end) - position
 
-    if (readlen > this.chunkSizeLimit)
-      throw new Error('chunkSizeLimit exceeded')
+    if (readlen > this.chunkSizeLimit) {
+      throw new Error(`data size of ${readlen.toLocaleString()} bytes exceeded chunk size limit of ${this.chunkSizeLimit.toLocaleString()} bytes`)
+    }
 
     let residues = Buffer.allocUnsafe(readlen)
     await this.fasta.read(residues, 0, readlen, position)
