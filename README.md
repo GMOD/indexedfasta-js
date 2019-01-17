@@ -1,6 +1,6 @@
 [![Generated with nod](https://img.shields.io/badge/generator-nod-2196F3.svg?style=flat-square)](https://github.com/diegohaz/nod)
 [![NPM version](https://img.shields.io/npm/v/@gmod/indexedfasta.svg?style=flat-square)](https://npmjs.org/package/@gmod/indexedfasta)
-[![Build Status](https://img.shields.io/travis/GMOD/indexedfasta-js/master.svg?style=flat-square)](https://travis-ci.org/GMOD/indexedfasta-js) [![Coverage Status](https://img.shields.io/codecov/c/github/GMOD/indexedfasta-js/master.svg?style=flat-square)](https://codecov.io/gh/GMOD/indexedfasta-js/branch/master)
+[![Build Status](https://img.shields.io/travis/GMOD/indexedfasta-js/master.svg?style=flat-square)](https://travis-ci.org/GMOD/indexedfasta-js) [![Coverage Status](https://img.shields.io/codecov/c/github/GMOD/indexedfasta-js/master.svg?style=flat-square)](https://codecov.io/gh/GMOD/indexedfasta-js/branch/master) [![Greenkeeper badge](https://badges.greenkeeper.io/GMOD/indexedfasta-js.svg)](https://greenkeeper.io/)
 
 
 ## Install
