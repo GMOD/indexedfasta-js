@@ -89,6 +89,7 @@ class IndexedFasta {
   async getSequenceNames() {
     return Object.keys((await this._getIndexes()).id)
   }
+
   /**
    * @returns {array[string]} array of string sequence
    * names that are present in the index, in which the
@@ -147,6 +148,7 @@ class IndexedFasta {
     if (!indexEntry) return undefined
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
+
   async getSequence(...args) {
     return this.getResiduesByName(...args)
   }
