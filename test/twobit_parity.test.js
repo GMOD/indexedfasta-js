@@ -61,33 +61,25 @@ describe('.fa data store', () => {
     expect(await t2.getSequence('ctgB', 0, 5000)).toBe(seqFromFasta)
   })
 
-  it(
-    'can get all the sequences and lengths in out2.fa in reasonable time',
-    async () => {
-      const t = new IndexedFasta({
-        path: require.resolve('./data/out2.fa'),
-      })
+  it('can get all the sequences and lengths in out2.fa in reasonable time', async () => {
+    const t = new IndexedFasta({
+      path: require.resolve('./data/out2.fa'),
+    })
 
-      const sizes = await t.getSequenceSizes()
-      expect(Object.keys(sizes).length).toEqual(10000)
-      expect(sizes['1']).toBe(4)
-    },
-    6000,
-  )
+    const sizes = await t.getSequenceSizes()
+    expect(Object.keys(sizes).length).toEqual(10000)
+    expect(sizes['1']).toBe(4)
+  }, 6000)
 
-  it(
-    'can get all the sequences and lengths in out2.long.fa in reasonable time',
-    async () => {
-      const t = new IndexedFasta({
-        path: require.resolve('./data/out2.long.fa'),
-      })
+  it('can get all the sequences and lengths in out2.long.fa in reasonable time', async () => {
+    const t = new IndexedFasta({
+      path: require.resolve('./data/out2.long.fa'),
+    })
 
-      const sizes = await t.getSequenceSizes()
-      expect(Object.keys(sizes).length).toEqual(10000)
-      expect(sizes['1']).toBe(4)
-    },
-    6000,
-  )
+    const sizes = await t.getSequenceSizes()
+    expect(Object.keys(sizes).length).toEqual(10000)
+    expect(sizes['1']).toBe(4)
+  }, 6000)
 
   it('can get the length of ctgA in volvox.fa', async () => {
     const t2 = new IndexedFasta({
