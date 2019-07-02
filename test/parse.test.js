@@ -45,6 +45,8 @@ async function endTest(t) {
 
 async function volvoxTest(t) {
   expect(await t.getSequenceList()).toEqual(['ctgA', 'ctgB'])
+  expect(await t.getSequenceSize('ctgA')).toEqual(50001)
+  expect(await t.getSequenceSize('ctgC')).toEqual(undefined)
   expect(await t.getSequenceSizes()).toEqual({ ctgA: 50001, ctgB: 6079 })
   expect(await t.getResiduesByName('ctgA', 0, 100)).toEqual(
     'cattgttgcggagttgaacaACGGCATTAGGAACACTTCCGTCTCtcacttttatacgattatgattggttctttagccttggtttagattggtagtagt',

@@ -1,3 +1,5 @@
+- Fix usage of getSequenceSize on a refSeqName that does not exist (returns undefined)
+
 ## [1.0.12](https://github.com/GMOD/indexedfasta-js/compare/v1.0.11...v1.0.12) (2019-04-04)
 
 

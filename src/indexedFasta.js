@@ -114,7 +114,7 @@ class IndexedFasta {
    */
   async getSequenceSize(seqName) {
     const idx = await this._getIndexes()
-    return idx.name[seqName].length
+    return (idx.name[seqName]||{}).length
   }
 
   /**
