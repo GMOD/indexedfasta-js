@@ -7,34 +7,30 @@
 
 ## [1.0.12](https://github.com/GMOD/indexedfasta-js/compare/v1.0.11...v1.0.12) (2019-04-04)
 
+- Upgrade to babel 7
 
-
-## 1.0.11
+## [1.0.11](https://github.com/GMOD/indexedfasta-js/compare/v1.0.10...v1.0.11) (2018-12-06)
 
 - More verbose error messages
 
-## 1.0.10
+## [1.0.10](https://github.com/GMOD/indexedfasta-js/compare/v1.0.9...v1.0.10) (2018-11-23)
 
 - Fix ie11 by using different libraries that don't use Object.defineProperty('length',...)
 
-## 1.0.9
-## 1.0.8
+## [1.0.9](https://github.com/GMOD/indexedfasta-js/compare/v1.0.8...v1.0.9) (2018-11-23)
 
-- Update for bgzf-filehandle for better babel support
+- Update bgzf filehandle
+
+## [1.0.8](https://github.com/GMOD/indexedfasta-js/compare/v1.0.7...v1.0.8) (2018-11-20)
 
 - Change from lru-cache to quick-lru
 
+## [1.0.7](https://github.com/GMOD/indexedfasta-js/compare/v1.0.6...v1.0.7) (2018-09-04)
 
-## 1.0.7
-## 1.0.6
-## 1.0.5
+- Update bgzf filehandle
 
-- Build work
+## [1.0.6](https://github.com/GMOD/indexedfasta-js/compare/v1.0.5...v1.0.6) (2018-09-04)
 
-## 1.0.4
-## 1.0.3
-## 1.0.2
-## 1.0.1
-## 1.0.0
+- Update pako library supporting bgzipped FASTA
 
-- Initial version with support for bgzip fasta, indexed fasta, and more
+
