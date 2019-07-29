@@ -64,7 +64,7 @@
     "prettier": "^1.17.0",
     "quick-lru": "^2.0.0",
     "rimraf": "^2.6.1",
-    "standard-changelog": "^1.0.0"
+    "standard-changelog": "^2.0.13"
   },
   "publishConfig": {
     "access": "public"
