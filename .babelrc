@@ -19,7 +19,7 @@
       {
         "helpers": true,
         "regenerator": true,
-        "corejs": 2
+        "corejs": 3
       }
     ]
   ]
