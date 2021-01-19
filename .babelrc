@@ -18,8 +18,7 @@
       "@babel/transform-runtime",
       {
         "helpers": true,
-        "regenerator": true,
-        "corejs": 3
+        "regenerator": true
       }
     ]
   ]
