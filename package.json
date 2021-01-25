@@ -29,7 +29,7 @@
     "build": "babel src -d dist",
     "version": "standard-changelog && git add CHANGELOG.md",
     "prepublishOnly": "npm test && npm run build",
-    "postpublish": "git push origin master --follow-tags"
+    "postversion": "git push origin master --follow-tags"
   },
   "jest": {
     "testEnvironment": "node"
