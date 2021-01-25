@@ -1,7 +1,7 @@
-<a name="1.0.13"></a>
+- Restore default corejs behavior in babel
+- Don't depend on webpack to determine if running in browser or node
+
 ## [1.0.13](https://github.com/GMOD/indexedfasta-js/compare/v1.0.12...v1.0.13) (2019-07-02)
-
-
 
 - Fix usage of getSequenceSize on a refSeqName that does not exist (returns undefined)
 
@@ -32,5 +32,3 @@
 ## [1.0.6](https://github.com/GMOD/indexedfasta-js/compare/v1.0.5...v1.0.6) (2018-09-04)
 
 - Update pako library supporting bgzipped FASTA
-
-
