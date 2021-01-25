@@ -1,13 +1,19 @@
 const { promisify } = require('es6-promisify')
+const { isNode } = require('browser-or-node')
 
-// don't load fs native module if running in webpacked code
-const fs = typeof __webpack_require__ !== 'function' ? require('fs') : null // eslint-disable-line camelcase
-
-const fsOpen = fs && promisify(fs.open)
-const fsRead = fs && promisify(fs.read)
-const fsFStat = fs && promisify(fs.fstat)
-const fsReadFile = fs && promisify(fs.readFile)
-
+// don't load fs native module if running in the browser
+let fsOpen
+let fsRead
+let fsFStat
+let fsReadFile
+if (isNode) {
+  // eslint-disable-next-line global-require
+  const fs = require('fs')
+  fsOpen = fs && promisify(fs.open)
+  fsRead = fs && promisify(fs.read)
+  fsFStat = fs && promisify(fs.fstat)
+  fsReadFile = fs && promisify(fs.readFile)
+}
 class LocalFile {
   constructor(source) {
     this.position = 0
