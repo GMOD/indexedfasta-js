@@ -1,10 +1,10 @@
+import fs from 'fs'
 import { FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta } from '../src'
-
-const { testDataFile } = require('./lib/util')
 
 describe('FASTA parser', () => {
   it('process unindexed fasta', async () => {
-    const t = new FetchableSmallFasta({ fasta: testDataFile('phi-X174.fa') })
+    const fasta = await fs.promises.open(require.resolve('./phi-X174.fa'))
+    const t = new FetchableSmallFasta({ fasta })
     expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
     expect(await t.fetch('NC_001422.1', 0, 100)).toEqual(
       'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
@@ -56,18 +56,18 @@ async function volvoxTest(t) {
 describe('Indexed FASTA parser', () => {
   it('process indexed fasta', async () => {
     const t = new IndexedFasta({
-      fasta: testDataFile('phi-X174.fa'),
-      fai: testDataFile('phi-X174.fa.fai'),
+      fasta: await fs.promises.open(require.resolve('./phi-X174.fa')),
+      fai: await fs.promises.open(require.resolve('./phi-X174.fa.fai')),
     })
     await phiTest(t)
     const e = new IndexedFasta({
-      fasta: testDataFile('end.fa'),
-      fai: testDataFile('end.fa.fai'),
+      fasta: await fs.promises.open(require.resolve('./end.fa')),
+      fai: await fs.promises.open(require.resolve('./end.fa.fai')),
     })
     await endTest(e)
     const v = new IndexedFasta({
-      fasta: testDataFile('volvox.fa'),
-      fai: testDataFile('volvox.fa.fai'),
+      fasta: await fs.promises.open(require.resolve('./volvox.fa')),
+      fai: await fs.promises.open(require.resolve('./volvox.fa.fai')),
     })
     await volvoxTest(v)
   })
@@ -76,21 +76,21 @@ describe('Indexed FASTA parser', () => {
 describe('Compressed indexed FASTA parser', () => {
   it('process bgzipped fasta', async () => {
     const t = new BgzipIndexedFasta({
-      fasta: testDataFile('phi-X174.fa.gz'),
-      gzi: testDataFile('phi-X174.fa.gz.gzi'),
-      fai: testDataFile('phi-X174.fa.fai'),
+      fasta: await fs.promises.open(require.resolve('./phi-X174.fa.gz')),
+      gzi: await fs.promises.open(require.resolve('./phi-X174.fa.gz.gzi')),
+      fai: await fs.promises.open(require.resolve('./phi-X174.fa.fai')),
     })
     await phiTest(t)
     const e = new BgzipIndexedFasta({
-      fasta: testDataFile('end.fa.gz'),
-      gzi: testDataFile('end.fa.gz.gzi'),
-      fai: testDataFile('end.fa.fai'),
+      fasta: await fs.promises.open(require.resolve('./end.fa.gz')),
+      gzi: await fs.promises.open(require.resolve('./end.fa.gz.gzi')),
+      fai: await fs.promises.open(require.resolve('./end.fa.fai')),
     })
     await endTest(e)
     const v = new BgzipIndexedFasta({
-      fasta: testDataFile('volvox.fa.gz'),
-      gzi: testDataFile('volvox.fa.gz.gzi'),
-      fai: testDataFile('volvox.fa.gz.fai'),
+      fasta: await fs.promises.open(require.resolve('./volvox.fa.gz')),
+      gzi: await fs.promises.open(require.resolve('./volvox.fa.gz.gzi')),
+      fai: await fs.promises.open(require.resolve('./volvox.fa.gz.fai')),
     })
     await volvoxTest(v)
   })
