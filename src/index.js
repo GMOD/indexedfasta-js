@@ -1,4 +1,3 @@
-import LocalFile from './localFile'
 import BgzipIndexedFasta from './bgzipIndexedFasta'
 import IndexedFasta from './indexedFasta'
 
@@ -19,11 +18,11 @@ function parseSmallFasta(text) {
 }
 // memoized
 class FetchableSmallFasta {
-  constructor({ fasta, path }) {
+  constructor({ fasta }) {
     if (fasta) {
       this.fasta = fasta
-    } else if (path) {
-      this.fasta = new LocalFile(path)
+    } else {
+      throw new Error('no fasta file supplied')
     }
     this.data = this.fasta.readFile().then(buffer => {
       const text = buffer.toString('utf8')

@@ -1,5 +1,3 @@
-import LocalFile from './localFile'
-
 function _faiOffset(idx, pos) {
   return (
     idx.offset +
@@ -9,19 +7,17 @@ function _faiOffset(idx, pos) {
 }
 
 class IndexedFasta {
-  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 1000000 }) {
+  constructor({ fasta, fai, chunkSizeLimit = 1000000 }) {
     if (fasta) {
       this.fasta = fasta
-    } else if (path) {
-      this.fasta = new LocalFile(path)
+    } else {
+      throw new Error('no fasta file supplied')
     }
 
     if (fai) {
       this.fai = fai
-    } else if (faiPath) {
-      this.fai = new LocalFile(faiPath)
-    } else if (path) {
-      this.fai = new LocalFile(`${path}.fai`)
+    } else {
+      throw new Error('no fai file supplied')
     }
     this.chunkSizeLimit = chunkSizeLimit
   }
