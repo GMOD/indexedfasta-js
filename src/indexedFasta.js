@@ -81,10 +81,9 @@ class IndexedFasta {
   }
 
   /**
-   * @returns {array[string]} array of string sequence
-   * names that are present in the index, in which the
-   * array index indicates the sequence ID, and the value
-   * is the sequence name
+   * @returns {array[string]} array of string sequence ids that are internally
+   * used in the code. use getSequenceList for real sequence names (sorry for
+   * the confusing names!)
    */
   async getSequenceNames() {
     return Object.keys((await this._getIndexes()).id)
