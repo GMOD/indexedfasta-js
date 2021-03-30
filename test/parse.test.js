@@ -16,6 +16,18 @@ async function phiTest(t) {
   const catchErr = e => {
     err = e
   }
+  expect(await t.getSequenceList()).toEqual([
+    {
+      end: 5386,
+      id: 0,
+      length: 5386,
+      lineBytes: 71,
+      lineLength: 70,
+      name: 'NC_001422.1',
+      offset: 49,
+      start: 0,
+    },
+  ])
   expect(await t.getSequenceNames()).toEqual(['NC_001422.1'])
   expect(await t.getSequenceSizes()).toEqual({ 'NC_001422.1': 5386 })
   expect(await t.getResiduesByName('NC_001422.1', 0, 100)).toEqual(
@@ -30,6 +42,18 @@ async function phiTest(t) {
 }
 
 async function endTest(t) {
+  expect(await t.getSequenceList()).toEqual([
+    {
+      end: 100100,
+      id: 0,
+      length: 100100,
+      lineBytes: 101,
+      lineLength: 100,
+      name: 'chr1',
+      offset: 6,
+      start: 0,
+    },
+  ])
   expect(await t.getSequenceNames()).toEqual(['chr1'])
   expect(await t.getSequenceSizes()).toEqual({ chr1: 100100 })
   expect(await t.getResiduesByName('chr1', 100000, 100100)).toEqual(
@@ -44,6 +68,28 @@ async function endTest(t) {
 }
 
 async function volvoxTest(t) {
+  expect(await t.getSequenceList()).toEqual([
+    {
+      end: 50001,
+      id: 0,
+      length: 50001,
+      lineBytes: 61,
+      lineLength: 60,
+      name: 'ctgA',
+      offset: 6,
+      start: 0,
+    },
+    {
+      end: 6079,
+      id: 1,
+      length: 6079,
+      lineBytes: 101,
+      lineLength: 100,
+      name: 'ctgB',
+      offset: 50847,
+      start: 0,
+    },
+  ])
   expect(await t.getSequenceNames()).toEqual(['ctgA', 'ctgB'])
   expect(await t.getSequenceSize('ctgA')).toEqual(50001)
   expect(await t.getSequenceSize('ctgC')).toEqual(undefined)
