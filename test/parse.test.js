@@ -5,7 +5,7 @@ const { testDataFile } = require('./lib/util')
 describe('FASTA parser', () => {
   it('process unindexed fasta', async () => {
     const t = new FetchableSmallFasta({ fasta: testDataFile('phi-X174.fa') })
-    expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+    expect(await t.getSequenceNames()).toEqual(['NC_001422.1'])
     expect(await t.fetch('NC_001422.1', 0, 100)).toEqual(
       'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
     )
@@ -16,7 +16,7 @@ async function phiTest(t) {
   const catchErr = e => {
     err = e
   }
-  expect(await t.getSequenceList()).toEqual(['NC_001422.1'])
+  expect(await t.getSequenceNames()).toEqual(['NC_001422.1'])
   expect(await t.getSequenceSizes()).toEqual({ 'NC_001422.1': 5386 })
   expect(await t.getResiduesByName('NC_001422.1', 0, 100)).toEqual(
     'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
@@ -30,7 +30,7 @@ async function phiTest(t) {
 }
 
 async function endTest(t) {
-  expect(await t.getSequenceList()).toEqual(['chr1'])
+  expect(await t.getSequenceNames()).toEqual(['chr1'])
   expect(await t.getSequenceSizes()).toEqual({ chr1: 100100 })
   expect(await t.getResiduesByName('chr1', 100000, 100100)).toEqual(
     'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
@@ -44,7 +44,7 @@ async function endTest(t) {
 }
 
 async function volvoxTest(t) {
-  expect(await t.getSequenceList()).toEqual(['ctgA', 'ctgB'])
+  expect(await t.getSequenceNames()).toEqual(['ctgA', 'ctgB'])
   expect(await t.getSequenceSize('ctgA')).toEqual(50001)
   expect(await t.getSequenceSize('ctgC')).toEqual(undefined)
   expect(await t.getSequenceSizes()).toEqual({ ctgA: 50001, ctgB: 6079 })

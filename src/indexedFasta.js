@@ -87,7 +87,7 @@ class IndexedFasta {
    * is the sequence name
    */
   async getSequenceNames() {
-    return Object.keys((await this._getIndexes()).id)
+    return Object.keys((await this._getIndexes()).name)
   }
 
   /**

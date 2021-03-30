@@ -39,7 +39,7 @@ class FetchableSmallFasta {
     return entry.sequence.substr(start, length)
   }
 
-  async getSequenceList() {
+  async getSequenceNames() {
     const data = await this.data
     return data.map(entry => entry.id)
   }
