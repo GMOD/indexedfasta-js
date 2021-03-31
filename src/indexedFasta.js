@@ -76,18 +76,8 @@ class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
-  async getSequenceList() {
-    return Object.values((await this._getIndexes()).id).map(value => value.name)
-  }
-
-  /**
-   * @returns {array[string]} array of string sequence
-   * names that are present in the index, in which the
-   * array index indicates the sequence ID, and the value
-   * is the sequence name
-   */
   async getSequenceNames() {
-    return Object.keys((await this._getIndexes()).id)
+    return Object.keys((await this._getIndexes()).name)
   }
 
   /**
