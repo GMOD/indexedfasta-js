@@ -71,30 +71,6 @@ class IndexedFasta {
   }
 
   /**
-   * @typedef {Object} Sequence
-   * @property {number} id - The sequence ID
-   * @property {string} name - The sequence name
-   * @property {number} start - The start coordinate of the sequence
-   * @property {number} end - The end coordinate of the sequence
-   * @property {number} length - The length of the sequence
-   * @property {number} lineBytes - The total number of bytes in each sequence
-   * line (including newlines)
-   * @property {number} lineLength - The total sequence length in each sequence
-   * line
-   * @property {number} offset - The number of bytes offset from the beginning
-   * of the block the first sequence line starts
-   */
-
-  /**
-   * @returns {array[Sequence]} array of sequences that are present in the
-   * index, in which the array index indicates the sequence ID, and the value
-   * is the sequence object
-   */
-  async getSequenceList() {
-    return Object.values((await this._getIndexes()).id)
-  }
-
-  /**
    * @returns {array[string]} array of string sequence
    * names that are present in the index, in which the
    * array index indicates the sequence ID, and the value
