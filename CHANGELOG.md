@@ -1,7 +1,8 @@
+- Rename getSequenceList to getSequenceNames to get a list of refNames in the fasta file
+
 <a name="1.1.0"></a>
+
 # [1.1.0](https://github.com/GMOD/indexedfasta-js/compare/v1.0.12...v1.1.0) (2021-01-25)
-
-
 
 - Restore default corejs behavior in babel
 - Don't depend on webpack to determine if running in browser or node
