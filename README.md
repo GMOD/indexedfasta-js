@@ -59,6 +59,19 @@ const t = new BgzipIndexedFasta({
 });
 ```
 
+In node.js you can also access remote files with generic-filehandle, but you would supply a fetch function e.g.
+
+```
+import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
+import { RemoteFile } from 'generic-filehandle'
+import fetch from 'cross-fetch'
+
+const t = new IndexedFasta({
+  filehandle: new RemoteFile("http://yourside.com/test.fa", {fetch}),
+  faiFilehandle: new RemoteFile("http://yourside.com/test.fa.fai",{fetch}),
+});
+```
+
 ## Academic Use
 
 This package was written with funding from the [NHGRI](http://genome.gov) as part of the [JBrowse](http://jbrowse.org) project. If you use it in an academic project that you publish, please cite the most recent JBrowse paper, which will be linked from [jbrowse.org](http://jbrowse.org).
