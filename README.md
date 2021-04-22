@@ -41,6 +41,24 @@ const chr1Size = await t.getSequenceSize("chr1");
 const seqNames = await t.getSequenceNames();
 ```
 
+
+If you are using in the browser, you may use the generic-filehandle package and initialize like this
+
+```
+import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
+import { RemoteFile } from 'generic-filehandle'
+
+const t = new IndexedFasta({
+  filehandle: new RemoteFile("http://yourside.com/test.fa"),
+  faiFilehandle: new RemoteFile("http://yourside.com/test.fa.fai"),
+});
+const t = new BgzipIndexedFasta({
+  filehandle: new RemoteFile("http://yourside.com/test.fa.gz"),
+  faiFilehandle: new RemoteFile("http://yourside.com/test.fa.gz.fai"),
+  gziFilehandle: new RemoteFile("http://yourside.com/test.fa.gz.gzi"),
+});
+```
+
 ## Academic Use
 
 This package was written with funding from the [NHGRI](http://genome.gov) as part of the [JBrowse](http://jbrowse.org) project. If you use it in an academic project that you publish, please cite the most recent JBrowse paper, which will be linked from [jbrowse.org](http://jbrowse.org).
