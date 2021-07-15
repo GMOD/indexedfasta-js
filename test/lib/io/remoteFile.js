@@ -60,8 +60,9 @@ class RemoteFile {
     if (!this._stat) {
       const buf = Buffer.allocUnsafe(10)
       await this.read(buf, 0, 10, 0)
-      if (!this._stat)
+      if (!this._stat) {
         throw new Error(`unable to determine size of file at ${this.url}`)
+      }
     }
     return this._stat
   }
