@@ -1,6 +1,12 @@
+import fromEntries from 'object.fromentries'
 import LocalFile from './localFile'
 import BgzipIndexedFasta from './bgzipIndexedFasta'
 import IndexedFasta from './indexedFasta'
+
+if (!Object.fromEntries) {
+  // @ts-ignore
+  fromEntries.shim()
+}
 
 function parseSmallFasta(text) {
   return text

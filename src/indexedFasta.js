@@ -27,7 +27,9 @@ export default class IndexedFasta {
   }
 
   async _getIndexes(opts) {
-    if (!this.indexes) this.indexes = await this._readFAI(opts)
+    if (!this.indexes) {
+      this.indexes = await this._readFAI(opts)
+    }
     return this.indexes
   }
 
@@ -123,7 +125,9 @@ export default class IndexedFasta {
    */
   async getResiduesById(seqId, min, max, opts) {
     const indexEntry = (await this._getIndexes(opts)).id[seqId]
-    if (!indexEntry) return undefined
+    if (!indexEntry) {
+      return undefined
+    }
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
 
@@ -134,7 +138,10 @@ export default class IndexedFasta {
    */
   async getResiduesByName(seqName, min, max, opts) {
     const indexEntry = (await this._getIndexes(opts)).name[seqName]
-    if (!indexEntry) return undefined
+    if (!indexEntry) {
+      return undefined
+    }
+
     return this._fetchFromIndexEntry(indexEntry, min, max, opts)
   }
 
