@@ -17,6 +17,7 @@ function parseSmallFasta(text) {
       }
     })
 }
+
 // memoized
 class FetchableSmallFasta {
   constructor({ fasta, path }) {
