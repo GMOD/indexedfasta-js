@@ -32,28 +32,25 @@ class IndexedFasta {
   }
 
   async _readFAI() {
-    const indexByName = {}
-    const indexById = {}
     const text = await this.fai.readFile()
     if (!(text && text.length))
       throw new Error('No data read from FASTA index (FAI) file')
 
     let idCounter = 0
     let currSeq
-    text
+    const data = text
       .toString('utf8')
       .split(/\r?\n/)
       .filter(line => /\S/.test(line))
-      .forEach(line => {
-        const row = line.split('\t')
-        if (row[0] === '') return
-
+      .map(line => line.split('\t'))
+      .filter(row => row[0] !== '')
+      .map(row => {
         if (!currSeq || currSeq.name !== row[0]) {
           currSeq = { name: row[0], id: idCounter }
           idCounter += 1
         }
 
-        const entry = {
+        return {
           id: currSeq.id,
           name: row[0],
           length: +row[1],
@@ -63,11 +60,12 @@ class IndexedFasta {
           lineLength: +row[3],
           lineBytes: +row[4],
         }
-        indexByName[entry.name] = entry
-        indexById[entry.id] = entry
       })
 
-    return { name: indexByName, id: indexById }
+    return {
+      name: Object.fromEntries(data.map(entry => [entry.name, entry])),
+      id: Object.fromEntries(data.map(entry => [entry.id, entry])),
+    }
   }
 
   /**
