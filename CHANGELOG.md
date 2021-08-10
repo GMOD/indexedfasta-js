@@ -1,7 +1,8 @@
+- Add ability to pass abort signal and other headers via the opts parameter
+
 <a name="2.0.0"></a>
+
 # [2.0.0](https://github.com/GMOD/indexedfasta-js/compare/v1.1.0...v2.0.0) (2021-03-31)
-
-
 
 - Rename getSequenceList to getSequenceNames to get a list of refNames in the fasta file
 
