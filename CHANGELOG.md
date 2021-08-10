@@ -1,3 +1,8 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/GMOD/indexedfasta-js/compare/v2.0.0...v2.0.1) (2021-08-10)
+
+
+
 - Add ability to pass abort signal and other headers via the opts parameter
 
 <a name="2.0.0"></a>
