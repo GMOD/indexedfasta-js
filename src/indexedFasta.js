@@ -8,7 +8,7 @@ function _faiOffset(idx, pos) {
   )
 }
 
-class IndexedFasta {
+export default class IndexedFasta {
   constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 1000000 }) {
     if (fasta) {
       this.fasta = fasta
@@ -26,34 +26,34 @@ class IndexedFasta {
     this.chunkSizeLimit = chunkSizeLimit
   }
 
-  async _getIndexes() {
-    if (!this.indexes) this.indexes = await this._readFAI()
+  async _getIndexes(opts) {
+    if (!this.indexes) {
+      this.indexes = await this._readFAI(opts)
+    }
     return this.indexes
   }
 
-  async _readFAI() {
-    const indexByName = {}
-    const indexById = {}
-    const text = await this.fai.readFile()
-    if (!(text && text.length))
+  async _readFAI(opts) {
+    const text = await this.fai.readFile(opts)
+    if (!(text && text.length)) {
       throw new Error('No data read from FASTA index (FAI) file')
+    }
 
     let idCounter = 0
     let currSeq
-    text
+    const data = text
       .toString('utf8')
       .split(/\r?\n/)
       .filter(line => /\S/.test(line))
-      .forEach(line => {
-        const row = line.split('\t')
-        if (row[0] === '') return
-
+      .map(line => line.split('\t'))
+      .filter(row => row[0] !== '')
+      .map(row => {
         if (!currSeq || currSeq.name !== row[0]) {
           currSeq = { name: row[0], id: idCounter }
           idCounter += 1
         }
 
-        const entry = {
+        return {
           id: currSeq.id,
           name: row[0],
           length: +row[1],
@@ -63,11 +63,12 @@ class IndexedFasta {
           lineLength: +row[3],
           lineBytes: +row[4],
         }
-        indexByName[entry.name] = entry
-        indexById[entry.id] = entry
       })
 
-    return { name: indexByName, id: indexById }
+    return {
+      name: Object.fromEntries(data.map(entry => [entry.name, entry])),
+      id: Object.fromEntries(data.map(entry => [entry.id, entry])),
+    }
   }
 
   /**
@@ -76,8 +77,8 @@ class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
-  async getSequenceNames() {
-    return Object.keys((await this._getIndexes()).name)
+  async getSequenceNames(opts) {
+    return Object.keys((await this._getIndexes(opts)).name)
   }
 
   /**
@@ -86,9 +87,9 @@ class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
-  async getSequenceSizes() {
+  async getSequenceSizes(opts) {
     const returnObject = {}
-    const idx = await this._getIndexes()
+    const idx = await this._getIndexes(opts)
     const vals = Object.values(idx.id)
     for (let i = 0; i < vals.length; i += 1) {
       returnObject[vals[i].name] = vals[i].length
@@ -102,8 +103,8 @@ class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
-  async getSequenceSize(seqName) {
-    const idx = await this._getIndexes()
+  async getSequenceSize(seqName, opts) {
+    const idx = await this._getIndexes(opts)
     return (idx.name[seqName] || {}).length
   }
 
@@ -112,8 +113,8 @@ class IndexedFasta {
    * @param {string} name
    * @returns {Promise[boolean]} true if the file contains the given reference sequence name
    */
-  async hasReferenceSequence(name) {
-    return !!(await this._getIndexes()).name[name]
+  async hasReferenceSequence(name, opts) {
+    return !!(await this._getIndexes(opts)).name[name]
   }
 
   /**
@@ -122,9 +123,11 @@ class IndexedFasta {
    * @param {number} min
    * @param {number} max
    */
-  async getResiduesById(seqId, min, max) {
-    const indexEntry = (await this._getIndexes()).id[seqId]
-    if (!indexEntry) return undefined
+  async getResiduesById(seqId, min, max, opts) {
+    const indexEntry = (await this._getIndexes(opts)).id[seqId]
+    if (!indexEntry) {
+      return undefined
+    }
     return this._fetchFromIndexEntry(indexEntry, min, max)
   }
 
@@ -133,17 +136,20 @@ class IndexedFasta {
    * @param {number} min
    * @param {number} max
    */
-  async getResiduesByName(seqName, min, max) {
-    const indexEntry = (await this._getIndexes()).name[seqName]
-    if (!indexEntry) return undefined
-    return this._fetchFromIndexEntry(indexEntry, min, max)
+  async getResiduesByName(seqName, min, max, opts) {
+    const indexEntry = (await this._getIndexes(opts)).name[seqName]
+    if (!indexEntry) {
+      return undefined
+    }
+
+    return this._fetchFromIndexEntry(indexEntry, min, max, opts)
   }
 
   async getSequence(...args) {
     return this.getResiduesByName(...args)
   }
 
-  async _fetchFromIndexEntry(indexEntry, min = 0, max) {
+  async _fetchFromIndexEntry(indexEntry, min = 0, max, opts) {
     let end = max
     if (min < 0) {
       throw new TypeError('regionStart cannot be less than 0')
@@ -164,12 +170,8 @@ class IndexedFasta {
       )
     }
 
-    let residues = Buffer.allocUnsafe(readlen)
-    await this.fasta.read(residues, 0, readlen, position)
-    residues = residues.toString('utf8').replace(/\s+/g, '')
-
-    return residues
+    const residues = Buffer.allocUnsafe(readlen)
+    await this.fasta.read(residues, 0, readlen, position, opts)
+    return residues.toString('utf8').replace(/\s+/g, '')
   }
 }
-
-module.exports = IndexedFasta

@@ -14,7 +14,7 @@ if (isNode) {
   fsFStat = fs && promisify(fs.fstat)
   fsReadFile = fs && promisify(fs.readFile)
 }
-class LocalFile {
+export default class LocalFile {
   constructor(source) {
     this.position = 0
     this.filename = source
@@ -43,5 +43,3 @@ class LocalFile {
     return this._stat
   }
 }
-
-module.exports = LocalFile

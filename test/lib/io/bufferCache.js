@@ -9,8 +9,9 @@ class BufferCache {
   }
 
   async get(outputBuffer, offset, length, position) {
-    if (outputBuffer.length < offset + length)
+    if (outputBuffer.length < offset + length) {
       throw new Error('output buffer not big enough for request')
+    }
 
     // calculate the list of chunks involved in this fetch
     const firstChunk = Math.floor(position / this.chunkSize)
