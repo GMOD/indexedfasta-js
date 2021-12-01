@@ -1,27 +1,23 @@
-const { promisify } = require('es6-promisify')
-const { isNode } = require('browser-or-node')
+import { promisify } from 'es6-promisify'
+import fs from 'fs'
 
-// don't load fs native module if running in the browser
-let fsOpen
-let fsRead
-let fsFStat
-let fsReadFile
-if (isNode) {
-  // eslint-disable-next-line global-require
-  const fs = require('fs')
-  fsOpen = fs && promisify(fs.open)
-  fsRead = fs && promisify(fs.read)
-  fsFStat = fs && promisify(fs.fstat)
-  fsReadFile = fs && promisify(fs.readFile)
-}
+const fsOpen = fs && promisify(fs.open)
+const fsRead = fs && promisify(fs.read)
+const fsFStat = fs && promisify(fs.fstat)
+const fsReadFile = fs && promisify(fs.readFile)
+
 export default class LocalFile {
-  constructor(source) {
+  private filename: string
+  private position: number
+  private fd: Promise<number>
+  private _stat: unknown
+  constructor(source: string) {
     this.position = 0
     this.filename = source
     this.fd = fsOpen(this.filename, 'r')
   }
 
-  async read(buffer, offset = 0, length, position) {
+  async read(buffer: Buffer, offset = 0, length: number, position: number) {
     let readPosition = position
     if (readPosition === null) {
       readPosition = this.position

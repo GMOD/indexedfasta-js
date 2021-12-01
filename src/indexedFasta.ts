@@ -1,6 +1,10 @@
 import LocalFile from './localFile'
+import { GenericFilehandle } from 'generic-filehandle'
 
-function _faiOffset(idx, pos) {
+function _faiOffset(
+  idx: { offset: number; lineBytes: number; lineLength: number },
+  pos: number,
+) {
   return (
     idx.offset +
     idx.lineBytes * Math.floor(pos / idx.lineLength) +
@@ -9,7 +13,24 @@ function _faiOffset(idx, pos) {
 }
 
 export default class IndexedFasta {
-  constructor({ fasta, fai, path, faiPath, chunkSizeLimit = 1000000 }) {
+  fasta: GenericFilehandle
+  fai: GenericFilehandle
+  chunkSizeLimit: number
+  indexes: unknown
+
+  constructor({
+    fasta,
+    fai,
+    path,
+    faiPath,
+    chunkSizeLimit = 1000000,
+  }: {
+    fasta: GenericFilehandle
+    fai: GenericFilehandle
+    path: string
+    faiPath: string
+    chunkSizeLimit: number
+  }) {
     if (fasta) {
       this.fasta = fasta
     } else if (path) {
@@ -26,21 +47,21 @@ export default class IndexedFasta {
     this.chunkSizeLimit = chunkSizeLimit
   }
 
-  async _getIndexes(opts) {
+  async _getIndexes(opts: unknown) {
     if (!this.indexes) {
       this.indexes = await this._readFAI(opts)
     }
     return this.indexes
   }
 
-  async _readFAI(opts) {
+  async _readFAI(opts: unknown) {
     const text = await this.fai.readFile(opts)
     if (!(text && text.length)) {
       throw new Error('No data read from FASTA index (FAI) file')
     }
 
     let idCounter = 0
-    let currSeq
+    let currSeq: { name: string; id: number } | undefined
     const data = text
       .toString('utf8')
       .split(/\r?\n/)
@@ -77,7 +98,7 @@ export default class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
-  async getSequenceNames(opts) {
+  async getSequenceNames(opts: unknown) {
     return Object.keys((await this._getIndexes(opts)).name)
   }
 
@@ -87,7 +108,7 @@ export default class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
-  async getSequenceSizes(opts) {
+  async getSequenceSizes(opts: unknown) {
     const returnObject = {}
     const idx = await this._getIndexes(opts)
     const vals = Object.values(idx.id)
