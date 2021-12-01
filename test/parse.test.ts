@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta } from '../src'
 
 const { testDataFile } = require('./lib/util')

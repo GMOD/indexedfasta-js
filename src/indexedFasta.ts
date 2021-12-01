@@ -71,10 +71,10 @@ export default class IndexedFasta {
     faiPath,
     chunkSizeLimit = 1000000,
   }: {
-    fasta: GenericFilehandle
-    fai: GenericFilehandle
-    path: string
-    faiPath: string
+    fasta?: GenericFilehandle
+    fai?: GenericFilehandle
+    path?: string
+    faiPath?: string
     chunkSizeLimit?: number
   }) {
     if (fasta) {
@@ -136,7 +136,7 @@ export default class IndexedFasta {
    * array index indicates the sequence ID, and the value
    * is the sequence name
    */
-  async getSequenceSize(seqName: string, opts: BaseOpts) {
+  async getSequenceSize(seqName: string, opts?: BaseOpts) {
     const idx = await this._getIndexes(opts)
     return idx.name[seqName]?.length
   }

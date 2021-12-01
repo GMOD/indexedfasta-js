@@ -12,12 +12,12 @@ export default class BgzipIndexedFasta extends IndexedFasta {
     gziPath,
     chunkSizeLimit,
   }: {
-    fasta: GenericFilehandle
-    path: string
-    fai: GenericFilehandle
-    faiPath: string
-    gzi: GenericFilehandle
-    gziPath: string
+    fasta?: GenericFilehandle
+    path?: string
+    fai?: GenericFilehandle
+    faiPath?: string
+    gzi?: GenericFilehandle
+    gziPath?: string
     chunkSizeLimit?: number
   }) {
     super({ fasta, path, fai, faiPath, chunkSizeLimit })
