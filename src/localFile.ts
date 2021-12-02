@@ -25,7 +25,9 @@ export default class LocalFile {
       this.position += length
     }
     const ret = await fsRead(await this.fd, buffer, offset, length, position)
-    if (typeof ret === 'object') return ret.bytesRead
+    if (typeof ret === 'object') {
+      return ret.bytesRead
+    }
     return ret
   }
 

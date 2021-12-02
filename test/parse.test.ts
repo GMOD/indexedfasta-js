@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta } from '../src'
 
-const { testDataFile } = require('./lib/util')
+import { testDataFile } from './lib/util'
 
 describe('FASTA parser', () => {
   it('process unindexed fasta', async () => {
