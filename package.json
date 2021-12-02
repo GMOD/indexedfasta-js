@@ -5,6 +5,7 @@
   "license": "MIT",
   "repository": "GMOD/indexedfasta-js",
   "main": "dist/index.js",
+  "module": "esm/index.js",
   "author": {
     "name": "Colin Diesh",
     "email": "colin.diesh@gmail.com",
@@ -17,16 +18,17 @@
     "lib": "dist"
   },
   "files": [
-    "dist"
+    "dist",
+    "esm"
   ],
   "scripts": {
     "test": "jest",
     "coverage": "npm test -- --coverage",
     "lint": "eslint src test",
     "docs": "documentation readme src --section=API",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist esm",
     "prebuild": "npm run clean",
-    "build": "babel src -d dist",
+    "build": "tsc --target es2018 --outDir esm && tsc --target es5 --outDir dist",
     "version": "standard-changelog && git add CHANGELOG.md",
     "prepublishOnly": "npm test && npm run build",
     "postversion": "git push origin master --follow-tags"
