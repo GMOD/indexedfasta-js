@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { IndexedFasta } from '../src'
 
 describe('.fa data store', () => {

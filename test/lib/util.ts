@@ -1,6 +1,7 @@
-const path = typeof __webpack_require__ !== 'function' ? require('path') : null // eslint-disable-line camelcase
-const fs = typeof __webpack_require__ !== 'function' ? require('fs') : null // eslint-disable-line camelcase
-const { fromUrl } = require('./io')
+//@ts-nocheck
+import path from 'path'
+import fs from 'fs'
+import { fromUrl } from './io'
 
 const dataDir = path && path.dirname(require.resolve('../data/phi-X174.fa'))
 
