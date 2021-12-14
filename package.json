@@ -43,11 +43,10 @@
   ],
   "dependencies": {
     "@gmod/bgzf-filehandle": "^1.4.0",
-    "es6-promisify": "^6.0.1",
-    "object.fromentries": "^2.0.4"
+    "object.fromentries": "^2.0.4",
+    "generic-filehandle": "^2.2.1"
   },
   "devDependencies": {
-    "@types/es6-promisify": "^6.0.0",
     "@types/jest": "^27.0.3",
     "@types/object.fromentries": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
@@ -59,7 +58,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-prettier": "^4.0.0",
-    "generic-filehandle": "^2.2.1",
     "jest": "^27.4.5",
     "prettier": "^2.5.1",
     "quick-lru": "^2.0.0",
@@ -70,9 +68,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "browser": {
-    "./dist/localFile.js": false,
-    "./esm/localFile.js": false
   }
 }

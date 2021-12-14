@@ -1,6 +1,5 @@
 import fromEntries from 'object.fromentries'
-import type { GenericFilehandle } from 'generic-filehandle'
-import LocalFile from './localFile'
+import { LocalFile, GenericFilehandle } from 'generic-filehandle'
 import BgzipIndexedFasta from './bgzipIndexedFasta'
 import IndexedFasta from './indexedFasta'
 

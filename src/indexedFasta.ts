@@ -1,4 +1,4 @@
-import LocalFile from './localFile'
+import { LocalFile } from 'generic-filehandle'
 import { GenericFilehandle } from 'generic-filehandle'
 
 interface BaseOpts {
