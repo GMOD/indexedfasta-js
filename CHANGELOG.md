@@ -1,3 +1,6 @@
+- Add esm module build with less babelification
+- Remove localFile from browser bundle via "browser" field in package.json
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/GMOD/indexedfasta-js/compare/v2.0.0...v2.0.1) (2021-08-10)
 
