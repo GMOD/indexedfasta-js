@@ -60,7 +60,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.4.5",
     "prettier": "^2.5.1",
-    "quick-lru": "^2.0.0",
     "rimraf": "^2.6.1",
     "standard-changelog": "^1.0.0",
     "ts-jest": "^27.1.1",
