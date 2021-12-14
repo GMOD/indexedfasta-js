@@ -1,6 +1,6 @@
 {
   "name": "@gmod/indexedfasta",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "read indexed fasta and bgzipped fasta formats",
   "license": "MIT",
   "repository": "GMOD/indexedfasta-js",
@@ -43,8 +43,8 @@
   ],
   "dependencies": {
     "@gmod/bgzf-filehandle": "^1.4.0",
-    "object.fromentries": "^2.0.4",
-    "generic-filehandle": "^2.2.1"
+    "generic-filehandle": "^2.2.1",
+    "object.fromentries": "^2.0.4"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
