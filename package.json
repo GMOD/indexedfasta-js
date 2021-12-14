@@ -28,7 +28,9 @@
     "docs": "documentation readme src --section=API",
     "clean": "rimraf dist esm",
     "prebuild": "npm run clean",
-    "build": "tsc --target es2018 --outDir esm && tsc --target es5 --outDir dist",
+    "build:esm": "tsc --target es2018 --outDir esm",
+    "build:es5": "tsc --target es5 --outDir dist",
+    "build": "npm run build:esm && npm run build:es5",
     "version": "standard-changelog && git add CHANGELOG.md",
     "prepublishOnly": "npm test && npm run build",
     "postversion": "git push origin master --follow-tags"
