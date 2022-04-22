@@ -14,12 +14,10 @@
   "engines": {
     "node": ">=8"
   },
-  "directories": {
-    "lib": "dist"
-  },
   "files": [
     "dist",
-    "esm"
+    "esm",
+    "src"
   ],
   "scripts": {
     "test": "jest",
@@ -33,7 +31,7 @@
     "build": "npm run build:esm && npm run build:es5",
     "version": "standard-changelog && git add CHANGELOG.md",
     "prepublishOnly": "npm test && npm run build",
-    "postversion": "git push origin master --follow-tags"
+    "postversion": "git push --follow-tags"
   },
   "keywords": [
     "fasta",
