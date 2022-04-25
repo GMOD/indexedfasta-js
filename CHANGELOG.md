@@ -1,3 +1,8 @@
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/GMOD/indexedfasta-js/compare/v2.0.2...v2.0.3) (2022-04-25)
+
+
+
 - Fix the esm build to be ESM format instead of CJS
 
 <a name="2.0.2"></a>
