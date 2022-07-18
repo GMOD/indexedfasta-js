@@ -1,12 +1,6 @@
-import fromEntries from 'object.fromentries'
 import { LocalFile, GenericFilehandle } from 'generic-filehandle'
 import BgzipIndexedFasta from './bgzipIndexedFasta'
 import IndexedFasta from './indexedFasta'
-
-if (!Object.fromEntries) {
-  // @ts-ignore
-  fromEntries.shim()
-}
 
 function parseSmallFasta(text: string) {
   return text

@@ -12,7 +12,7 @@
     "url": "https://github.com/cmdcolin"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=12"
   },
   "files": [
     "dist",
@@ -41,8 +41,7 @@
   ],
   "dependencies": {
     "@gmod/bgzf-filehandle": "^1.4.0",
-    "generic-filehandle": "^2.2.1",
-    "object.fromentries": "^2.0.4"
+    "generic-filehandle": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
