@@ -1,3 +1,7 @@
+## [2.0.4](https://github.com/GMOD/indexedfasta-js/compare/v2.0.3...v2.0.4) (2022-07-18)
+
+
+
 - Update to generic-filehandle 3.0.0
 
 <a name="2.0.3"></a>
