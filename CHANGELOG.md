@@ -1,22 +1,21 @@
+- Update to generic-filehandle 3.0.0
+
 <a name="2.0.3"></a>
+
 ## [2.0.3](https://github.com/GMOD/indexedfasta-js/compare/v2.0.2...v2.0.3) (2022-04-25)
-
-
 
 - Fix the esm build to be ESM format instead of CJS
 
 <a name="2.0.2"></a>
+
 ## [2.0.2](https://github.com/GMOD/indexedfasta-js/compare/v2.0.1...v2.0.2) (2021-12-14)
-
-
 
 - Add esm module build with less babelification
 - Remove localFile from browser bundle via "browser" field in package.json
 
 <a name="2.0.1"></a>
+
 ## [2.0.1](https://github.com/GMOD/indexedfasta-js/compare/v2.0.0...v2.0.1) (2021-08-10)
-
-
 
 - Add ability to pass abort signal and other headers via the opts parameter
 
