@@ -1,6 +1,6 @@
 [![NPM version](https://img.shields.io/npm/v/@gmod/indexedfasta.svg?style=flat-square)](https://npmjs.org/package/@gmod/indexedfasta)
 [![Coverage Status](https://img.shields.io/codecov/c/github/GMOD/indexedfasta-js/master.svg?style=flat-square)](https://codecov.io/gh/GMOD/indexedfasta-js/branch/master)
-[![Build Status](https://img.shields.io/github/workflow/status/GMOD/indexedfasta-js/Push/master?logo=github&style=flat-query)](https://github.com/GMOD/indexedfasta-js/actions?query=branch%3Amaster+workflow%3APush+)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/GMOD/indexedfasta-js/push.yml?branch=master)](https://github.com/GMOD/indexedfasta-js/actions)
 
 ## Install
 
