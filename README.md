@@ -8,7 +8,7 @@
 
 ## Usage
 
-```js
+```typescript
 const { IndexedFasta, BgzipIndexedFasta } = require('@gmod/indexedfasta')
 
 const t = new IndexedFasta({
@@ -44,24 +44,24 @@ const seqNames = await t.getSequenceNames()
 
 If you are using in the browser, you may use the generic-filehandle package and initialize like this
 
-```js
+```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
 import { RemoteFile } from 'generic-filehandle'
 
 const t = new IndexedFasta({
-  filehandle: new RemoteFile('http://yourside.com/test.fa'),
-  faiFilehandle: new RemoteFile('http://yourside.com/test.fa.fai'),
+  fasta: new RemoteFile('http://yourside.com/test.fa'),
+  fai: new RemoteFile('http://yourside.com/test.fa.fai'),
 })
 const t = new BgzipIndexedFasta({
-  filehandle: new RemoteFile('http://yourside.com/test.fa.gz'),
-  faiFilehandle: new RemoteFile('http://yourside.com/test.fa.gz.fai'),
-  gziFilehandle: new RemoteFile('http://yourside.com/test.fa.gz.gzi'),
+  fasta: new RemoteFile('http://yourside.com/test.fa.gz'),
+  fai: new RemoteFile('http://yourside.com/test.fa.gz.fai'),
+  gzi: new RemoteFile('http://yourside.com/test.fa.gz.gzi'),
 })
 ```
 
 In node.js you can also access remote files with generic-filehandle, but you would supply a fetch function e.g.
 
-```js
+```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
 import { RemoteFile } from 'generic-filehandle'
 import fetch from 'cross-fetch'
