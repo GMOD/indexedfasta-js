@@ -1,3 +1,6 @@
+- Fix docs, re-publish to NPM
+
+
 ## [2.0.4](https://github.com/GMOD/indexedfasta-js/compare/v2.0.3...v2.0.4) (2022-07-18)
 
 
