@@ -67,8 +67,8 @@ import { RemoteFile } from 'generic-filehandle'
 import fetch from 'cross-fetch'
 
 const t = new IndexedFasta({
-  filehandle: new RemoteFile('http://yourside.com/test.fa', { fetch }),
-  faiFilehandle: new RemoteFile('http://yourside.com/test.fa.fai', { fetch }),
+  fasta: new RemoteFile('http://yourside.com/test.fa', { fetch }),
+  fai: new RemoteFile('http://yourside.com/test.fa.fai', { fetch }),
 })
 ```
 
