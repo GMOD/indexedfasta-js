@@ -42,7 +42,8 @@ const chr1Size = await t.getSequenceSize('chr1')
 const seqNames = await t.getSequenceNames()
 ```
 
-If you are using in the browser, you may use the generic-filehandle package and initialize like this
+If you are using in the browser, you may use the generic-filehandle package and
+initialize like this
 
 ```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
@@ -59,7 +60,8 @@ const t = new BgzipIndexedFasta({
 })
 ```
 
-In node.js you can also access remote files with generic-filehandle, but you would supply a fetch function e.g.
+In node.js you can also access remote files with generic-filehandle, but you
+would supply a fetch function e.g.
 
 ```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
@@ -74,7 +76,10 @@ const t = new IndexedFasta({
 
 ## Academic Use
 
-This package was written with funding from the [NHGRI](http://genome.gov) as part of the [JBrowse](http://jbrowse.org) project. If you use it in an academic project that you publish, please cite the most recent JBrowse paper, which will be linked from [jbrowse.org](http://jbrowse.org).
+This package was written with funding from the [NHGRI](http://genome.gov) as
+part of the [JBrowse](http://jbrowse.org) project. If you use it in an academic
+project that you publish, please cite the most recent JBrowse paper, which will
+be linked from [jbrowse.org](http://jbrowse.org).
 
 ## License
 
