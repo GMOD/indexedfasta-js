@@ -50,13 +50,13 @@ import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
 import { RemoteFile } from 'generic-filehandle'
 
 const t = new IndexedFasta({
-  fasta: new RemoteFile('http://yourside.com/test.fa'),
-  fai: new RemoteFile('http://yourside.com/test.fa.fai'),
+  fasta: new RemoteFile('http://yoursite.com/test.fa'),
+  fai: new RemoteFile('http://yoursite.com/test.fa.fai'),
 })
 const t = new BgzipIndexedFasta({
-  fasta: new RemoteFile('http://yourside.com/test.fa.gz'),
-  fai: new RemoteFile('http://yourside.com/test.fa.gz.fai'),
-  gzi: new RemoteFile('http://yourside.com/test.fa.gz.gzi'),
+  fasta: new RemoteFile('http://yoursite.com/test.fa.gz'),
+  fai: new RemoteFile('http://yoursite.com/test.fa.gz.fai'),
+  gzi: new RemoteFile('http://yoursite.com/test.fa.gz.gzi'),
 })
 ```
 
@@ -69,8 +69,8 @@ import { RemoteFile } from 'generic-filehandle'
 import fetch from 'cross-fetch'
 
 const t = new IndexedFasta({
-  fasta: new RemoteFile('http://yourside.com/test.fa', { fetch }),
-  fai: new RemoteFile('http://yourside.com/test.fa.fai', { fetch }),
+  fasta: new RemoteFile('http://yoursite.com/test.fa', { fetch }),
+  fai: new RemoteFile('http://yoursite.com/test.fa.fai', { fetch }),
 })
 ```
 
