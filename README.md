@@ -20,7 +20,6 @@ const t = new BgzipIndexedFasta({
   path: 'test.fa.gz',
   faiPath: 'test.fa.gz.fai',
   gziPath: 'test.fa.gz.gzi',
-  chunkSizeLimit: 500000,
 })
 
 // get the first 10 bases of a sequence from the file.

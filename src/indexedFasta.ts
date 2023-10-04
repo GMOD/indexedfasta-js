@@ -60,7 +60,6 @@ async function readFAI(fai: GenericFilehandle, opts?: BaseOpts) {
 export default class IndexedFasta {
   fasta: GenericFilehandle
   fai: GenericFilehandle
-  chunkSizeLimit: number
   indexes?: ReturnType<typeof readFAI>
 
   constructor({
@@ -68,13 +67,11 @@ export default class IndexedFasta {
     fai,
     path,
     faiPath,
-    chunkSizeLimit = 1000000,
   }: {
     fasta?: GenericFilehandle
     fai?: GenericFilehandle
     path?: string
     faiPath?: string
-    chunkSizeLimit?: number
   }) {
     if (fasta) {
       this.fasta = fasta
@@ -93,7 +90,6 @@ export default class IndexedFasta {
     } else {
       throw new Error('Need to pass filehandle for  or path to localfile')
     }
-    this.chunkSizeLimit = chunkSizeLimit
   }
 
   async _getIndexes(opts?: BaseOpts) {
@@ -216,12 +212,6 @@ export default class IndexedFasta {
 
     const position = _faiOffset(indexEntry, min)
     const readlen = _faiOffset(indexEntry, end) - position
-
-    if (readlen > this.chunkSizeLimit) {
-      throw new Error(
-        `data size of ${readlen.toLocaleString()} bytes exceeded chunk size limit of ${this.chunkSizeLimit.toLocaleString()} bytes`,
-      )
-    }
 
     const residues = Buffer.allocUnsafe(readlen)
     await this.fasta.read(residues, 0, readlen, position, opts)

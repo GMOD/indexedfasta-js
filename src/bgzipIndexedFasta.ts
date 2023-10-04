@@ -10,7 +10,6 @@ export default class BgzipIndexedFasta extends IndexedFasta {
     faiPath,
     gzi,
     gziPath,
-    chunkSizeLimit,
   }: {
     fasta?: GenericFilehandle
     path?: string
@@ -18,9 +17,8 @@ export default class BgzipIndexedFasta extends IndexedFasta {
     faiPath?: string
     gzi?: GenericFilehandle
     gziPath?: string
-    chunkSizeLimit?: number
   }) {
-    super({ fasta, path, fai, faiPath, chunkSizeLimit })
+    super({ fasta, path, fai, faiPath })
     if (fasta && gzi) {
       this.fasta = new BgzfFilehandle({
         filehandle: fasta,
