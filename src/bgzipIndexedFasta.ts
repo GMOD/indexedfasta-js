@@ -20,11 +20,13 @@ export default class BgzipIndexedFasta extends IndexedFasta {
   }) {
     super({ fasta, path, fai, faiPath })
     if (fasta && gzi) {
+      // @ts-expect-error
       this.fasta = new BgzfFilehandle({
         filehandle: fasta,
         gziFilehandle: gzi,
       })
     } else if (path && gziPath) {
+      // @ts-expect-error
       this.fasta = new BgzfFilehandle({ path, gziPath })
     }
   }
