@@ -1,4 +1,5 @@
 import { LocalFile, GenericFilehandle } from 'generic-filehandle'
+import { Buffer } from 'buffer'
 
 interface BaseOpts {
   signal?: AbortSignal
@@ -21,7 +22,7 @@ function _faiOffset(idx: IndexEntry, pos: number) {
 
 async function readFAI(fai: GenericFilehandle, opts?: BaseOpts) {
   const text = await fai.readFile(opts)
-  if (!(text && text.length)) {
+  if (!text?.length) {
     throw new Error('No data read from FASTA index (FAI) file')
   }
 
@@ -116,11 +117,10 @@ export default class IndexedFasta {
    * is the sequence name
    */
   async getSequenceSizes(opts?: BaseOpts) {
-    const returnObject = {} as { [key: string]: number }
+    const returnObject = {} as Record<string, number>
     const idx = await this._getIndexes(opts)
-    const vals = Object.values(idx.id)
-    for (let i = 0; i < vals.length; i += 1) {
-      returnObject[vals[i].name] = vals[i].length
+    for (const val of Object.values(idx.id)) {
+      returnObject[val.name] = val.length
     }
     return returnObject
   }

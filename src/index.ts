@@ -1,6 +1,4 @@
 import { LocalFile, GenericFilehandle } from 'generic-filehandle'
-import BgzipIndexedFasta from './bgzipIndexedFasta'
-import IndexedFasta from './indexedFasta'
 
 function parseSmallFasta(text: string) {
   return text
@@ -45,7 +43,7 @@ class FetchableSmallFasta {
     if (!entry) {
       throw new Error(`no sequence with id ${id} exists`)
     }
-    return entry.sequence.substr(start, length)
+    return entry.sequence.slice(start, length)
   }
 
   async getSequenceNames() {
@@ -54,4 +52,7 @@ class FetchableSmallFasta {
   }
 }
 
-export { parseSmallFasta, FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta }
+export { parseSmallFasta, FetchableSmallFasta }
+
+export { default as BgzipIndexedFasta } from './bgzipIndexedFasta'
+export { default as IndexedFasta } from './indexedFasta'

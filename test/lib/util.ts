@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import { fromUrl } from './io'
 
-const dataDir = path && path.dirname(require.resolve('../data/phi-X174.fa'))
+const dataDir = path.dirname(require.resolve('../data/phi-X174.fa'))
 
 function testDataUrl(filename) {
   return typeof window === 'undefined'

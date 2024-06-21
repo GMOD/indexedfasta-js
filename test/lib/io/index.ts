@@ -22,4 +22,6 @@ function open(maybeUrl, maybePath, maybeFilehandle) {
   throw new Error('no url, path, or filehandle provided, cannot open')
 }
 
-export { LocalFile, RemoteFile, fromUrl, open }
+export { fromUrl, open }
+
+export { LocalFile, RemoteFile } from 'generic-filehandle'
