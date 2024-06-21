@@ -1,3 +1,7 @@
+## [2.1.1](https://github.com/GMOD/indexedfasta-js/compare/v2.1.0...v2.1.1) (2024-06-21)
+
+
+
 # [2.1.0](https://github.com/GMOD/indexedfasta-js/compare/v2.0.4...v2.1.0) (2023-10-04)
 
 
