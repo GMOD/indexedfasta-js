@@ -90,6 +90,7 @@ export default [
       'unicorn/prefer-switch': 'off',
       'unicorn/better-regex': 'off',
       'unicorn/no-for-loop': 'off',
+      'unicorn/prefer-string-replace-all': 'off',
       'unicorn/escape-case': 'off',
       'unicorn/prefer-structured-clone': 'off',
       'unicorn/prefer-number-properties': 'off',
