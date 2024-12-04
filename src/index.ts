@@ -6,10 +6,10 @@ function parseSmallFasta(text: string) {
     .filter(t => /\S/.test(t))
     .map(entryText => {
       const [defLine, ...seqLines] = entryText.split('\n')
-      const [id, ...description] = defLine.split(' ')
+      const [id, ...description] = defLine!.split(' ')
       const sequence = seqLines.join('').replace(/\s/g, '')
       return {
-        id,
+        id: id!,
         description: description.join(' '),
         sequence,
       }
@@ -22,7 +22,7 @@ class FetchableSmallFasta {
 
   data: Promise<{ id: string; description: string; sequence: string }[]>
 
-  constructor({ fasta, path }: { fasta: GenericFilehandle; path: string }) {
+  constructor({ fasta, path }: { fasta?: GenericFilehandle; path?: string }) {
     if (fasta) {
       this.fasta = fasta
     } else if (path) {

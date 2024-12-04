@@ -27,7 +27,10 @@ export default class BgzipIndexedFasta extends IndexedFasta {
       })
     } else if (path && gziPath) {
       // @ts-expect-error
-      this.fasta = new BgzfFilehandle({ path, gziPath })
+      this.fasta = new BgzfFilehandle({
+        path,
+        gziPath,
+      })
     }
   }
 }

@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "lib": ["es2017", "es7", "es6", "dom"],
+    "skipLibCheck": true,
+    "target": "es2020",
     "declaration": true,
     "outDir": "dist",
+    "noUncheckedIndexedAccess": true,
     "strict": true,
     "sourceMap": true,
     "esModuleInterop": true

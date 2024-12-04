@@ -20,17 +20,17 @@
     "src"
   ],
   "scripts": {
-    "test": "jest",
-    "coverage": "npm test -- --coverage",
+    "test": "vitest",
+    "coverage": "yarn test -- --coverage",
     "lint": "eslint  --report-unused-disable-directives --max-warnings 0 src test",
     "docs": "documentation readme src --section=API",
     "clean": "rimraf dist esm",
-    "prebuild": "npm run clean",
+    "prebuild": "yarn clean",
     "build:esm": "tsc --target es2018 --outDir esm",
     "build:es5": "tsc --target es2015 --module commonjs --outDir dist",
-    "build": "npm run build:esm && npm run build:es5",
+    "build": "yarn build:esm && yarn run build:es5",
     "version": "standard-changelog && git add CHANGELOG.md",
-    "prepublishOnly": "npm test && npm run build",
+    "prepublishOnly": "yarn test --run && yarn build",
     "postversion": "git push --follow-tags"
   },
   "keywords": [
@@ -41,26 +41,21 @@
   ],
   "dependencies": {
     "@gmod/bgzf-filehandle": "^1.4.0",
+    "buffer": "^6.0.3",
     "generic-filehandle": "^3.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.0",
-    "@types/object.fromentries": "^2.0.1",
-    "@typescript-eslint/eslint-plugin": "^7.13.1",
-    "@typescript-eslint/parser": "^7.13.1",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
     "cross-fetch": "^4.0.0",
     "documentation": "^14.0.1",
     "eslint": "^9.5.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-unicorn": "^54.0.0",
-    "jest": "^29.5.0",
+    "eslint-plugin-unicorn": "^56.0.1",
     "prettier": "^3.0.3",
-    "rimraf": "^6.0.1",
     "standard-changelog": "^6.0.0",
-    "ts-jest": "^29.0.5",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "typescript-eslint": "^8.17.0",
+    "vitest": "^2.1.8"
   },
   "publishConfig": {
     "access": "public"

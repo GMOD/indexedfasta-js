@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { describe, expect, it } from 'vitest'
 import { FetchableSmallFasta, IndexedFasta, BgzipIndexedFasta } from '../src'
 
 import { testDataFile } from './lib/util'

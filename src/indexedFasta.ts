@@ -22,33 +22,36 @@ function _faiOffset(idx: IndexEntry, pos: number) {
 
 async function readFAI(fai: GenericFilehandle, opts?: BaseOpts) {
   const text = await fai.readFile(opts)
-  if (!text?.length) {
+  if (!text.length) {
     throw new Error('No data read from FASTA index (FAI) file')
   }
 
   let idCounter = 0
   let currSeq: { name: string; id: number } | undefined
   const data = text
-    .toString('utf8')
+    .toString()
     .split(/\r?\n/)
     .filter(line => /\S/.test(line))
     .map(line => line.split('\t'))
     .filter(row => row[0] !== '')
     .map(row => {
       if (!currSeq || currSeq.name !== row[0]) {
-        currSeq = { name: row[0], id: idCounter }
+        currSeq = {
+          name: row[0]!,
+          id: idCounter,
+        }
         idCounter += 1
       }
 
       return {
         id: currSeq.id,
-        name: row[0],
-        length: +row[1],
+        name: row[0]!,
+        length: +row[1]!,
         start: 0,
-        end: +row[1],
-        offset: +row[2],
-        lineLength: +row[3],
-        lineBytes: +row[4],
+        end: +row[1]!,
+        offset: +row[2]!,
+        lineLength: +row[3]!,
+        lineBytes: +row[4]!,
       }
     })
 
@@ -203,7 +206,7 @@ export default class IndexedFasta {
     if (min < 0) {
       throw new TypeError('regionStart cannot be less than 0')
     }
-    if (end === undefined || end > indexEntry.length) {
+    if (end > indexEntry.length) {
       end = indexEntry.length
     }
     if (min >= end) {

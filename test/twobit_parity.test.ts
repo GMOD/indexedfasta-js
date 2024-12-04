@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { describe, expect, it } from 'vitest'
 import { IndexedFasta } from '../src'
 
 describe('.fa data store', () => {

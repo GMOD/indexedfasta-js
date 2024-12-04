@@ -5,7 +5,7 @@ import { RemoteFile, LocalFile } from 'generic-filehandle'
 function fromUrl(source) {
   const { protocol, pathname } = url.parse(source)
   if (protocol === 'file:') {
-    return new LocalFile(unescape(pathname))
+    return new LocalFile(pathname)
   }
   return new RemoteFile(source)
 }
