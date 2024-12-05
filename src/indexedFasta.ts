@@ -199,14 +199,14 @@ export default class IndexedFasta {
   async _fetchFromIndexEntry(
     indexEntry: IndexEntry,
     min = 0,
-    max: number,
+    max?: number,
     opts?: BaseOpts,
   ) {
     let end = max
     if (min < 0) {
       throw new TypeError('regionStart cannot be less than 0')
     }
-    if (end > indexEntry.length) {
+    if (end === undefined || end > indexEntry.length) {
       end = indexEntry.length
     }
     if (min >= end) {
