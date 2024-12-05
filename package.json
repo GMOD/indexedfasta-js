@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "test": "vitest",
-    "coverage": "yarn test -- --coverage",
+    "coverage": "yarn test --coverage",
     "lint": "eslint  --report-unused-disable-directives --max-warnings 0 src test",
     "docs": "documentation readme src --section=API",
     "clean": "rimraf dist esm",
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
+    "@vitest/coverage-v8": "^2.1.8",
     "cross-fetch": "^4.0.0",
     "documentation": "^14.0.1",
     "eslint": "^9.5.0",
