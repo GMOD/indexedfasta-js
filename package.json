@@ -52,6 +52,7 @@
     "eslint": "^9.5.0",
     "eslint-plugin-unicorn": "^56.0.1",
     "prettier": "^3.0.3",
+    "rimraf": "^6.0.1",
     "standard-changelog": "^6.0.0",
     "typescript": "^5.0.2",
     "typescript-eslint": "^8.17.0",
