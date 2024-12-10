@@ -26,39 +26,33 @@ async function readFAI(fai: GenericFilehandle, opts?: BaseOpts) {
     throw new Error('No data read from FASTA index (FAI) file')
   }
 
-  let idCounter = 0
-  let currSeq: { name: string; id: number } | undefined
-  const data = text
-    .toString()
-    .split(/\r?\n/)
-    .filter(line => /\S/.test(line))
-    .map(line => line.split('\t'))
-    .filter(row => row[0] !== '')
-    .map(row => {
-      if (!currSeq || currSeq.name !== row[0]) {
-        currSeq = {
-          name: row[0]!,
-          id: idCounter,
+  return Object.fromEntries(
+    text
+      .toString()
+      .split(/\r?\n/)
+      .map(r => r.trim())
+      .filter(f => !!f)
+      .map(line => line.split('\t'))
+      .map(row => {
+        if (row[0]?.startsWith('>')) {
+          throw new Error(
+            'found > in sequence name, might have supplied FASTA file for the FASTA index',
+          )
         }
-        idCounter += 1
-      }
-
-      return {
-        id: currSeq.id,
-        name: row[0]!,
-        length: +row[1]!,
-        start: 0,
-        end: +row[1]!,
-        offset: +row[2]!,
-        lineLength: +row[3]!,
-        lineBytes: +row[4]!,
-      }
-    })
-
-  return {
-    name: Object.fromEntries(data.map(entry => [entry.name, entry])),
-    id: Object.fromEntries(data.map(entry => [entry.id, entry])),
-  }
+        return [
+          row[0]!,
+          {
+            name: row[0]!,
+            length: +row[1]!,
+            start: 0,
+            end: +row[1]!,
+            offset: +row[2]!,
+            lineLength: +row[3]!,
+            lineBytes: +row[4]!,
+          },
+        ] as const
+      }),
+  )
 }
 
 export default class IndexedFasta {
@@ -98,45 +92,45 @@ export default class IndexedFasta {
 
   async _getIndexes(opts?: BaseOpts) {
     if (!this.indexes) {
-      this.indexes = readFAI(this.fai, opts)
+      this.indexes = readFAI(this.fai, opts).catch((e: unknown) => {
+        this.indexes = undefined
+        throw e
+      })
     }
     return this.indexes
   }
 
   /**
-   * @returns {array[string]} array of string sequence
-   * names that are present in the index, in which the
-   * array index indicates the sequence ID, and the value
-   * is the sequence name
+   * @returns array of string sequence names that are present in the index, in
+   * which the array index indicates the sequence ID, and the value is the
+   * sequence name
    */
   async getSequenceNames(opts?: BaseOpts) {
-    return Object.keys((await this._getIndexes(opts)).name)
+    return Object.keys(await this._getIndexes(opts))
   }
 
   /**
-   * @returns {array[string]} array of string sequence
-   * names that are present in the index, in which the
-   * array index indicates the sequence ID, and the value
-   * is the sequence name
+   * @returns array of string sequence names that are present in the index, in
+   * which the array index indicates the sequence ID, and the value is the
+   * sequence name
    */
   async getSequenceSizes(opts?: BaseOpts) {
     const returnObject = {} as Record<string, number>
     const idx = await this._getIndexes(opts)
-    for (const val of Object.values(idx.id)) {
+    for (const val of Object.values(idx)) {
       returnObject[val.name] = val.length
     }
     return returnObject
   }
 
   /**
-   * @returns {array[string]} array of string sequence
-   * names that are present in the index, in which the
-   * array index indicates the sequence ID, and the value
-   * is the sequence name
+   * @returns array of string sequence names that are present in the index, in
+   * which the array index indicates the sequence ID, and the value is the
+   * sequence name
    */
   async getSequenceSize(seqName: string, opts?: BaseOpts) {
     const idx = await this._getIndexes(opts)
-    return idx.name[seqName]?.length
+    return idx[seqName]?.length
   }
 
   /**
@@ -145,26 +139,7 @@ export default class IndexedFasta {
    * @returns {Promise[boolean]} true if the file contains the given reference sequence name
    */
   async hasReferenceSequence(name: string, opts?: BaseOpts) {
-    return !!(await this._getIndexes(opts)).name[name]
-  }
-
-  /**
-   *
-   * @param {number} seqId
-   * @param {number} min
-   * @param {number} max
-   */
-  async getResiduesById(
-    seqId: number,
-    min: number,
-    max: number,
-    opts?: BaseOpts,
-  ) {
-    const indexEntry = (await this._getIndexes(opts)).id[seqId]
-    if (!indexEntry) {
-      return undefined
-    }
-    return this._fetchFromIndexEntry(indexEntry, min, max, opts)
+    return !!(await this._getIndexes(opts))[name]
   }
 
   /**
@@ -178,12 +153,10 @@ export default class IndexedFasta {
     max: number,
     opts?: BaseOpts,
   ) {
-    const indexEntry = (await this._getIndexes(opts)).name[seqName]
-    if (!indexEntry) {
-      return undefined
-    }
-
-    return this._fetchFromIndexEntry(indexEntry, min, max, opts)
+    const indexEntry = (await this._getIndexes(opts))[seqName]
+    return indexEntry
+      ? this._fetchFromIndexEntry(indexEntry, min, max, opts)
+      : undefined
   }
 
   //alias for getResiduesByName
