@@ -41,7 +41,7 @@
   ],
   "dependencies": {
     "@gmod/bgzf-filehandle": "^2.0.0",
-    "generic-filehandle2": "^0.0.1"
+    "generic-filehandle2": "^1.0.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.17.0",
