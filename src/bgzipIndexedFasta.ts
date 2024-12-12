@@ -1,5 +1,5 @@
 import { BgzfFilehandle } from '@gmod/bgzf-filehandle'
-import { GenericFilehandle } from 'generic-filehandle'
+import { GenericFilehandle } from 'generic-filehandle2'
 import IndexedFasta from './indexedFasta'
 
 export default class BgzipIndexedFasta extends IndexedFasta {

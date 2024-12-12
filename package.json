@@ -40,9 +40,8 @@
     "bionode"
   ],
   "dependencies": {
-    "@gmod/bgzf-filehandle": "^1.4.0",
-    "buffer": "^6.0.3",
-    "generic-filehandle": "^3.0.0"
+    "@gmod/bgzf-filehandle": "^2.0.0",
+    "generic-filehandle2": "^0.0.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.17.0",

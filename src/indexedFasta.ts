@@ -1,5 +1,4 @@
-import { LocalFile, GenericFilehandle } from 'generic-filehandle'
-import { Buffer } from 'buffer'
+import { LocalFile, GenericFilehandle } from 'generic-filehandle2'
 
 interface BaseOpts {
   signal?: AbortSignal
@@ -21,14 +20,10 @@ function _faiOffset(idx: IndexEntry, pos: number) {
 }
 
 async function readFAI(fai: GenericFilehandle, opts?: BaseOpts) {
-  const text = await fai.readFile(opts)
-  if (!text.length) {
-    throw new Error('No data read from FASTA index (FAI) file')
-  }
-
+  const decoder = new TextDecoder('utf8')
   return Object.fromEntries(
-    text
-      .toString()
+    decoder
+      .decode((await fai.readFile(opts)) as unknown as Uint8Array)
       .split(/\r?\n/)
       .map(r => r.trim())
       .filter(f => !!f)
@@ -134,18 +129,18 @@ export default class IndexedFasta {
   }
 
   /**
+   * @param name
    *
-   * @param {string} name
-   * @returns {Promise[boolean]} true if the file contains the given reference sequence name
+   * @returns true if the file contains the given reference sequence name
    */
   async hasReferenceSequence(name: string, opts?: BaseOpts) {
     return !!(await this._getIndexes(opts))[name]
   }
 
   /**
-   * @param {string} seqName
-   * @param {number} min
-   * @param {number} max
+   * @param seqName
+   * @param min
+   * @param max
    */
   async getResiduesByName(
     seqName: string,
@@ -189,8 +184,9 @@ export default class IndexedFasta {
     const position = _faiOffset(indexEntry, min)
     const readlen = _faiOffset(indexEntry, end) - position
 
-    const residues = Buffer.allocUnsafe(readlen)
-    await this.fasta.read(residues, 0, readlen, position, opts)
-    return residues.toString('utf8').replace(/\s+/g, '')
+    const decoder = new TextDecoder('utf8')
+    return decoder
+      .decode(await this.fasta.read(readlen, position, opts))
+      .replace(/\s+/g, '')
   }
 }

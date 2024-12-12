@@ -1,4 +1,4 @@
-import { LocalFile, GenericFilehandle } from 'generic-filehandle'
+import { LocalFile, GenericFilehandle } from 'generic-filehandle2'
 
 function parseSmallFasta(text: string) {
   return text
@@ -16,7 +16,6 @@ function parseSmallFasta(text: string) {
     })
 }
 
-// memoized
 class FetchableSmallFasta {
   fasta: GenericFilehandle
 
@@ -31,7 +30,8 @@ class FetchableSmallFasta {
       throw new Error('Need to pass fasta or path')
     }
     this.data = this.fasta.readFile().then(buffer => {
-      const text = buffer.toString('utf8')
+      const decoder = new TextDecoder('utf8')
+      const text = decoder.decode(buffer)
       return parseSmallFasta(text)
     })
   }
