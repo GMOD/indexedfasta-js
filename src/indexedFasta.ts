@@ -1,4 +1,6 @@
-import { LocalFile, GenericFilehandle } from 'generic-filehandle2'
+import { LocalFile } from 'generic-filehandle2'
+
+import type { GenericFilehandle } from 'generic-filehandle2'
 
 interface BaseOpts {
   signal?: AbortSignal

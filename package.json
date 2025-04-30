@@ -4,8 +4,16 @@
   "description": "read indexed fasta and bgzipped fasta formats",
   "license": "MIT",
   "repository": "GMOD/indexedfasta-js",
-  "main": "dist/index.js",
-  "module": "esm/index.js",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": {
+      "import": "./esm/index.js"
+    },
+    "require": {
+      "require": "./dist/index.js"
+    }
+  },
   "author": {
     "name": "Colin Diesh",
     "email": "colin.diesh@gmail.com",
@@ -50,7 +58,8 @@
     "cross-fetch": "^4.0.0",
     "documentation": "^14.0.1",
     "eslint": "^9.5.0",
-    "eslint-plugin-unicorn": "^57.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-unicorn": "^59.0.0",
     "prettier": "^3.0.3",
     "rimraf": "^6.0.1",
     "standard-changelog": "^6.0.0",

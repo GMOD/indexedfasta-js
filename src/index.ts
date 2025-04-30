@@ -1,4 +1,6 @@
-import { LocalFile, GenericFilehandle } from 'generic-filehandle2'
+import { LocalFile } from 'generic-filehandle2'
+
+import type { GenericFilehandle } from 'generic-filehandle2'
 
 function parseSmallFasta(text: string) {
   return text
@@ -52,7 +54,7 @@ class FetchableSmallFasta {
   }
 }
 
-export { parseSmallFasta, FetchableSmallFasta }
+export { FetchableSmallFasta, parseSmallFasta }
 
 export { default as BgzipIndexedFasta } from './bgzipIndexedFasta'
 export { default as IndexedFasta } from './indexedFasta'
