@@ -1,4 +1,5 @@
-import { test, expect } from 'vitest'
+import { expect, test } from 'vitest'
+
 import { IndexedFasta } from '../src'
 
 test('loads some small bits of data from foo.fa', async () => {
