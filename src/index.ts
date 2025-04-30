@@ -56,5 +56,5 @@ class FetchableSmallFasta {
 
 export { FetchableSmallFasta, parseSmallFasta }
 
-export { default as BgzipIndexedFasta } from './bgzipIndexedFasta'
-export { default as IndexedFasta } from './indexedFasta'
+export { default as BgzipIndexedFasta } from './bgzipIndexedFasta.ts'
+export { default as IndexedFasta } from './indexedFasta.ts'
