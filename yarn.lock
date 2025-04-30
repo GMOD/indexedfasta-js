@@ -348,12 +348,12 @@
     "@eslint/core" "^0.13.0"
     levn "^0.4.1"
 
-"@gmod/bgzf-filehandle@^2.0.0":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@gmod/bgzf-filehandle/-/bgzf-filehandle-2.0.4.tgz#64f88ff6ad48efaf69641e796db87f24bf5da9ab"
-  integrity sha512-MV1V3X2uF0vqN93dkEhL8TUiJMTHyaJQFuLZttKAl8vH5utN2gKJf/3PTW8f7r5X+GgyftuTcfIpHHD5+3mJiQ==
+"@gmod/bgzf-filehandle@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@gmod/bgzf-filehandle/-/bgzf-filehandle-3.0.2.tgz#d89f8b2d169c3be10737be165b06c4ac909e3850"
+  integrity sha512-P3t9S7rVQSxePF17W/k34+AThe61nK+rNEVlt9AV80a3XvnKRW/6tDS2Wch4sURcpe5arTGZBc41hyw9W5gkHw==
   dependencies:
-    generic-filehandle2 "^1.0.0"
+    generic-filehandle2 "^2.0.1"
     pako "^1.0.11"
 
 "@humanfs/core@^0.19.1":
@@ -640,7 +640,7 @@
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.11.tgz#11af57b127e32487774841f7a4e54eab166d03c4"
   integrity sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==
 
-"@typescript-eslint/eslint-plugin@8.31.1", "@typescript-eslint/eslint-plugin@^8.17.0":
+"@typescript-eslint/eslint-plugin@8.31.1":
   version "8.31.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.31.1.tgz#62f1befe59647524994e89de4516d8dcba7a850a"
   integrity sha512-oUlH4h1ABavI4F0Xnl8/fOtML/eu8nI2A1nYd+f+55XI0BLu+RIqKoCiZKNo6DtqZBEQm5aNKA20G3Z5w3R6GQ==
@@ -655,7 +655,7 @@
     natural-compare "^1.4.0"
     ts-api-utils "^2.0.1"
 
-"@typescript-eslint/parser@8.31.1", "@typescript-eslint/parser@^8.17.0":
+"@typescript-eslint/parser@8.31.1":
   version "8.31.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-8.31.1.tgz#e9b0ccf30d37dde724ee4d15f4dbc195995cce1b"
   integrity sha512-oU/OtYVydhXnumd0BobL9rkJg7wFJ9bFFPmSmB/bf/XWN85hlViji59ko6bSKBXyseT9V8l+CN1nwmlbiN0G7Q==
@@ -1940,10 +1940,10 @@ functions-have-names@^1.2.3:
   resolved "https://registry.yarnpkg.com/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-generic-filehandle2@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/generic-filehandle2/-/generic-filehandle2-1.0.0.tgz#d7a216072467793e1e48c925f97162eab1b82efc"
-  integrity sha512-jXfyNk1zhsR0Xf2sLm4vgeYSP1q1XbeSVG0TRSnOCKLb2CojPNJyy57nKi6QWmt83yGSHZGay8qIn7YWyl2V5w==
+generic-filehandle2@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/generic-filehandle2/-/generic-filehandle2-2.0.1.tgz#5255de8aee2e7214fd91ee332433d1c7d5895761"
+  integrity sha512-/y+IrWYv0y+DueFkRNDeIQf/1B/MPDgNNTjZY/1kRZlN1YNRCvWaTm8LcUvgirs8S+t7QUZZU1Sg61NaJy0GqA==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
