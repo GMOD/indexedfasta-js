@@ -1,6 +1,8 @@
 import { BgzfFilehandle } from '@gmod/bgzf-filehandle'
+import { LocalFile } from 'generic-filehandle2'
 
 import IndexedFasta from './indexedFasta.ts'
+
 
 import type { GenericFilehandle } from 'generic-filehandle2'
 
@@ -30,8 +32,8 @@ export default class BgzipIndexedFasta extends IndexedFasta {
     } else if (path && gziPath) {
       // @ts-expect-error
       this.fasta = new BgzfFilehandle({
-        path,
-        gziPath,
+        filehandle: new LocalFile(path),
+        gziFilehandle: new LocalFile(gziPath),
       })
     }
   }

@@ -48,7 +48,7 @@
     "bionode"
   ],
   "dependencies": {
-    "@gmod/bgzf-filehandle": "^3.0.2",
+    "@gmod/bgzf-filehandle": "^4.0.0",
     "generic-filehandle2": "^2.0.1"
   },
   "devDependencies": {
@@ -60,7 +60,7 @@
     "eslint-plugin-unicorn": "^59.0.0",
     "prettier": "^3.0.3",
     "rimraf": "^6.0.1",
-    "standard-changelog": "^6.0.0",
+    "standard-changelog": "^7.0.1",
     "typescript": "^5.0.2",
     "typescript-eslint": "^8.17.0",
     "vitest": "^3.0.1"
