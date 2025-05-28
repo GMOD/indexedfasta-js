@@ -21,7 +21,7 @@ function _faiOffset(idx: IndexEntry, pos: number) {
   )
 }
 
-async function readFAI(fai: GenericFilehandle, opts?: BaseOpts) {
+async function readFAI(fai: GenericFilehandle, opts: BaseOpts = {}) {
   const decoder = new TextDecoder('utf8')
   return Object.fromEntries(
     decoder
