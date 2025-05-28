@@ -37,6 +37,7 @@
     "build:esm": "tsc --target es2020 --outDir esm",
     "build:es5": "tsc --target es2020 --module commonjs --outDir dist",
     "build": "yarn build:esm && yarn run build:es5",
+    "postbuild:es5": "echo '{\"type\": \"commonjs\"}' > dist/package.json",
     "version": "standard-changelog && git add CHANGELOG.md",
     "prepublishOnly": "yarn test --run && yarn build",
     "postversion": "git push --follow-tags"
