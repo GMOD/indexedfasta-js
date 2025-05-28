@@ -41,12 +41,12 @@ const chr1Size = await t.getSequenceSize('chr1')
 const seqNames = await t.getSequenceNames()
 ```
 
-If you are using in the browser, you may use the generic-filehandle package and
+If you are using in the browser, you may use the generic-filehandle2 package and
 initialize like this
 
 ```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
-import { RemoteFile } from 'generic-filehandle'
+import { RemoteFile } from 'generic-filehandle2'
 
 const t = new IndexedFasta({
   fasta: new RemoteFile('http://yoursite.com/test.fa'),
@@ -59,12 +59,12 @@ const t = new BgzipIndexedFasta({
 })
 ```
 
-In node.js you can also access remote files with generic-filehandle, but you
+In node.js you can also access remote files with generic-filehandle2, but you
 would supply a fetch function e.g.
 
 ```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
-import { RemoteFile } from 'generic-filehandle'
+import { RemoteFile } from 'generic-filehandle2'
 import fetch from 'cross-fetch'
 
 const t = new IndexedFasta({
