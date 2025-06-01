@@ -22,34 +22,36 @@ function _faiOffset(idx: IndexEntry, pos: number) {
 }
 
 async function readFAI(fai: GenericFilehandle, opts: BaseOpts = {}) {
+  const result = {} as Record<string, Entry>
   const decoder = new TextDecoder('utf8')
-  return Object.fromEntries(
-    decoder
-      .decode((await fai.readFile(opts)) as unknown as Uint8Array)
-      .split(/\r?\n/)
-      .map(r => r.trim())
-      .filter(f => !!f)
-      .map(line => line.split('\t'))
-      .map(row => {
-        if (row[0]?.startsWith('>')) {
-          throw new Error(
-            'found > in sequence name, might have supplied FASTA file for the FASTA index',
-          )
-        }
-        return [
-          row[0]!,
-          {
-            name: row[0]!,
-            length: +row[1]!,
-            start: 0,
-            end: +row[1]!,
-            offset: +row[2]!,
-            lineLength: +row[3]!,
-            lineBytes: +row[4]!,
-          },
-        ] as const
-      }),
+  const content = decoder.decode(
+    (await fai.readFile(opts)) as unknown as Uint8Array,
   )
+  const lines = content.split(/\r?\n/)
+
+  for (let i = 0, l = lines.length; i < lines.length; i++) {
+    const line = lines[i]!.trim()
+    if (!line) continue
+
+    const row = line.split('\t')
+    if (row[0]?.startsWith('>')) {
+      throw new Error(
+        'found > in sequence name, might have supplied FASTA file for the FASTA index',
+      )
+    }
+
+    result[row[0]!] = {
+      name: row[0]!,
+      length: +row[1]!,
+      start: 0,
+      end: +row[1]!,
+      offset: +row[2]!,
+      lineLength: +row[3]!,
+      lineBytes: +row[4]!,
+    }
+  }
+
+  return result
 }
 
 export default class IndexedFasta {
