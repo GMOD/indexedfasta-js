@@ -9,29 +9,25 @@ export async function readFAI(fai: GenericFilehandle, opts: BaseOpts = {}) {
     (await fai.readFile(opts)) as unknown as Uint8Array,
   )
   const lines = content.split(/\r?\n/)
+  if (lines[0]?.startsWith('>')) {
+    throw new Error(
+      'found > in sequence name, might have supplied FASTA file for the FASTA index',
+    )
+  }
   for (let i = 0, l = lines.length; i < l; i++) {
-    const line = lines[i]!.trim()
-    if (!line) {
-      continue
+    if (lines[i]) {
+      const row = lines[i]!.split('\t')
+      sequenceInfo[row[0]!] = {
+        name: row[0]!,
+        length: +row[1]!,
+        start: 0,
+        end: +row[1]!,
+        offset: +row[2]!,
+        lineLength: +row[3]!,
+        lineBytes: +row[4]!,
+      }
+      sequenceNames.push(row[0]!)
     }
-
-    const row = line.split('\t')
-    if (row[0]?.startsWith('>')) {
-      throw new Error(
-        'found > in sequence name, might have supplied FASTA file for the FASTA index',
-      )
-    }
-
-    sequenceInfo[row[0]!] = {
-      name: row[0]!,
-      length: +row[1]!,
-      start: 0,
-      end: +row[1]!,
-      offset: +row[2]!,
-      lineLength: +row[3]!,
-      lineBytes: +row[4]!,
-    }
-    sequenceNames.push(row[0]!)
   }
 
   return {

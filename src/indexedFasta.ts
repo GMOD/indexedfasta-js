@@ -1,6 +1,6 @@
 import { LocalFile } from 'generic-filehandle2'
 
-import { readFAI } from './readFAI'
+import { readFAI } from './readFAI.ts'
 
 import type { BaseOpts, Entry } from './types'
 import type { GenericFilehandle } from 'generic-filehandle2'
