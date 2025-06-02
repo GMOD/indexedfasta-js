@@ -128,7 +128,7 @@ export default class IndexedFasta {
   }
 
   async _fetchFromIndexEntry(
-    indexEntry: IndexEntry,
+    indexEntry: Entry,
     min = 0,
     max?: number,
     opts?: BaseOpts,
