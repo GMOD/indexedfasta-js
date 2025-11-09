@@ -1,6 +1,10 @@
 import { expect, test } from 'vitest'
 
-import { BgzipIndexedFasta, FetchableSmallFasta, IndexedFasta } from '../src'
+import {
+  BgzipIndexedFasta,
+  FetchableSmallFasta,
+  IndexedFasta,
+} from '../src/index.ts'
 
 test('process unindexed fasta', async () => {
   const t = new FetchableSmallFasta({ path: 'test/data/phi-X174.fa' })

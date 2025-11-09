@@ -55,6 +55,7 @@ export default defineConfig(
       'no-empty': 'off',
 
       'import/no-unresolved': 'off',
+      'import/extensions': ['error', 'ignorePackages'],
       'import/order': [
         'error',
         {

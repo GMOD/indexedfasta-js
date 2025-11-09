@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { IndexedFasta } from '../src'
+import { IndexedFasta } from '../src/index.ts'
 
 test('loads some small bits of data from foo.fa', async () => {
   const t = new IndexedFasta({
