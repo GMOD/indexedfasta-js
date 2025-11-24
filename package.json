@@ -49,7 +49,7 @@
     "bionode"
   ],
   "dependencies": {
-    "@gmod/bgzf-filehandle": "^4.0.0",
+    "@gmod/bgzf-filehandle": "^5.0.1",
     "generic-filehandle2": "^2.0.1"
   },
   "devDependencies": {
