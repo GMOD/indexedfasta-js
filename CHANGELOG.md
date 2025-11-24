@@ -1,3 +1,7 @@
+## [4.0.7](https://github.com/GMOD/indexedfasta-js/compare/v4.0.6...v4.0.7) (2025-11-24)
+
+
+
 ## [4.0.6](https://github.com/GMOD/indexedfasta-js/compare/v4.0.5...v4.0.6) (2025-05-28)
 
 
