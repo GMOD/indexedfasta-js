@@ -95,3 +95,13 @@ test('process bgzipped path', async () => {
   })
   await volvoxTest(v)
 })
+
+test('IndexedFasta throws error when given gzip file', async () => {
+  const t = new IndexedFasta({
+    path: 'test/data/volvox.fa.gz',
+    faiPath: 'test/data/volvox.fa.gz.fai',
+  })
+  await expect(t.getResiduesByName('ctgA', 0, 100)).rejects.toThrow(
+    /Non-ASCII/,
+  )
+})

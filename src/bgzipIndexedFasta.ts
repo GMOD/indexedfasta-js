@@ -3,7 +3,6 @@ import { LocalFile } from 'generic-filehandle2'
 
 import IndexedFasta from './indexedFasta.ts'
 
-
 import type { GenericFilehandle } from 'generic-filehandle2'
 
 export default class BgzipIndexedFasta extends IndexedFasta {
