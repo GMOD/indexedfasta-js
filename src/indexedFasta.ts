@@ -187,8 +187,16 @@ export default class IndexedFasta {
     const readlen = _faiOffset(indexEntry, end) - position
 
     const decoder = new TextDecoder('utf8')
-    return decoder
+    const seq = decoder
       .decode(await this.fasta.read(readlen, position, opts))
       .replace(/\s+/g, '')
+
+    if (/[^\x20-\x7e]/.test(seq.slice(0, 1000))) {
+      throw new Error(
+        'Non-ASCII characters detected in sequence. The file may be gzip compressed. Use BgzipIndexedFasta for bgzip files, or decompress the file.',
+      )
+    }
+
+    return seq
   }
 }
