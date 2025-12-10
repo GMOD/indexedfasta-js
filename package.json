@@ -31,14 +31,12 @@
     "test": "vitest",
     "coverage": "yarn test --coverage",
     "lint": "eslint  --report-unused-disable-directives --max-warnings 0 src test",
-    "docs": "documentation readme src --section=API",
     "clean": "rimraf dist esm",
     "prebuild": "yarn clean",
     "build:esm": "tsc --target es2020 --outDir esm",
     "build:es5": "tsc --target es2020 --module commonjs --outDir dist",
     "build": "yarn build:esm && yarn run build:es5",
     "postbuild:es5": "echo '{\"type\": \"commonjs\"}' > dist/package.json",
-    "version": "standard-changelog && git add CHANGELOG.md",
     "prepublishOnly": "yarn test --run && yarn build",
     "postversion": "git push --follow-tags"
   },
@@ -55,13 +53,11 @@
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.6",
     "cross-fetch": "^4.0.0",
-    "documentation": "^14.0.1",
     "eslint": "^9.5.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-unicorn": "^62.0.0",
     "prettier": "^3.0.3",
     "rimraf": "^6.0.1",
-    "standard-changelog": "^7.0.1",
     "typescript": "^5.0.2",
     "typescript-eslint": "^8.17.0",
     "vitest": "^4.0.6"
