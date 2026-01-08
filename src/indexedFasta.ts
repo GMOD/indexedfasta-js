@@ -13,6 +13,12 @@ interface IndexEntry {
   length: number
 }
 
+interface ParsedIndex {
+  entries: Record<string, IndexEntry>
+  names: string[]
+  sizes: Record<string, number>
+}
+
 function _faiOffset(idx: IndexEntry, pos: number) {
   return (
     idx.offset +
@@ -21,41 +27,60 @@ function _faiOffset(idx: IndexEntry, pos: number) {
   )
 }
 
-async function readFAI(fai: GenericFilehandle, opts: BaseOpts = {}) {
+async function readFAI(fai: GenericFilehandle, opts: BaseOpts = {}): Promise<ParsedIndex> {
   const decoder = new TextDecoder('utf8')
-  return Object.fromEntries(
-    decoder
-      .decode((await fai.readFile(opts)) as unknown as Uint8Array)
-      .split(/\r?\n/)
-      .map(r => r.trim())
-      .filter(f => !!f)
-      .map(line => line.split('\t'))
-      .map(row => {
-        if (row[0]?.startsWith('>')) {
-          throw new Error(
-            'found > in sequence name, might have supplied FASTA file for the FASTA index',
-          )
-        }
-        return [
-          row[0]!,
-          {
-            name: row[0]!,
-            length: +row[1]!,
-            start: 0,
-            end: +row[1]!,
-            offset: +row[2]!,
-            lineLength: +row[3]!,
-            lineBytes: +row[4]!,
-          },
-        ] as const
-      }),
-  )
+  const text = decoder.decode((await fai.readFile(opts)) as unknown as Uint8Array)
+  const entries: Record<string, IndexEntry> = {}
+  const names: string[] = []
+  const sizes: Record<string, number> = {}
+
+  let lineStart = 0
+  const len = text.length
+  while (lineStart < len) {
+    let lineEnd = text.indexOf('\n', lineStart)
+    if (lineEnd === -1) {
+      lineEnd = len
+    }
+    let line = text.slice(lineStart, lineEnd)
+    if (line.endsWith('\r')) {
+      line = line.slice(0, -1)
+    }
+    line = line.trim()
+    lineStart = lineEnd + 1
+
+    if (line.length === 0) {
+      continue
+    }
+
+    const tab1 = line.indexOf('\t')
+    const tab2 = line.indexOf('\t', tab1 + 1)
+    const tab3 = line.indexOf('\t', tab2 + 1)
+    const tab4 = line.indexOf('\t', tab3 + 1)
+
+    const name = line.slice(0, tab1)
+    if (name.startsWith('>')) {
+      throw new Error(
+        'found > in sequence name, might have supplied FASTA file for the FASTA index',
+      )
+    }
+
+    const length = +line.slice(tab1 + 1, tab2)
+    const offset = +line.slice(tab2 + 1, tab3)
+    const lineLength = +line.slice(tab3 + 1, tab4)
+    const lineBytes = +line.slice(tab4 + 1)
+
+    entries[name] = { offset, lineBytes, lineLength, length }
+    names.push(name)
+    sizes[name] = length
+  }
+
+  return { entries, names, sizes }
 }
 
 export default class IndexedFasta {
   fasta: GenericFilehandle
   fai: GenericFilehandle
-  indexes?: ReturnType<typeof readFAI>
+  indexes?: Promise<ParsedIndex>
 
   constructor({
     fasta,
@@ -103,31 +128,21 @@ export default class IndexedFasta {
    * sequence name
    */
   async getSequenceNames(opts?: BaseOpts) {
-    return Object.keys(await this._getIndexes(opts))
+    return (await this._getIndexes(opts)).names
   }
 
   /**
-   * @returns array of string sequence names that are present in the index, in
-   * which the array index indicates the sequence ID, and the value is the
-   * sequence name
+   * @returns object mapping sequence names to their lengths
    */
   async getSequenceSizes(opts?: BaseOpts) {
-    const returnObject = {} as Record<string, number>
-    const idx = await this._getIndexes(opts)
-    for (const val of Object.values(idx)) {
-      returnObject[val.name] = val.length
-    }
-    return returnObject
+    return (await this._getIndexes(opts)).sizes
   }
 
   /**
-   * @returns array of string sequence names that are present in the index, in
-   * which the array index indicates the sequence ID, and the value is the
-   * sequence name
+   * @returns the length of the given sequence, or undefined if not found
    */
   async getSequenceSize(seqName: string, opts?: BaseOpts) {
-    const idx = await this._getIndexes(opts)
-    return idx[seqName]?.length
+    return (await this._getIndexes(opts)).entries[seqName]?.length
   }
 
   /**
@@ -136,7 +151,7 @@ export default class IndexedFasta {
    * @returns true if the file contains the given reference sequence name
    */
   async hasReferenceSequence(name: string, opts?: BaseOpts) {
-    return !!(await this._getIndexes(opts))[name]
+    return !!(await this._getIndexes(opts)).entries[name]
   }
 
   /**
@@ -150,7 +165,7 @@ export default class IndexedFasta {
     max: number,
     opts?: BaseOpts,
   ) {
-    const indexEntry = (await this._getIndexes(opts))[seqName]
+    const indexEntry = (await this._getIndexes(opts)).entries[seqName]
     return indexEntry
       ? this._fetchFromIndexEntry(indexEntry, min, max, opts)
       : undefined
