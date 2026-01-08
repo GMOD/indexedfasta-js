@@ -6,36 +6,44 @@ interface BaseOpts {
   signal?: AbortSignal
 }
 
-interface IndexEntry {
-  offset: number
-  lineBytes: number
-  lineLength: number
-  length: number
-}
-
 interface ParsedIndex {
-  entries: Record<string, IndexEntry>
   names: string[]
-  sizes: Record<string, number>
+  nameToIndex: Record<string, number>
+  offsets: number[]
+  lengths: number[]
+  lineLengths: number[]
+  lineBytes: number[]
+  sizesCache?: Record<string, number>
 }
 
-function _faiOffset(idx: IndexEntry, pos: number) {
-  return (
-    idx.offset +
-    idx.lineBytes * Math.floor(pos / idx.lineLength) +
-    (pos % idx.lineLength)
-  )
+function _faiOffset(
+  offset: number,
+  lineBytes: number,
+  lineLength: number,
+  pos: number,
+) {
+  return offset + lineBytes * Math.floor(pos / lineLength) + (pos % lineLength)
 }
 
-async function readFAI(fai: GenericFilehandle, opts: BaseOpts = {}): Promise<ParsedIndex> {
+async function readFAI(
+  fai: GenericFilehandle,
+  opts: BaseOpts = {},
+): Promise<ParsedIndex> {
   const decoder = new TextDecoder('utf8')
-  const text = decoder.decode((await fai.readFile(opts)) as unknown as Uint8Array)
-  const entries: Record<string, IndexEntry> = {}
+  const text = decoder.decode(
+    (await fai.readFile(opts)) as unknown as Uint8Array,
+  )
+
   const names: string[] = []
-  const sizes: Record<string, number> = {}
+  const offsets: number[] = []
+  const lengths: number[] = []
+  const lineLengths: number[] = []
+  const lineBytes: number[] = []
+  const nameToIndex: Record<string, number> = {}
 
   let lineStart = 0
   const len = text.length
+  let idx = 0
   while (lineStart < len) {
     let lineEnd = text.indexOf('\n', lineStart)
     if (lineEnd === -1) {
@@ -64,17 +72,16 @@ async function readFAI(fai: GenericFilehandle, opts: BaseOpts = {}): Promise<Par
       )
     }
 
-    const length = +line.slice(tab1 + 1, tab2)
-    const offset = +line.slice(tab2 + 1, tab3)
-    const lineLength = +line.slice(tab3 + 1, tab4)
-    const lineBytes = +line.slice(tab4 + 1)
-
-    entries[name] = { offset, lineBytes, lineLength, length }
     names.push(name)
-    sizes[name] = length
+    lengths.push(+line.slice(tab1 + 1, tab2))
+    offsets.push(+line.slice(tab2 + 1, tab3))
+    lineLengths.push(+line.slice(tab3 + 1, tab4))
+    lineBytes.push(+line.slice(tab4 + 1))
+    nameToIndex[name] = idx
+    idx++
   }
 
-  return { entries, names, sizes }
+  return { names, nameToIndex, offsets, lengths, lineLengths, lineBytes }
 }
 
 export default class IndexedFasta {
@@ -135,14 +142,24 @@ export default class IndexedFasta {
    * @returns object mapping sequence names to their lengths
    */
   async getSequenceSizes(opts?: BaseOpts) {
-    return (await this._getIndexes(opts)).sizes
+    const idx = await this._getIndexes(opts)
+    if (!idx.sizesCache) {
+      const sizes: Record<string, number> = {}
+      for (let i = 0; i < idx.names.length; i++) {
+        sizes[idx.names[i]!] = idx.lengths[i]!
+      }
+      idx.sizesCache = sizes
+    }
+    return idx.sizesCache
   }
 
   /**
    * @returns the length of the given sequence, or undefined if not found
    */
   async getSequenceSize(seqName: string, opts?: BaseOpts) {
-    return (await this._getIndexes(opts)).entries[seqName]?.length
+    const idx = await this._getIndexes(opts)
+    const i = idx.nameToIndex[seqName]
+    return i !== undefined ? idx.lengths[i] : undefined
   }
 
   /**
@@ -151,7 +168,7 @@ export default class IndexedFasta {
    * @returns true if the file contains the given reference sequence name
    */
   async hasReferenceSequence(name: string, opts?: BaseOpts) {
-    return !!(await this._getIndexes(opts)).entries[name]
+    return (await this._getIndexes(opts)).nameToIndex[name] !== undefined
   }
 
   /**
@@ -165,10 +182,20 @@ export default class IndexedFasta {
     max: number,
     opts?: BaseOpts,
   ) {
-    const indexEntry = (await this._getIndexes(opts)).entries[seqName]
-    return indexEntry
-      ? this._fetchFromIndexEntry(indexEntry, min, max, opts)
-      : undefined
+    const idx = await this._getIndexes(opts)
+    const i = idx.nameToIndex[seqName]
+    if (i === undefined) {
+      return undefined
+    }
+    return this._fetchFromIndex(
+      idx.offsets[i]!,
+      idx.lineBytes[i]!,
+      idx.lineLengths[i]!,
+      idx.lengths[i]!,
+      min,
+      max,
+      opts,
+    )
   }
 
   //alias for getResiduesByName
@@ -181,8 +208,11 @@ export default class IndexedFasta {
     return this.getResiduesByName(seqName, min, max, opts)
   }
 
-  async _fetchFromIndexEntry(
-    indexEntry: IndexEntry,
+  async _fetchFromIndex(
+    offset: number,
+    lineBytes: number,
+    lineLength: number,
+    seqLength: number,
     min = 0,
     max?: number,
     opts?: BaseOpts,
@@ -191,15 +221,15 @@ export default class IndexedFasta {
     if (min < 0) {
       throw new TypeError('regionStart cannot be less than 0')
     }
-    if (end === undefined || end > indexEntry.length) {
-      end = indexEntry.length
+    if (end === undefined || end > seqLength) {
+      end = seqLength
     }
     if (min >= end) {
       return ''
     }
 
-    const position = _faiOffset(indexEntry, min)
-    const readlen = _faiOffset(indexEntry, end) - position
+    const position = _faiOffset(offset, lineBytes, lineLength, min)
+    const readlen = _faiOffset(offset, lineBytes, lineLength, end) - position
 
     const decoder = new TextDecoder('utf8')
     const seq = decoder
