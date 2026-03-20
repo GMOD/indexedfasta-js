@@ -1,57 +1,31 @@
 ## [4.0.7](https://github.com/GMOD/indexedfasta-js/compare/v4.0.6...v4.0.7) (2025-11-24)
 
-
-
 ## [4.0.6](https://github.com/GMOD/indexedfasta-js/compare/v4.0.5...v4.0.6) (2025-05-28)
-
-
 
 ## [4.0.5](https://github.com/GMOD/indexedfasta-js/compare/v4.0.4...v4.0.5) (2025-05-28)
 
-
-
 ## [4.0.4](https://github.com/GMOD/indexedfasta-js/compare/v4.0.3...v4.0.4) (2025-05-28)
-
-
 
 ## [4.0.3](https://github.com/GMOD/indexedfasta-js/compare/v4.0.2...v4.0.3) (2025-05-26)
 
-
-
 ## [4.0.2](https://github.com/GMOD/indexedfasta-js/compare/v4.0.1...v4.0.2) (2025-04-30)
-
-
 
 ## [4.0.1](https://github.com/GMOD/indexedfasta-js/compare/v3.0.1...v4.0.1) (2025-04-30)
 
-
-
 # [4.0.0](https://github.com/GMOD/indexedfasta-js/compare/v3.0.1...v4.0.0) (2025-04-30)
-
-
 
 ## [3.0.1](https://github.com/GMOD/indexedfasta-js/compare/v3.0.0...v3.0.1) (2024-12-12)
 
-
-
 # [3.0.0](https://github.com/GMOD/indexedfasta-js/compare/v2.1.1...v3.0.0) (2024-12-12)
-
-
 
 ## [2.1.1](https://github.com/GMOD/indexedfasta-js/compare/v2.1.0...v2.1.1) (2024-06-21)
 
-
-
 # [2.1.0](https://github.com/GMOD/indexedfasta-js/compare/v2.0.4...v2.1.0) (2023-10-04)
-
-
 
 - Fix docs, re-publish to NPM
 - Remove chunkSizeLimit
 
 ## [2.0.4](https://github.com/GMOD/indexedfasta-js/compare/v2.0.3...v2.0.4) (2022-07-18)
-
-
 
 - Update to generic-filehandle 3.0.0
 
@@ -78,7 +52,8 @@
 
 # [2.0.0](https://github.com/GMOD/indexedfasta-js/compare/v1.1.0...v2.0.0) (2021-03-31)
 
-- Rename getSequenceList to getSequenceNames to get a list of refNames in the fasta file
+- Rename getSequenceList to getSequenceNames to get a list of refNames in the
+  fasta file
 
 <a name="1.1.0"></a>
 
@@ -89,7 +64,8 @@
 
 ## [1.0.13](https://github.com/GMOD/indexedfasta-js/compare/v1.0.12...v1.0.13) (2019-07-02)
 
-- Fix usage of getSequenceSize on a refSeqName that does not exist (returns undefined)
+- Fix usage of getSequenceSize on a refSeqName that does not exist (returns
+  undefined)
 
 ## [1.0.12](https://github.com/GMOD/indexedfasta-js/compare/v1.0.11...v1.0.12) (2019-04-04)
 
@@ -101,7 +77,8 @@
 
 ## [1.0.10](https://github.com/GMOD/indexedfasta-js/compare/v1.0.9...v1.0.10) (2018-11-23)
 
-- Fix ie11 by using different libraries that don't use Object.defineProperty('length',...)
+- Fix ie11 by using different libraries that don't use
+  Object.defineProperty('length',...)
 
 ## [1.0.9](https://github.com/GMOD/indexedfasta-js/compare/v1.0.8...v1.0.9) (2018-11-23)
 

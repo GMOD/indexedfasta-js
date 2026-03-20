@@ -9,7 +9,7 @@
 ## Usage
 
 ```typescript
-const { IndexedFasta, BgzipIndexedFasta } = require('@gmod/indexedfasta')
+import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
 
 const t = new IndexedFasta({
   path: 'test.fa',

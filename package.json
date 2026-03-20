@@ -38,7 +38,8 @@
     "build": "yarn build:esm && yarn run build:es5",
     "postbuild:es5": "echo '{\"type\": \"commonjs\"}' > dist/package.json",
     "prepublishOnly": "yarn test --run && yarn build",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags",
+    "format": "prettier --write ."
   },
   "keywords": [
     "fasta",
@@ -47,20 +48,21 @@
     "bionode"
   ],
   "dependencies": {
-    "@gmod/bgzf-filehandle": "^6.0.3",
+    "@gmod/bgzf-filehandle": "^6.0.12",
     "generic-filehandle2": "^2.0.1"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.6",
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.0",
     "cross-fetch": "^4.0.0",
-    "eslint": "^9.5.0",
+    "eslint": "^10.1.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-unicorn": "^62.0.0",
-    "prettier": "^3.0.3",
-    "rimraf": "^6.0.1",
+    "eslint-plugin-unicorn": "^63.0.0",
+    "prettier": "^3.8.1",
+    "rimraf": "^6.1.3",
     "typescript": "^5.0.2",
-    "typescript-eslint": "^8.17.0",
-    "vitest": "^4.0.6"
+    "typescript-eslint": "^8.57.1",
+    "vitest": "^4.1.0"
   },
   "publishConfig": {
     "access": "public"
