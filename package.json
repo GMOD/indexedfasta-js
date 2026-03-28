@@ -3,7 +3,10 @@
   "version": "5.0.2",
   "description": "read indexed fasta and bgzipped fasta formats",
   "license": "MIT",
-  "repository": "GMOD/indexedfasta-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GMOD/indexedfasta-js.git"
+  },
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -19,9 +22,6 @@
     "email": "colin.diesh@gmail.com",
     "url": "https://github.com/cmdcolin"
   },
-  "engines": {
-    "node": ">=12"
-  },
   "files": [
     "dist",
     "esm",
@@ -34,7 +34,7 @@
     "clean": "rimraf dist esm",
     "prebuild": "yarn clean",
     "build:esm": "tsc --target es2020 --outDir esm",
-    "build:es5": "tsc --target es2020 --module commonjs --outDir dist",
+    "build:es5": "tsc --target es2020 --module commonjs --moduleResolution bundler --outDir dist",
     "build": "yarn build:esm && yarn run build:es5",
     "postbuild:es5": "echo '{\"type\": \"commonjs\"}' > dist/package.json",
     "prepublishOnly": "yarn test --run && yarn build",
@@ -49,20 +49,23 @@
   ],
   "dependencies": {
     "@gmod/bgzf-filehandle": "^6.0.12",
-    "generic-filehandle2": "^2.0.1"
+    "@jbrowse/quick-lru": "^7.3.5",
+    "generic-filehandle2": "^2.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@vitest/coverage-v8": "^4.1.0",
-    "cross-fetch": "^4.0.0",
-    "eslint": "^10.1.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-unicorn": "^63.0.0",
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "cross-fetch": "^4.1.0",
+    "eslint": "^9.39.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unicorn": "^64.0.0",
     "prettier": "^3.8.1",
     "rimraf": "^6.1.3",
-    "typescript": "^5.0.2",
-    "typescript-eslint": "^8.57.1",
-    "vitest": "^4.1.0"
+    "tsdown": "^0.21.6",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.57.2",
+    "vitest": "^4.1.2"
   },
   "publishConfig": {
     "access": "public"
