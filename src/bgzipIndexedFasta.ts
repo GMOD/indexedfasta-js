@@ -23,13 +23,13 @@ export default class BgzipIndexedFasta extends IndexedFasta {
   }) {
     super({ fasta, path, fai, faiPath })
     if (fasta && gzi) {
-      // @ts-expect-error
+      // @ts-expect-error - BgzfFilehandle constructor arg types don't match exactly
       this.fasta = new BgzfFilehandle({
         filehandle: fasta,
         gziFilehandle: gzi,
       })
     } else if (path && gziPath) {
-      // @ts-expect-error
+      // @ts-expect-error - BgzfFilehandle constructor arg types don't match exactly
       this.fasta = new BgzfFilehandle({
         filehandle: new LocalFile(path),
         gziFilehandle: new LocalFile(gziPath),
