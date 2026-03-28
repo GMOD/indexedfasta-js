@@ -26,7 +26,7 @@ async function phiTest(t: IndexedFasta) {
     'GAGTTTTATCGCTTCCATGACGCAGAAGTTAACACTTTCGGATATTTCTGATGAGTCGAAAAATTATCTTGATAAAGCAGGAATTACTACTGCTTGTTTA',
   )
   await t.getResiduesByName('NC_001422.1', -100, 100).catch(catchErr)
-  expect(`${err}`).toContain('cannot be less than 0')
+  expect(String(err)).toContain('cannot be less than 0')
   expect(await t.getResiduesByName('NC_001422.1', 100, 150)).toEqual(
     'CGAATTAAATCGAAGTGGACTGCTGGCGGAAAATGAGAAAATTCGACCTA',
   )
@@ -102,4 +102,14 @@ test('IndexedFasta throws error when given gzip file', async () => {
     faiPath: 'test/data/volvox.fa.gz.fai',
   })
   await expect(t.getResiduesByName('ctgA', 0, 100)).rejects.toThrow(/Non-ASCII/)
+})
+
+test('IndexedFasta throws clear error for FAI with LINEBASES=0 (missing trailing newline)', async () => {
+  const t = new IndexedFasta({
+    path: 'test/data/no-newline.fa',
+    faiPath: 'test/data/no-newline.fa.fai',
+  })
+  await expect(t.getResiduesByName('seq1', 0, 8)).rejects.toThrow(
+    /Invalid FAI index.*LINEBASES is 0.*trailing newline/,
+  )
 })

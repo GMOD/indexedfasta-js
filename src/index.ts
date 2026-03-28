@@ -19,33 +19,30 @@ function parseSmallFasta(text: string) {
 }
 
 class FetchableSmallFasta {
-  fasta: GenericFilehandle
-
   data: Promise<{ id: string; description: string; sequence: string }[]>
 
   constructor({ fasta, path }: { fasta?: GenericFilehandle; path?: string }) {
+    let filehandle: GenericFilehandle
     if (fasta) {
-      this.fasta = fasta
+      filehandle = fasta
     } else if (path) {
-      this.fasta = new LocalFile(path)
+      filehandle = new LocalFile(path)
     } else {
       throw new Error('Need to pass fasta or path')
     }
-    this.data = this.fasta.readFile().then(buffer => {
+    this.data = filehandle.readFile().then(buffer => {
       const decoder = new TextDecoder('utf8')
-      const text = decoder.decode(buffer)
-      return parseSmallFasta(text)
+      return parseSmallFasta(decoder.decode(buffer))
     })
   }
 
   async fetch(id: string, start: number, end: number) {
     const data = await this.data
     const entry = data.find(iter => iter.id === id)
-    const length = end - start
     if (!entry) {
       throw new Error(`no sequence with id ${id} exists`)
     }
-    return entry.sequence.slice(start, length)
+    return entry.sequence.slice(start, end)
   }
 
   async getSequenceNames() {
