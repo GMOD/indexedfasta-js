@@ -3,7 +3,9 @@
 
 ## Install
 
-    $ npm install --save @gmod/indexedfasta
+```bash
+npm install @gmod/indexedfasta
+```
 
 ## Usage
 
@@ -15,17 +17,16 @@ const t = new IndexedFasta({
   faiPath: 'test.fa.fai',
 })
 // or
-const t = new BgzipIndexedFasta({
+const t2 = new BgzipIndexedFasta({
   path: 'test.fa.gz',
   faiPath: 'test.fa.gz.fai',
   gziPath: 'test.fa.gz.gzi',
 })
 
-// get the first 10 bases of a sequence from the file.
+// get the first 10 bases of a sequence from the file
 // coordinates are UCSC standard 0-based half-open
-//
 const chr1Region = await t.getSequence('chr1', 0, 10)
-// chr1Region is now a string of bases, 'ACTG...'
+// chr1Region is a string of bases e.g. 'ACTG...' or undefined if not found
 
 // get a whole sequence from the file
 const chr1Bases = await t.getSequence('chr1')
@@ -48,27 +49,27 @@ import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
 import { RemoteFile } from 'generic-filehandle2'
 
 const t = new IndexedFasta({
-  fasta: new RemoteFile('http://yoursite.com/test.fa'),
-  fai: new RemoteFile('http://yoursite.com/test.fa.fai'),
+  fasta: new RemoteFile('https://example.com/test.fa'),
+  fai: new RemoteFile('https://example.com/test.fa.fai'),
 })
-const t = new BgzipIndexedFasta({
-  fasta: new RemoteFile('http://yoursite.com/test.fa.gz'),
-  fai: new RemoteFile('http://yoursite.com/test.fa.gz.fai'),
-  gzi: new RemoteFile('http://yoursite.com/test.fa.gz.gzi'),
+const t2 = new BgzipIndexedFasta({
+  fasta: new RemoteFile('https://example.com/test.fa.gz'),
+  fai: new RemoteFile('https://example.com/test.fa.gz.fai'),
+  gzi: new RemoteFile('https://example.com/test.fa.gz.gzi'),
 })
 ```
 
-In node.js you can also access remote files with generic-filehandle2, but you
-would supply a fetch function e.g.
+In Node.js you can also access remote files with generic-filehandle2. Node 18+
+has native `fetch`; for older versions supply one via e.g. `cross-fetch`:
 
 ```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
 import { RemoteFile } from 'generic-filehandle2'
-import fetch from 'cross-fetch'
+import fetch from 'cross-fetch' // only needed for Node < 18
 
 const t = new IndexedFasta({
-  fasta: new RemoteFile('http://yoursite.com/test.fa', { fetch }),
-  fai: new RemoteFile('http://yoursite.com/test.fa.fai', { fetch }),
+  fasta: new RemoteFile('https://example.com/test.fa', { fetch }),
+  fai: new RemoteFile('https://example.com/test.fa.fai', { fetch }),
 })
 ```
 
@@ -78,6 +79,10 @@ This package was written with funding from the [NHGRI](http://genome.gov) as
 part of the [JBrowse](http://jbrowse.org) project. If you use it in an academic
 project that you publish, please cite the most recent JBrowse paper, which will
 be linked from [jbrowse.org](http://jbrowse.org).
+
+## Publishing
+
+Releases are published to npm using [npm trusted publishing](https://docs.npmjs.com/generating-provenance-statements) via GitHub Actions, so no npm token is stored in the repository secrets.
 
 ## License
 
