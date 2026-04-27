@@ -40,25 +40,25 @@ async function readFAI(
 
     const [name, seqLenStr, offsetStr, lineLengthStr, lineBytesStr] =
       line.split('\t')
-    if (name.startsWith('>')) {
+    if (name!.startsWith('>')) {
       throw new Error(
         'found > in sequence name, might have supplied FASTA file for the FASTA index',
       )
     }
 
-    const length = +seqLenStr
-    const lineLength = +lineLengthStr
+    const length = +seqLenStr!
+    const lineLength = +lineLengthStr!
     if (length > 0 && lineLength === 0) {
       throw new Error(
-        `Invalid FAI index for "${name}": LINEBASES is 0 for a non-empty sequence. ` +
+        `Invalid FAI index for "${name!}": LINEBASES is 0 for a non-empty sequence. ` +
           `The FASTA file may be missing a trailing newline — try regenerating the .fai index.`,
       )
     }
-    index.set(name, {
+    index.set(name!, {
       length,
-      offset: +offsetStr,
+      offset: +offsetStr!,
       lineLength,
-      lineBytes: +lineBytesStr,
+      lineBytes: +lineBytesStr!,
     })
   }
 
