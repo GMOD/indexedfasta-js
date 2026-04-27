@@ -28,7 +28,7 @@ async function readFAI(
 ): Promise<Map<string, SeqRecord>> {
   const decoder = new TextDecoder('utf8')
   const text = decoder.decode(
-    (await fai.readFile(opts)) as unknown as Uint8Array,
+    await fai.readFile(opts),
   )
 
   const index = new Map<string, SeqRecord>()
