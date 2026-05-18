@@ -21,19 +21,19 @@ export default class BgzipIndexedFasta extends IndexedFasta {
     gzi?: GenericFilehandle
     gziPath?: string
   }) {
-    super({ fasta, path, fai, faiPath })
+    let bgzfFasta: BgzfFilehandle
     if (fasta && gzi) {
-      // @ts-expect-error - BgzfFilehandle constructor arg types don't match exactly
-      this.fasta = new BgzfFilehandle({
-        filehandle: fasta,
-        gziFilehandle: gzi,
-      })
+      bgzfFasta = new BgzfFilehandle({ filehandle: fasta, gziFilehandle: gzi })
     } else if (path && gziPath) {
-      // @ts-expect-error - BgzfFilehandle constructor arg types don't match exactly
-      this.fasta = new BgzfFilehandle({
+      bgzfFasta = new BgzfFilehandle({
         filehandle: new LocalFile(path),
         gziFilehandle: new LocalFile(gziPath),
       })
+    } else {
+      throw new Error(
+        'BgzipIndexedFasta requires either {fasta, gzi} or {path, gziPath}',
+      )
     }
+    super({ fasta: bgzfFasta, fai, faiPath, path })
   }
 }

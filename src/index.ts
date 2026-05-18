@@ -1,57 +1,7 @@
-import { LocalFile } from 'generic-filehandle2'
-
-import type { GenericFilehandle } from 'generic-filehandle2'
-
-function parseSmallFasta(text: string) {
-  return text
-    .split('>')
-    .filter(t => /\S/.test(t))
-    .map(entryText => {
-      const [defLine, ...seqLines] = entryText.split('\n')
-      const [id, ...description] = defLine!.split(' ')
-      const sequence = seqLines.join('').replace(/\s/g, '')
-      return {
-        id: id!,
-        description: description.join(' '),
-        sequence,
-      }
-    })
-}
-
-class FetchableSmallFasta {
-  data: Promise<{ id: string; description: string; sequence: string }[]>
-
-  constructor({ fasta, path }: { fasta?: GenericFilehandle; path?: string }) {
-    let filehandle: GenericFilehandle
-    if (fasta) {
-      filehandle = fasta
-    } else if (path) {
-      filehandle = new LocalFile(path)
-    } else {
-      throw new Error('Need to pass fasta or path')
-    }
-    this.data = filehandle.readFile().then(buffer => {
-      const decoder = new TextDecoder('utf8')
-      return parseSmallFasta(decoder.decode(buffer))
-    })
-  }
-
-  async fetch(id: string, start: number, end: number) {
-    const data = await this.data
-    const entry = data.find(iter => iter.id === id)
-    if (!entry) {
-      throw new Error(`no sequence with id ${id} exists`)
-    }
-    return entry.sequence.slice(start, end)
-  }
-
-  async getSequenceNames() {
-    const data = await this.data
-    return data.map(entry => entry.id)
-  }
-}
-
-export { FetchableSmallFasta, parseSmallFasta }
+export {
+  FetchableSmallFasta,
+  parseSmallFasta,
+} from './fetchableSmallFasta.ts'
 
 export { default as BgzipIndexedFasta } from './bgzipIndexedFasta.ts'
 export { default as IndexedFasta } from './indexedFasta.ts'
