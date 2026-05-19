@@ -1,5 +1,5 @@
 [![NPM version](https://img.shields.io/npm/v/@gmod/indexedfasta.svg?style=flat-square)](https://npmjs.org/package/@gmod/indexedfasta)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/GMOD/indexedfasta-js/publish.yml?branch=main)](https://github.com/GMOD/indexedfasta-js/actions)
+![Build Status](https://img.shields.io/github/actions/workflow/status/GMOD/indexedfasta-js/publish.yml?branch=main)
 
 ## Install
 
