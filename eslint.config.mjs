@@ -29,6 +29,7 @@ export default defineConfig(
 
   {
     rules: {
+      '@typescript-eslint/parameter-properties': 'error',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
