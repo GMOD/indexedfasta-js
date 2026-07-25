@@ -1,6 +1,7 @@
 {
   "name": "@gmod/indexedfasta",
   "version": "5.0.7",
+  "packageManager": "pnpm@11.15.1",
   "description": "read indexed fasta and bgzipped fasta formats",
   "license": "MIT",
   "repository": {
@@ -8,6 +9,7 @@
     "url": "https://github.com/GMOD/indexedfasta-js.git"
   },
   "type": "module",
+  "sideEffects": false,
   "main": "dist/index.js",
   "exports": {
     "import": "./esm/index.js",
