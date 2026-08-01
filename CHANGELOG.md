@@ -1,3 +1,52 @@
+## [5.0.9](https://github.com/GMOD/indexedfasta-js/compare/v5.0.8...v5.0.9) (2026-07-25)
+
+## [5.0.8](https://github.com/GMOD/indexedfasta-js/compare/v5.0.7...v5.0.8) (2026-07-25)
+
+- Declare `sideEffects: false` in package.json for better tree-shaking
+
+## [5.0.7](https://github.com/GMOD/indexedfasta-js/compare/v5.0.6...v5.0.7) (2026-05-18)
+
+## [5.0.6](https://github.com/GMOD/indexedfasta-js/compare/v5.0.5...v5.0.6) (2026-05-18)
+
+- `BgzipIndexedFasta` now throws a clear error when constructed without both
+  `{fasta, gzi}` or `{path, gziPath}`, instead of silently reading the file as
+  an uncompressed FASTA
+- Throw a clear error for malformed FAI lines (wrong number of tab-separated
+  columns)
+- Export `fetchFromIndex`, `SeqReader`, `SeqRecord`, and `BaseOpts` from
+  `indexedFasta.ts`
+
+## [5.0.5](https://github.com/GMOD/indexedfasta-js/compare/v5.0.4...v5.0.5) (2026-04-27)
+
+## [5.0.4](https://github.com/GMOD/indexedfasta-js/compare/v5.0.3...v5.0.4) (2026-03-31)
+
+## [5.0.3](https://github.com/GMOD/indexedfasta-js/compare/v5.0.2...v5.0.3) (2026-03-28)
+
+- Fix `FetchableSmallFasta.fetch` returning the wrong slice of sequence (used
+  `slice(start, length)` instead of `slice(start, end)`)
+- Throw a clear error for FASTA files missing a trailing newline (FAI
+  `LINEBASES` of 0)
+
+## [5.0.2](https://github.com/GMOD/indexedfasta-js/compare/v5.0.1...v5.0.2) (2026-01-08)
+
+- Further improve FAI parsing performance by storing index entries as
+  parallel arrays instead of per-record objects
+
+## [5.0.1](https://github.com/GMOD/indexedfasta-js/compare/v5.0.0...v5.0.1) (2026-01-08)
+
+- Improve `getSequenceNames`/FAI parsing performance by scanning the index
+  text directly instead of splitting into arrays
+
+# [5.0.0](https://github.com/GMOD/indexedfasta-js/compare/v4.0.9...v5.0.0) (2025-12-11)
+
+- Bump `@gmod/bgzf-filehandle` to v6
+
+## [4.0.9](https://github.com/GMOD/indexedfasta-js/compare/v4.0.7...v4.0.9) (2025-12-10)
+
+- Detect gzip-compressed FASTA passed to `IndexedFasta` and throw a clear
+  error suggesting `BgzipIndexedFasta`, instead of returning garbled sequence
+  data
+
 ## [4.0.7](https://github.com/GMOD/indexedfasta-js/compare/v4.0.6...v4.0.7) (2025-11-24)
 
 ## [4.0.6](https://github.com/GMOD/indexedfasta-js/compare/v4.0.5...v4.0.6) (2025-05-28)
