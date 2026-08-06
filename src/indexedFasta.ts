@@ -11,11 +11,7 @@ export interface BaseOpts {
 // Narrower than GenericFilehandle: only requires positional read. Lets us
 // accept handles like BgzfFilehandle that don't implement readFile/stat/close.
 export interface SeqReader {
-  read(
-    length: number,
-    position: number,
-    opts?: BaseOpts,
-  ): Promise<Uint8Array>
+  read(length: number, position: number, opts?: BaseOpts): Promise<Uint8Array>
 }
 
 export interface SeqRecord {

@@ -41,8 +41,8 @@ const chr1Size = await fasta.getSequenceSize('chr1')
 const seqNames = await fasta.getSequenceNames()
 ```
 
-If you are using this in the browser, you may use the generic-filehandle2 package and
-initialize like this
+If you are using this in the browser, you may use the generic-filehandle2
+package and initialize like this
 
 ```typescript
 import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
@@ -82,7 +82,8 @@ be linked from [jbrowse.org](http://jbrowse.org).
 
 ## Publishing
 
-[Trusted publishing](https://docs.npmjs.com/about-trusted-publishing) via GitHub Actions.
+[Trusted publishing](https://docs.npmjs.com/about-trusted-publishing) via GitHub
+Actions.
 
 ```bash
 pnpm version patch  # or minor/major

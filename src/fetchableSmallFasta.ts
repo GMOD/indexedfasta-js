@@ -45,9 +45,7 @@ export class FetchableSmallFasta {
   }
 
   private getIndexed() {
-    this.indexed ??= this.data.then(
-      arr => new Map(arr.map(e => [e.id, e])),
-    )
+    this.indexed ??= this.data.then(arr => new Map(arr.map(e => [e.id, e])))
     return this.indexed
   }
 
