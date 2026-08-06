@@ -1,3 +1,4 @@
+import { SharedReadCache } from '@gmod/shared-read-cache'
 import { LocalFile } from 'generic-filehandle2'
 
 import type { GenericFilehandle } from 'generic-filehandle2'
@@ -109,7 +110,12 @@ export async function fetchFromIndex(
 export default class IndexedFasta {
   fasta: SeqReader
   fai: GenericFilehandle
-  indexes?: Promise<Map<string, SeqRecord>>
+
+  /**
+   * The parsed .fai, as a shared read — see {@link getIndexes}. One entry,
+   * never evicted, which is what a memo is.
+   */
+  private indexCache = new SharedReadCache<string, Map<string, SeqRecord>>({})
 
   constructor({
     fasta,
@@ -141,12 +147,31 @@ export default class IndexedFasta {
     }
   }
 
-  private async getIndexes(opts?: BaseOpts) {
-    this.indexes ??= readFAI(this.fai, opts).catch((e: unknown) => {
-      this.indexes = undefined
-      throw e
-    })
-    return this.indexes
+  /**
+   * Parse the .fai, or join the parse already running.
+   *
+   * The index is read and parsed once for the life of this object and every
+   * method here goes through it, so it is the one read that is shared between
+   * callers — and therefore the one place a cancellation can leak from the
+   * caller that asked for it to a caller that did not. `readFAI` hands `opts`
+   * straight to `fai.readFile`, so memoizing the bare promise put the FIRST
+   * caller's signal in charge of a read every later caller joins: when a
+   * reference-sequence track panned away, every concurrent fetch failed with
+   * its abort, their own signals untouched.
+   *
+   * The cache is what fixes that: the parse runs under a signal of its own and
+   * is cancelled only once every caller waiting on it has given up, so one
+   * caller's abort is reported to that caller alone. A rejection is still
+   * dropped rather than cached, so a transient failure does not poison the
+   * index for the life of the file.
+   *
+   * SYNC: ~/src/gmod/bam-js/src/indexFile.ts parse,
+   * ~/src/gmod/tabix-js/src/indexFile.ts parse — same shape, same reason.
+   */
+  private getIndexes(opts?: BaseOpts) {
+    return this.indexCache.get('fai', opts?.signal, signal =>
+      readFAI(this.fai, { ...opts, signal }),
+    )
   }
 
   /**
