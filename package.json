@@ -1,6 +1,6 @@
 {
   "name": "@gmod/indexedfasta",
-  "version": "5.0.9",
+  "version": "5.0.10",
   "packageManager": "pnpm@11.15.1",
   "description": "read indexed fasta and bgzipped fasta formats",
   "license": "MIT",
