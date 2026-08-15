@@ -4,7 +4,17 @@ import {
   BgzipIndexedFasta,
   FetchableSmallFasta,
   IndexedFasta,
+  parseSmallFasta,
 } from '../src/index.ts'
+
+test('parseSmallFasta splits id from description', () => {
+  expect(
+    parseSmallFasta('>seq1 first sequence\nACGT\nACGT\n\n>seq2\nTTTT\n'),
+  ).toEqual([
+    { id: 'seq1', description: 'first sequence', sequence: 'ACGTACGT' },
+    { id: 'seq2', description: '', sequence: 'TTTT' },
+  ])
+})
 
 test('process unindexed fasta', async () => {
   const t = new FetchableSmallFasta({ path: 'test/data/phi-X174.fa' })
@@ -51,6 +61,8 @@ async function volvoxTest(t: IndexedFasta) {
   expect(await t.getSequenceNames()).toEqual(['ctgA', 'ctgB'])
   expect(await t.getSequenceSize('ctgA')).toEqual(50001)
   expect(await t.getSequenceSize('ctgC')).toEqual(undefined)
+  expect(await t.hasReferenceSequence('ctgA')).toBe(true)
+  expect(await t.hasReferenceSequence('ctgC')).toBe(false)
   expect(await t.getSequenceSizes()).toEqual({ ctgA: 50001, ctgB: 6079 })
   expect(await t.getResiduesByName('ctgA', 0, 100)).toEqual(
     'cattgttgcggagttgaacaACGGCATTAGGAACACTTCCGTCTCtcacttttatacgattatgattggttctttagccttggtttagattggtagtagt',
