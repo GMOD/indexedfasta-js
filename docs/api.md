@@ -25,24 +25,24 @@ Pass either local paths or
 | `getSequenceSize(name)`       | `number`, or `undefined`                                        |
 | `hasReferenceSequence(name)`  | `boolean`                                                       |
 
-`max` is clamped to the sequence length, so requesting past the end returns the
-rest of the sequence rather than throwing. An empty range returns `''`. A
-negative `min` throws.
+`max` clamps to the sequence length, so requesting past the end returns the rest
+of the sequence rather than throwing. An empty range returns `''`. A negative
+`min` throws.
 
 ### The shared index parse
 
-The `.fai` is read and parsed once per object and every method goes through it,
-so it is the one read shared between callers. It runs under a signal of its own
-and is cancelled only once every waiting caller has given up — one caller's
-abort never surfaces as another's failure. A failed parse is not cached, so a
+Each object reads and parses its `.fai` once, and every method goes through that
+one parse, so it is the read callers share. It runs under a signal of its own
+and aborts only once every waiting caller has given up — one caller's abort
+never surfaces as another's failure. A failed parse leaves no cache entry, so a
 transient error doesn't poison the file for the life of the object.
 
 ### Errors
 
-Thrown while parsing the index or decoding sequence:
+These come out of parsing the index or decoding sequence:
 
-- a sequence name starting with `>` — the FASTA was likely passed where the
-  `.fai` was expected
+- a sequence name starting with `>` — you probably passed the FASTA where the
+  `.fai` belongs
 - a line with fewer than 5 tab-separated columns
 - `LINEBASES` of 0 on a non-empty sequence — usually a FASTA missing its
   trailing newline; regenerate the index
@@ -57,12 +57,12 @@ new BgzipIndexedFasta({ fasta, fai, gzi })
 ```
 
 Extends `IndexedFasta` with the same methods, reading through a
-`BgzfFilehandle`. The `.gzi` is required — `{fasta, gzi}` or `{path, gziPath}`,
-mixing the two forms throws.
+`BgzfFilehandle`. It needs the `.gzi` — pass `{fasta, gzi}` or
+`{path, gziPath}`; mixing the two forms throws.
 
 ## `FetchableSmallFasta`
 
-For small unindexed FASTA files, read and parsed whole into memory.
+For small unindexed FASTA files, which it reads and parses whole into memory.
 
 ```typescript
 import { FetchableSmallFasta } from '@gmod/indexedfasta'
@@ -72,5 +72,6 @@ await fasta.getSequenceNames()
 await fasta.fetch('NC_001422.1', 0, 10)
 ```
 
-`fetch` throws if the id is absent, unlike `getSequence` above. Also exported is
-`parseSmallFasta(text)`, returning `{ id, description, sequence }[]`.
+`fetch` throws if the id is absent, unlike `getSequence` above. The package also
+exports `parseSmallFasta(text)`, which returns
+`{ id, description, sequence }[]`.
