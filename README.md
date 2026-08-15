@@ -1,6 +1,8 @@
 [![NPM version](https://img.shields.io/npm/v/@gmod/indexedfasta.svg?style=flat-square)](https://npmjs.org/package/@gmod/indexedfasta)
 ![Build Status](https://img.shields.io/github/actions/workflow/status/GMOD/indexedfasta-js/publish.yml?branch=main)
 
+Read FASTA files indexed with `samtools faidx`, plain or bgzipped.
+
 ## Install
 
 ```bash
@@ -23,55 +25,29 @@ const bgzipFasta = new BgzipIndexedFasta({
   gziPath: 'test.fa.gz.gzi',
 })
 
-// get the first 10 bases of a sequence from the file
 // coordinates are UCSC standard 0-based half-open
-const chr1Region = await fasta.getSequence('chr1', 0, 10)
-// chr1Region is a string of bases e.g. 'ACTG...' or undefined if not found
+// returns a string of bases, or undefined if the sequence is not in the index
+const bases = await fasta.getSequence('chr1', 0, 10)
 
-// get a whole sequence from the file
-const chr1Bases = await fasta.getSequence('chr1')
-
-// get object with all seq lengths as { seqName => length, ... }
-const allSequenceSizes = await fasta.getSequenceSizes()
-
-// get the size of a single sequence
+const seqNames = await fasta.getSequenceNames() // ['chr1', ...]
+const sizes = await fasta.getSequenceSizes() // { chr1: 100100, ... }
 const chr1Size = await fasta.getSequenceSize('chr1')
-
-// get an array of all sequence names in the file
-const seqNames = await fasta.getSequenceNames()
 ```
 
-If you are using this in the browser, you may use the generic-filehandle2
-package and initialize like this
+To read remote files in the browser or in Node, pass filehandles instead of
+paths:
 
 ```typescript
-import { IndexedFasta, BgzipIndexedFasta } from '@gmod/indexedfasta'
 import { RemoteFile } from 'generic-filehandle2'
 
 const fasta = new IndexedFasta({
   fasta: new RemoteFile('https://example.com/test.fa'),
   fai: new RemoteFile('https://example.com/test.fa.fai'),
 })
-const bgzipFasta = new BgzipIndexedFasta({
-  fasta: new RemoteFile('https://example.com/test.fa.gz'),
-  fai: new RemoteFile('https://example.com/test.fa.gz.fai'),
-  gzi: new RemoteFile('https://example.com/test.fa.gz.gzi'),
-})
 ```
 
-In Node.js you can also access remote files with generic-filehandle2. Node 18+
-has native `fetch`; for older versions supply one via e.g. `cross-fetch`:
-
-```typescript
-import { IndexedFasta } from '@gmod/indexedfasta'
-import { RemoteFile } from 'generic-filehandle2'
-import fetch from 'cross-fetch' // only needed for Node < 18
-
-const fasta = new IndexedFasta({
-  fasta: new RemoteFile('https://example.com/test.fa', { fetch }),
-  fai: new RemoteFile('https://example.com/test.fa.fai', { fetch }),
-})
-```
+See [docs/api.md](docs/api.md) for the full API, including abort signals and
+`FetchableSmallFasta` for small unindexed files.
 
 ## Academic Use
 
@@ -80,14 +56,9 @@ part of the [JBrowse](http://jbrowse.org) project. If you use it in an academic
 project that you publish, please cite the most recent JBrowse paper, which will
 be linked from [jbrowse.org](http://jbrowse.org).
 
-## Publishing
+## Contributing
 
-[Trusted publishing](https://docs.npmjs.com/about-trusted-publishing) via GitHub
-Actions.
-
-```bash
-pnpm version patch  # or minor/major
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development and release steps.
 
 ## License
 
