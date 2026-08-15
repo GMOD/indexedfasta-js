@@ -7,3 +7,5 @@ dist
 .eslintcache
 esm
 
+.claude/settings.local.json
+.claude/worktrees/
