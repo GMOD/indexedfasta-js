@@ -28,11 +28,18 @@
 
 ## [5.0.9](https://github.com/GMOD/indexedfasta-js/compare/v5.0.8...v5.0.9) (2026-07-25)
 
+- Allow the `unrs-resolver`/`esbuild` build scripts under pnpm 11's stricter
+  build-script gating (`ERR_PNPM_IGNORED_BUILDS` otherwise)
+
 ## [5.0.8](https://github.com/GMOD/indexedfasta-js/compare/v5.0.7...v5.0.8) (2026-07-25)
 
 - Declare `sideEffects: false` in package.json for better tree-shaking
 
 ## [5.0.7](https://github.com/GMOD/indexedfasta-js/compare/v5.0.6...v5.0.7) (2026-05-18)
+
+- Rename the merged workflow back to `publish.yml`, since npm trusted
+  publishing pins to the exact workflow file path via the OIDC
+  `job_workflow_ref` claim and the previous merge had deleted it
 
 ## [5.0.6](https://github.com/GMOD/indexedfasta-js/compare/v5.0.5...v5.0.6) (2026-05-18)
 
@@ -46,7 +53,21 @@
 
 ## [5.0.5](https://github.com/GMOD/indexedfasta-js/compare/v5.0.4...v5.0.5) (2026-04-27)
 
+- Enable `noUncheckedIndexedAccess` in tsconfig and add the non-null
+  assertions it required
+- Replace `eslint-plugin-import` with `eslint-plugin-import-x`
+- Remove unused dependencies
+- Standardize `package.json`/tsconfig/build scripts to match the other GMOD
+  packages (simplified `exports`, added a `main` field for backwards
+  compatibility, `es2022` target)
+- Clean up the README (descriptive variable names, fixed grammar, added a
+  publishing note)
+
 ## [5.0.4](https://github.com/GMOD/indexedfasta-js/compare/v5.0.3...v5.0.4) (2026-03-31)
+
+- Fix the publish workflow for npm trusted publishing by removing the token
+  override and provenance flag
+- Rename branch badges
 
 ## [5.0.3](https://github.com/GMOD/indexedfasta-js/compare/v5.0.2...v5.0.3) (2026-03-28)
 
@@ -77,25 +98,73 @@
 
 ## [4.0.7](https://github.com/GMOD/indexedfasta-js/compare/v4.0.6...v4.0.7) (2025-11-24)
 
+- Bump `@gmod/bgzf-filehandle` to v5
+- Import test modules via explicit `../src/index.ts` paths, enforced by a new
+  `import/extensions` eslint rule
+- Bump vitest to v4 and other devDependencies
+- Switch eslint config to use `defineConfig`
+
 ## [4.0.6](https://github.com/GMOD/indexedfasta-js/compare/v4.0.5...v4.0.6) (2025-05-28)
+
+- Add a `postbuild:es5` step that writes `dist/package.json` with `{"type":
+  "commonjs"}`, so the CJS build isn't misparsed as ESM
 
 ## [4.0.5](https://github.com/GMOD/indexedfasta-js/compare/v4.0.4...v4.0.5) (2025-05-28)
 
+- Update the README to reference `generic-filehandle2` instead of the
+  deprecated `generic-filehandle`
+
 ## [4.0.4](https://github.com/GMOD/indexedfasta-js/compare/v4.0.3...v4.0.4) (2025-05-28)
+
+- Fix a TypeScript build error in `readFAI`'s options parameter
 
 ## [4.0.3](https://github.com/GMOD/indexedfasta-js/compare/v4.0.2...v4.0.3) (2025-05-26)
 
+- Update to `@gmod/bgzf-filehandle` v4's `filehandle`/`gziFilehandle`
+  constructor options, replacing the old `path`/`gziPath` shape
+
 ## [4.0.2](https://github.com/GMOD/indexedfasta-js/compare/v4.0.1...v4.0.2) (2025-04-30)
+
+- Fix generated exports to use explicit `.ts` extensions, matching the rest
+  of the codebase
 
 ## [4.0.1](https://github.com/GMOD/indexedfasta-js/compare/v3.0.1...v4.0.1) (2025-04-30)
 
+- Add a pure-ESM build: set `"type": "module"` with separate `import`/
+  `require` export conditions, replacing the old `main`/`module` fields
+- Bump `@gmod/bgzf-filehandle` to v3 and `generic-filehandle2` to v2
+- Drop the separate `@typescript-eslint/eslint-plugin`/
+  `@typescript-eslint/parser` in favor of the unified `typescript-eslint`
+  package
+- Bump vitest to v3 and other devDependencies
+
 # [4.0.0](https://github.com/GMOD/indexedfasta-js/compare/v3.0.1...v4.0.0) (2025-04-30)
+
+No corresponding commits exist in git history for this tag — it was likely
+superseded immediately by v4.0.1, which covers the same commit range.
 
 ## [3.0.1](https://github.com/GMOD/indexedfasta-js/compare/v3.0.0...v3.0.1) (2024-12-12)
 
 # [3.0.0](https://github.com/GMOD/indexedfasta-js/compare/v2.1.1...v3.0.0) (2024-12-12)
 
+- Migrate from `generic-filehandle` to `generic-filehandle2`, bump
+  `@gmod/bgzf-filehandle` to v2, and decode FASTA text with `TextDecoder`
+  instead of `Buffer#toString`
+- Remove `getResiduesById`; the FAI index is now stored as a single
+  name-keyed map instead of separate `id`/`name` maps, and `readFAI` throws
+  when the file looks like a FASTA rather than a `.fai`
+- Fix a regression that made `max`/end required again in
+  `_fetchFromIndexEntry`, restoring the ability to fetch to the end of a
+  sequence
+- Convert the test suite from jest to vitest, and bump the build target from
+  es2018/es2015 to es2020
+
 ## [2.1.1](https://github.com/GMOD/indexedfasta-js/compare/v2.1.0...v2.1.1) (2024-06-21)
+
+- Import `buffer` explicitly and clean up the ESLint config
+- Suppress a TS error against a known `@gmod/bgzf-filehandle` type mismatch
+  (tracked upstream as bgzf-filehandle#62)
+- Bump deps
 
 # [2.1.0](https://github.com/GMOD/indexedfasta-js/compare/v2.0.4...v2.1.0) (2023-10-04)
 
