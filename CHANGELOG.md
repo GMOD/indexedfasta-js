@@ -1,3 +1,29 @@
+## [5.0.11](https://github.com/GMOD/indexedfasta-js/compare/v5.0.10...v5.0.11) (2026-08-21)
+
+### Bug Fixes
+
+- Take the shared-read-cache release that fixes abort, eviction and weighing ([0fb54ca](https://github.com/GMOD/indexedfasta-js/commit/0fb54ca31b8d121e02b19266c322781d919b7eb0))
+
+### Chores
+
+- Render only the commit subject, and link the commit ([aa77f46](https://github.com/GMOD/indexedfasta-js/commit/aa77f46b281eb320e44f5d97f5c92d3fee35db68))
+- Create a GitHub release for each published tag ([7b282da](https://github.com/GMOD/indexedfasta-js/commit/7b282da07b7ce109080b3ae8e041e5156721e66d))
+- Enforce type strippability in tsconfig ([3820bba](https://github.com/GMOD/indexedfasta-js/commit/3820bba2f5b70c11ca0ecc4ebcf0ca728e552a90))
+- Keep agent worktrees out of the toolchain's way ([550f2c2](https://github.com/GMOD/indexedfasta-js/commit/550f2c223ca888f5addbf86e699a679371582603))
+- Drop unused @jbrowse/quick-lru, cover two untested exports ([ba240e3](https://github.com/GMOD/indexedfasta-js/commit/ba240e3fc7317e798b31d0d167f1af2d1c866c50))
+
+### Documentation
+
+- Trim README and move the full API to docs/api.md ([aeb59d1](https://github.com/GMOD/indexedfasta-js/commit/aeb59d1dd832da9287fffdd2365fe18a52526685))
+- Put the API prose in the active voice ([7744f9a](https://github.com/GMOD/indexedfasta-js/commit/7744f9ab9e5af4b9ab2aebc731a37acc3dec87be))
+- Correct the release command in CONTRIBUTING, and its voice ([e0b410f](https://github.com/GMOD/indexedfasta-js/commit/e0b410f25eba9ff0c2ed0a625355b98525c7cf64))
+- Point remote readers at @gmod/range-cache-filehandle ([2b004ce](https://github.com/GMOD/indexedfasta-js/commit/2b004ce516ce8aa8a0131fc1458318142ee8b802))
+- Say it in full sentences ([e8d04b0](https://github.com/GMOD/indexedfasta-js/commit/e8d04b04e0597a6ec9e4100826e2adbb07f2cc70))
+
+### Other Changes
+
+- Backfill CHANGELOG.md gaps for v2.1.1 through v5.0.9 ([4a5a3fb](https://github.com/GMOD/indexedfasta-js/commit/4a5a3fb28f157c1f70c5be44111ee0eee1260782))
+
 ## [5.0.10](https://github.com/GMOD/indexedfasta-js/compare/v5.0.9...v5.0.10) (2026-08-10)
 
 ### Bug Fixes
