@@ -46,11 +46,11 @@ const fasta = new IndexedFasta({
 })
 ```
 
-Over HTTP, use
+When the files are remote,
 [`@gmod/range-cache-filehandle`](https://github.com/GMOD/range-cache-filehandle)
-in place of `RemoteFile`: it caches byte ranges in 256 KiB chunks, so a
-re-visited region costs no request and adjacent ones coalesce into a single
-fetch.
+can be used in place of `RemoteFile`. It caches the byte ranges it reads in 256
+KiB chunks, so returning to a region you have already fetched costs no request
+at all, and neighboring regions are fetched together.
 
 See [docs/api.md](docs/api.md) for the full API, including abort signals and
 `FetchableSmallFasta` for small unindexed files.
