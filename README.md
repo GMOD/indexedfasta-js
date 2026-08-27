@@ -48,9 +48,10 @@ const fasta = new IndexedFasta({
 
 When the files are remote,
 [`@gmod/range-cache-filehandle`](https://github.com/GMOD/range-cache-filehandle)
-can be used in place of `RemoteFile`. It caches the byte ranges it reads in 256
-KiB chunks, so returning to a region you have already fetched costs no request
-at all, and neighboring regions are fetched together.
+is a drop-in for `RemoteFile`. `IndexedFasta` reads the `.fai` once, then one
+byte range per `getSequence` — small ranges, close together, so ten consecutive
+100 bp reads are ten requests covering 1 kb. The cache serves them out of 256
+KiB chunks, so those ten become one fetch and a region read twice costs nothing.
 
 See [docs/api.md](docs/api.md) for the full API, including abort signals and
 `FetchableSmallFasta` for small unindexed files.
