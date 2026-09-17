@@ -31,11 +31,11 @@ of the sequence rather than throwing. An empty range returns `''`. A negative
 
 ### The shared index parse
 
-Each object reads and parses its `.fai` once, and every method goes through that
-one parse, so it is the read callers share. It runs under a signal of its own
-and aborts only once every waiting caller has given up — one caller's abort
-never surfaces as another's failure. A failed parse leaves no cache entry, so a
-transient error doesn't poison the file for the life of the object.
+Each object reads and parses its `.fai` once; every method goes through that one
+parse, so callers share the same read. It runs under a signal of its own and
+aborts only once every waiting caller has given up — one caller's abort never
+turns into another's failure. A failed parse leaves no cache entry, so a
+transient error doesn't break every later read for the life of the object.
 
 ### Errors
 
