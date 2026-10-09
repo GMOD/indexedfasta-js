@@ -1,3 +1,18 @@
+## [5.0.12](https://github.com/GMOD/indexedfasta-js/compare/v5.0.11...v5.0.12) (2026-10-09)
+
+### Chores
+
+- Bump @gmod/shared-read-cache to 2.0.0 ([d17aaea](https://github.com/GMOD/indexedfasta-js/commit/d17aaea13630f6f3c15d31f61a84c72e2234f5dd))
+
+### Documentation
+
+- Say what the read pattern actually is before recommending the range cache ([888b76b](https://github.com/GMOD/indexedfasta-js/commit/888b76b0a1bf5b7ed2808e6bc7257d959041c857))
+- Fix anti-AI writing tropes in README and docs/api.md ([40f7ea7](https://github.com/GMOD/indexedfasta-js/commit/40f7ea733c3858f8b7034547c68dd14763315de4))
+
+### Tests
+
+- Assert the read pattern the README describes ([eeb0120](https://github.com/GMOD/indexedfasta-js/commit/eeb0120980dee152925364e403eeb5f7f6cf8fed))
+
 ## [5.0.11](https://github.com/GMOD/indexedfasta-js/compare/v5.0.10...v5.0.11) (2026-08-21)
 
 ### Bug Fixes
