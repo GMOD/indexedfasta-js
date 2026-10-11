@@ -1,3 +1,9 @@
+## [5.0.13](https://github.com/GMOD/indexedfasta-js/compare/v5.0.12...v5.0.13) (2026-10-11)
+
+### Tests
+
+- Fail when docs/api.md misses a public member or export ([340dc8b](https://github.com/GMOD/indexedfasta-js/commit/340dc8bd5bac2187c2522a9e69c9822949dbb320))
+
 ## [5.0.12](https://github.com/GMOD/indexedfasta-js/compare/v5.0.11...v5.0.12) (2026-10-09)
 
 ### Chores
