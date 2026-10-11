@@ -16,6 +16,11 @@ Pass either local paths or
 `faiPath` defaults to `${path}.fai`. The `fasta` handle only needs a positional
 `read(length, position, opts)`; `fai` needs `readFile`.
 
+`path` and `faiPath` name local files, which the constructor wraps in
+`LocalFile`. A `fasta` or `fai` handle takes precedence over the matching path.
+The constructor throws when it has neither a handle nor a path for one of the
+two files.
+
 | Method                        | Returns                                                         |
 | ----------------------------- | --------------------------------------------------------------- |
 | `getSequence(name, min, max)` | bases as a string, or `undefined` if `name` is not in the index |
@@ -57,8 +62,12 @@ new BgzipIndexedFasta({ fasta, fai, gzi })
 ```
 
 Extends `IndexedFasta` with the same methods, reading through a
-`BgzfFilehandle`. It needs the `.gzi` — pass `{fasta, gzi}` or
-`{path, gziPath}`; mixing the two forms throws.
+`BgzfFilehandle`. It needs the `.gzi`, so pass `{fasta, gzi}` or
+`{path, gziPath}`. The constructor throws when it has neither pair, as with
+`{fasta, gziPath}`.
+
+`path` and `gziPath` name local files. The `.fai` path defaults to
+`${path}.fai`, as in `IndexedFasta`.
 
 ## `FetchableSmallFasta`
 
@@ -75,3 +84,13 @@ await fasta.fetch('NC_001422.1', 0, 10)
 `fetch` throws if the id is absent, unlike `getSequence` above. The package also
 exports `parseSmallFasta(text)`, which returns
 `{ id, description, sequence }[]`.
+
+The constructor takes a local `path` or a `fasta` filehandle with `readFile`,
+and starts reading the file at once. `data` holds the parsed entries as a
+`Promise`, in file order.
+
+| Field         | Value                                                |
+| ------------- | ---------------------------------------------------- |
+| `id`          | the definition line after `>`, up to the first space |
+| `description` | the rest of the definition line                      |
+| `sequence`    | the sequence lines joined, whitespace removed        |
