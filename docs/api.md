@@ -31,8 +31,8 @@ two files.
 | `hasReferenceSequence(name)`  | `boolean`                                                       |
 
 `max` clamps to the sequence length, so requesting past the end returns the rest
-of the sequence rather than throwing. An empty range returns `''`. A negative
-`min` throws.
+of the sequence rather than throwing. An empty range returns `''`, and a
+negative `min` throws.
 
 ### The shared index parse
 
