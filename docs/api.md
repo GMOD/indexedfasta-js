@@ -24,7 +24,7 @@ two files.
 | Method                        | Returns                                                         |
 | ----------------------------- | --------------------------------------------------------------- |
 | `getSequence(name, min, max)` | bases as a string, or `undefined` if `name` is not in the index |
-| `getResiduesByName(...)`      | same thing — `getSequence` is an alias                          |
+| `getResiduesByName(...)`      | the same; `getSequence` is an alias of it                       |
 | `getSequenceNames()`          | `string[]` in index order                                       |
 | `getSequenceSizes()`          | `Record<string, number>`                                        |
 | `getSequenceSize(name)`       | `number`, or `undefined`                                        |
@@ -36,15 +36,17 @@ of the sequence rather than throwing. An empty range returns `''`. A negative
 
 ### The shared index parse
 
-Each object reads and parses its `.fai` once; every method goes through that one
-parse, so callers share the same read. It runs under a signal of its own and
-aborts only once every waiting caller has given up — one caller's abort never
-turns into another's failure. A failed parse leaves no cache entry, so a
-transient error doesn't break every later read for the life of the object.
+Each object reads and parses its `.fai` once, and every method goes through that
+one parse, so callers share the same read. The parse runs under a separate
+`AbortSignal` and aborts only after every waiting caller has aborted, so one
+caller's abort leaves the other callers' reads running. The object caches no
+failed parse, so a transient error does not make every later read on the object
+fail.
 
 ### Errors
 
-These come out of parsing the index or decoding sequence:
+`IndexedFasta` throws while parsing the index or decoding sequence when it
+finds:
 
 - a sequence name starting with `>` — you probably passed the FASTA where the
   `.fai` belongs
@@ -61,8 +63,8 @@ new BgzipIndexedFasta({ path, faiPath, gziPath })
 new BgzipIndexedFasta({ fasta, fai, gzi })
 ```
 
-Extends `IndexedFasta` with the same methods, reading through a
-`BgzfFilehandle`. It needs the `.gzi`, so pass `{fasta, gzi}` or
+`BgzipIndexedFasta` extends `IndexedFasta` with the same methods and reads the
+FASTA through a `BgzfFilehandle`. It needs the `.gzi`, so pass `{fasta, gzi}` or
 `{path, gziPath}`. The constructor throws when it has neither pair, as with
 `{fasta, gziPath}`.
 
@@ -71,7 +73,8 @@ Extends `IndexedFasta` with the same methods, reading through a
 
 ## `FetchableSmallFasta`
 
-For small unindexed FASTA files, which it reads and parses whole into memory.
+`FetchableSmallFasta` reads a small unindexed FASTA file and parses it whole
+into memory.
 
 ```typescript
 import { FetchableSmallFasta } from '@gmod/indexedfasta'

@@ -12,8 +12,9 @@ pnpm build
 pnpm version patch  # or minor/major
 ```
 
-That runs lint, format, types, tests and build, regenerates CHANGELOG.md with
-git-cliff, then pushes the tag, which triggers the publish workflow.
+`pnpm version` runs lint, format, types, tests and build, regenerates
+CHANGELOG.md with git-cliff, then pushes the tag, which triggers the publish
+workflow.
 
 [docs/api.md](docs/api.md) is written by hand, and `test/apiDocs.test.ts` fails
 when a public member of `IndexedFasta`, `BgzipIndexedFasta`,
@@ -23,15 +24,15 @@ internal.
 
 ## Publishing
 
-Releases publish automatically via GitHub Actions using npm trusted publishing
-(OIDC, no stored token). The workflow requires `--provenance` and
-`id-token: write` permissions.
+GitHub Actions publishes each release to npm with trusted publishing (OIDC, no
+stored token). The workflow requires `--provenance` and `id-token: write`
+permissions.
 
-This repo is already configured. To set up a new package:
-`npm trust github <pkg> --file publish.yml --repo GMOD/<repo>` (requires
-npm >=11.10.0 and 2FA).
+indexedfasta-js is already configured for trusted publishing. To set up a new
+package, run `npm trust github <pkg> --file publish.yml --repo GMOD/<repo>`
+(requires npm >=11.10.0 and 2FA).
 
 Once npm publish succeeds, the `release` job creates the GitHub release for the
-tag, taking its notes from that version's CHANGELOG.md section — which
-`scripts/release-notes.sh` extracts, so run that with a version to preview what
-a release will say.
+tag, with that version's CHANGELOG.md section as its notes.
+`scripts/release-notes.sh` extracts the section, so run the script with a
+version to preview a release's notes.
