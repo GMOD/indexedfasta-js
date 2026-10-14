@@ -24,7 +24,7 @@ two files.
 | Method                        | Returns                                                         |
 | ----------------------------- | --------------------------------------------------------------- |
 | `getSequence(name, min, max)` | bases as a string, or `undefined` if `name` is not in the index |
-| `getResiduesByName(...)`      | the same; `getSequence` is an alias of it                       |
+| `getResiduesByName(...)`      | same thing — `getSequence` is an alias                          |
 | `getSequenceNames()`          | `string[]` in index order                                       |
 | `getSequenceSizes()`          | `Record<string, number>`                                        |
 | `getSequenceSize(name)`       | `number`, or `undefined`                                        |
@@ -36,12 +36,12 @@ negative `min` throws.
 
 ### The shared index parse
 
-Each object reads and parses its `.fai` once, and every method goes through that
-one parse, so callers share the same read. The parse runs under a separate
-`AbortSignal` and aborts only after every waiting caller has aborted, so one
+Each object reads and parses its `.fai` once; every method goes through that one
+parse, so callers share the same read. The parse runs under a separate
+`AbortSignal` and aborts only once every waiting caller has aborted, so one
 caller's abort leaves the other callers' reads running. The object caches no
-failed parse, so a transient error does not make every later read on the object
-fail.
+failed parse, so a transient error doesn't break every later read for the life
+of the object.
 
 ### Errors
 

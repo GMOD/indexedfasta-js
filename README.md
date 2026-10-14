@@ -50,9 +50,9 @@ When the files are remote,
 [`@gmod/range-cache-filehandle`](https://github.com/GMOD/range-cache-filehandle)
 is a drop-in for `RemoteFile`. `IndexedFasta` reads the `.fai` once, then one
 small byte range per `getSequence` call, so ten consecutive 100 bp reads make
-ten adjacent requests covering 1 kb. The cache serves those reads from 256 KiB
-chunks, so the ten requests become one fetch, and reading the same region twice
-adds no request.
+ten adjacent requests covering 1 kb. The cache serves them out of 256 KiB
+chunks, so those ten become one fetch, and reading the same region twice adds no
+extra request.
 
 See [docs/api.md](docs/api.md) for the full API, including abort signals and
 `FetchableSmallFasta` for small unindexed files.
