@@ -11,15 +11,12 @@ new IndexedFasta({ path, faiPath })
 new IndexedFasta({ fasta, fai })
 ```
 
-Pass either local paths or
+Pass either local paths, which the constructor wraps in `LocalFile`, or
 [generic-filehandle2](https://github.com/GMOD/generic-filehandle2) filehandles.
 `faiPath` defaults to `${path}.fai`. The `fasta` handle only needs a positional
-`read(length, position, opts)`; `fai` needs `readFile`.
-
-`path` and `faiPath` name local files, which the constructor wraps in
-`LocalFile`. A `fasta` or `fai` handle takes precedence over the matching path.
-The constructor throws when it has neither a handle nor a path for one of the
-two files.
+`read(length, position, opts)`; `fai` needs `readFile`. A handle takes
+precedence over the matching path, and the constructor throws when it has
+neither for one of the two files.
 
 | Method                        | Returns                                                         |
 | ----------------------------- | --------------------------------------------------------------- |
@@ -36,12 +33,10 @@ negative `min` throws.
 
 ### The shared index parse
 
-Each object reads and parses its `.fai` once; every method goes through that one
-parse, so callers share the same read. The parse runs under a separate
-`AbortSignal` and aborts only once every waiting caller has aborted, so one
-caller's abort leaves the other callers' reads running. The object caches no
-failed parse, so a transient error doesn't break every later read for the life
-of the object.
+Each object reads and parses its `.fai` once, and every method shares that
+parse. The parse runs under a separate `AbortSignal` and aborts only once every
+waiting caller has aborted. The object caches no failed parse, so a transient
+error doesn't break every later read.
 
 ### Errors
 
@@ -68,8 +63,7 @@ FASTA through a `BgzfFilehandle`. It needs the `.gzi`, so pass `{fasta, gzi}` or
 `{path, gziPath}`. The constructor throws when it has neither pair, as with
 `{fasta, gziPath}`.
 
-`path` and `gziPath` name local files. The `.fai` path defaults to
-`${path}.fai`, as in `IndexedFasta`.
+The `.fai` path defaults to `${path}.fai`, as in `IndexedFasta`.
 
 ## `FetchableSmallFasta`
 
