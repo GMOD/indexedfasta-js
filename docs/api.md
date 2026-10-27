@@ -60,8 +60,8 @@ new BgzipIndexedFasta({ fasta, fai, gzi })
 
 `BgzipIndexedFasta` extends `IndexedFasta` with the same methods and reads the
 FASTA through a `BgzfFilehandle`. It needs the `.gzi`, so pass `{fasta, gzi}` or
-`{path, gziPath}`. The constructor throws when it has neither pair, as with
-`{fasta, gziPath}`.
+`{path, gziPath}`. `gziPath` is the path to the `.gzi` file. The constructor
+throws when it has neither pair, as with `{fasta, gziPath}`.
 
 The `.fai` path defaults to `${path}.fai`, as in `IndexedFasta`.
 
