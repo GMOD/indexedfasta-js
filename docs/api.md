@@ -84,7 +84,9 @@ exports `parseSmallFasta(text)`, which returns
 
 The constructor takes a local `path` or a `fasta` filehandle with `readFile`,
 and starts reading the file at once. `data` holds the parsed entries as a
-`Promise`, in file order.
+`Promise`, in file order. `;` comment lines and blank lines at the start of the
+file are skipped (`;` is the original FASTA comment marker, also used by FAIR
+Header Reference genome metadata headers).
 
 | Field         | Value                                                |
 | ------------- | ---------------------------------------------------- |

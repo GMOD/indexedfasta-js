@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 import {
   BgzipIndexedFasta,
@@ -13,6 +13,53 @@ test('parseSmallFasta splits id from description', () => {
   ).toEqual([
     { id: 'seq1', description: 'first sequence', sequence: 'ACGTACGT' },
     { id: 'seq2', description: '', sequence: 'TTTT' },
+  ])
+})
+
+describe('parseSmallFasta leading comments', () => {
+  const records = '>chr1 desc one\nACGTACGT\nAC\n>chr2\nTTTT\n'
+  const expected = [
+    { id: 'chr1', description: 'desc one', sequence: 'ACGTACGTAC' },
+    { id: 'chr2', description: '', sequence: 'TTTT' },
+  ]
+
+  test('skips ; comments, FHR headers and blank lines', () => {
+    expect(parseSmallFasta(records)).toEqual(expected)
+    expect(parseSmallFasta(`;a comment\n${records}`)).toEqual(expected)
+    expect(
+      parseSmallFasta(`;~schema: x\n;~taxon:\n\n;~  name: y\n${records}`),
+    ).toEqual(expected)
+  })
+
+  test('a > inside a comment starts no record', () => {
+    expect(parseSmallFasta(`;see >chr2 below\n${records}`)).toEqual(expected)
+  })
+
+  test('a file of only comments has no records', () => {
+    expect(parseSmallFasta(';one\n;two\n')).toEqual([])
+  })
+
+  test('a comment ended by a lone \\r does not swallow a record', () => {
+    expect(parseSmallFasta(`;c\r${records}`)).toEqual(expected)
+  })
+
+  test('CRLF comment and blank lines', () => {
+    const crlf = records.replaceAll('\n', '\r\n')
+    expect(parseSmallFasta(`;one\r\n\r\n;two\r\n${crlf}`)).toEqual(expected)
+  })
+
+  test('millions of leading lines do not overflow the stack', () => {
+    const text = ';c\n'.repeat(1_500_000) + '\n'.repeat(1_500_000) + records
+    expect(parseSmallFasta(text)).toEqual(expected)
+  })
+})
+
+test('a > inside a description does not split the entry', () => {
+  expect(
+    parseSmallFasta('>ctgA gene A>B fusion\nACGT\n>ctgB\tx\nTT\n'),
+  ).toEqual([
+    { id: 'ctgA', description: 'gene A>B fusion', sequence: 'ACGT' },
+    { id: 'ctgB', description: 'x', sequence: 'TT' },
   ])
 })
 

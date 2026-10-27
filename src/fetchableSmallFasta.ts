@@ -10,14 +10,35 @@ export interface SmallFastaEntry {
   sequence: string
 }
 
+// ';' lines (the original FASTA comment marker, used by FHR metadata headers)
+// and blank lines before the first record would otherwise become a record. A
+// loop rather than one anchored regex, which overflows the stack on millions
+// of lines.
+function skipLeadingComments(text: string) {
+  const lineBreak = /\r\n?|\n/g
+  let start = 0
+  while (start < text.length) {
+    lineBreak.lastIndex = start
+    const match = lineBreak.exec(text)
+    const end = match ? match.index : text.length
+    if (text[start] !== ';' && /\S/.test(text.slice(start, end))) {
+      break
+    }
+    start = match ? lineBreak.lastIndex : end
+  }
+  return text.slice(start)
+}
+
+// Split on a '>' that starts a line: a description is free text and may
+// contain one ("gene A>B"). Any whitespace ends the id, as samtools does it.
 export function parseSmallFasta(text: string): SmallFastaEntry[] {
-  return text
-    .split('>')
+  return skipLeadingComments(text)
+    .split(/^>/m)
     .filter(t => /\S/.test(t))
     .map(entryText => {
-      const [defLine, ...seqLines] = entryText.split('\n')
-      const [id, ...description] = defLine!.split(' ')
-      const sequence = seqLines.join('').replace(/\s/g, '')
+      const [defLine, ...seqLines] = entryText.split(/\r?\n/)
+      const [id, ...description] = defLine!.split(/\s+/)
+      const sequence = seqLines.join('').replaceAll(/\s/g, '')
       return {
         id: id!,
         description: description.join(' '),
