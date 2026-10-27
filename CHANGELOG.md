@@ -1,3 +1,17 @@
+## [5.0.14](https://github.com/GMOD/indexedfasta-js/compare/v5.0.13...v5.0.14) (2026-10-27)
+
+### Documentation
+
+- Name gziPath in api.md so the docs coverage test passes ([cf0cf97](https://github.com/GMOD/indexedfasta-js/commit/cf0cf9721192147e06ee7f7d1a893266dcd5fe04))
+
+### Other Changes
+
+- Rewrite AI-writing tropes in README and docs ([4eb8283](https://github.com/GMOD/indexedfasta-js/commit/4eb8283929de6d2e4b7967b75484fcf64ae1b8de))
+- Fold short verdict sentences into their neighbours ([76edb37](https://github.com/GMOD/indexedfasta-js/commit/76edb37f6f6cce2afc924b813b4ef9b80e176d1a))
+- Restore wording the tropes rewrite changed without a trope ([171ec24](https://github.com/GMOD/indexedfasta-js/commit/171ec24dd0464b7547353b0b049e9b040943add9))
+- Trim wordiness in README and API doc ([ffb0ee5](https://github.com/GMOD/indexedfasta-js/commit/ffb0ee59f5d75ee3079d519a40bab738db38c8db))
+- ParseSmallFasta skips leading ; comments, splits on line-initial > ([18674c2](https://github.com/GMOD/indexedfasta-js/commit/18674c243d5fd74268bed926548ba77c09f613d1))
+
 ## [5.0.13](https://github.com/GMOD/indexedfasta-js/compare/v5.0.12...v5.0.13) (2026-10-11)
 
 ### Tests
