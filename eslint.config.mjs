@@ -6,10 +6,8 @@ import tseslint from 'typescript-eslint'
 export default defineConfig(
   {
     ignores: [
-      'webpack.config.js',
       'dist/*',
       'esm/*',
-      'example/*',
       'eslint.config.mjs',
       // agent worktrees are whole checkouts of this repo living inside it, so
       // without this eslint lints every one of them against the root
